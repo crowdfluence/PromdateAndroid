@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PromDate</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="not_registered">Not registered?</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_up"><u>Sign up.</u></string>
+    <string name="sign_in"><u>Sign in.</u></string>
+    <string name="no_internet">Unable to connect to the server. Check your internet connection and try again.</string>
+    <string name="failed_login">Invalid login credentials. Please check your username and password and try again.</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="gender">Gender</string>
+    <string name="school">School</string>
+    <string name="grade">Grade</string>
+</resources>
