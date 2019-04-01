@@ -17,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//TODO: Check that confirm password and password match as the user is typing
+//TODO: (MAYBE) clear all errors after user starts typing
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -49,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    fun register(view:View) {
+    fun register(view: View) {
         val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
         val email = emailEdit.text.toString()
         val password = findViewById<EditText>(R.id.password_edit).text.toString()
@@ -57,12 +57,48 @@ class RegisterActivity : AppCompatActivity() {
         val firstName = findViewById<EditText>(R.id.first_name_edit).text.toString()
         val lastName = findViewById<EditText>(R.id.last_name_edit).text.toString()
         val gender = findViewById<EditText>(R.id.gender_edit).text.toString()
-        val grade = findViewById<EditText>(R.id.grade_edit).text.toString().toInt()
+        val grade = findViewById<EditText>(R.id.grade_edit).text.toString().toIntOrNull() ?: -1
         val schoolId = 1
 
+        var missingFields = false
         if (!isValidEmail(emailEdit)) {
+            missingFields = true
+        }
+        else if (email.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (password.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (checkPassword.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (firstName.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (lastName.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (gender.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (!isValidGrade(grade)) {
+            findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = getString(R.string.required_field)
+            missingFields = true
+        }
+        if (!isValidSchoolId(schoolId)) {
+            missingFields = true
+        }
+        if (missingFields) {
             return
         }
+
 
         val apiAccessor = APIAccessor()
 
@@ -72,7 +108,9 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     //successfully logged in
-                    Toast.makeText(this@RegisterActivity, "Registered account!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(R.id.constraint_layout), R.string.register_success,
+                        Snackbar.LENGTH_LONG)
+                        .show()
                 }
                 else {
                     Snackbar.make(findViewById(R.id.constraint_layout), response.body()?.result ?: "",
@@ -106,6 +144,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun isValidGrade(grade: Int): Boolean = grade > 0
+
+    private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0
+
     private fun validatePassword(confirmPassEdit: TextInputEditText) {
         val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
         val confirmPassword = confirmPassEdit.text.toString()
@@ -123,6 +165,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
         confirmPassEditWrapper.error = null
+        return
     }
 
     //TODO: https://developer.android.com/guide/topics/search/search-dialog

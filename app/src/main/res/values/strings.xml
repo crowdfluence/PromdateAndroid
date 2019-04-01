@@ -20,4 +20,13 @@
     <string name="grade">Grade</string>
     <string name="password_no_match">Both passwords must match.</string>
     <string name="invalid_email">The provided email is invalid.</string>
+    <string name="required_field">This field is required.</string>
+    <string name="title_activity_main_feed">MainFeedActivity</string>
+    <string name="action_navigation">Navigation</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="register_success">Successfully registered account! Please verify your email, then sign in.</string>
+    <string name="singles">Singles</string>
+    <string name="couples">Couples</string>
+    <string name="action_search">Search</string>
+    <string name="action_filter">Filter</string>
 </resources>
