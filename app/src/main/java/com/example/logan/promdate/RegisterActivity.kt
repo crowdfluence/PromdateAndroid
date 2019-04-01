@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
         confirmPassEdit.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validatePassword(confirmPassEdit)
+                isValidPasswordConfirmation(confirmPassEdit)
             }
 
             //don't need these but have to override as it is an interface
@@ -52,12 +52,13 @@ class RegisterActivity : AppCompatActivity() {
     fun register(view: View) {
         val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
         val email = emailEdit.text.toString()
-        val password = findViewById<EditText>(R.id.password_edit).text.toString()
-        val checkPassword = findViewById<EditText>(R.id.confirm_password_edit).text.toString()
-        val firstName = findViewById<EditText>(R.id.first_name_edit).text.toString()
-        val lastName = findViewById<EditText>(R.id.last_name_edit).text.toString()
-        val gender = findViewById<EditText>(R.id.gender_edit).text.toString()
-        val grade = findViewById<EditText>(R.id.grade_edit).text.toString().toIntOrNull() ?: -1
+        val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
+        val checkPasswordEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
+        val checkPassword = checkPasswordEdit.text.toString()
+        val firstName = findViewById<TextInputEditText>(R.id.first_name_edit).text.toString()
+        val lastName = findViewById<TextInputEditText>(R.id.last_name_edit).text.toString()
+        val gender = findViewById<TextInputEditText>(R.id.gender_edit).text.toString()
+        val grade = findViewById<TextInputEditText>(R.id.grade_edit).text.toString().toIntOrNull() ?: -1
         val schoolId = 1
 
         var missingFields = false
@@ -68,32 +69,59 @@ class RegisterActivity : AppCompatActivity() {
             findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
         }
+        else {
+            findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = null
+        }
         if (password.isEmpty()) {
             findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
         }
-        if (checkPassword.isEmpty()) {
+        else {
+            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
+        }
+        if (!isValidPasswordConfirmation(checkPasswordEdit)) {
+            missingFields = true
+        }
+        else if (checkPassword.isEmpty()) {
             findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
+        }
+        else {
+            findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = null
         }
         if (firstName.isEmpty()) {
             findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
         }
+        else {
+            findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = null
+        }
         if (lastName.isEmpty()) {
             findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
+        }
+        else {
+            findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = null
         }
         if (gender.isEmpty()) {
             findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
         }
+        else {
+            findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = null
+        }
         if (!isValidGrade(grade)) {
             findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
         }
+        else {
+            findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = null
+        }
         if (!isValidSchoolId(schoolId)) {
             missingFields = true
+        }
+        else {
+            findViewById<TextInputLayout>(R.id.school_edit_wrapper).error = null
         }
         if (missingFields) {
             return
@@ -148,24 +176,24 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0
 
-    private fun validatePassword(confirmPassEdit: TextInputEditText) {
+    private fun isValidPasswordConfirmation(confirmPassEdit: TextInputEditText): Boolean {
         val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
         val confirmPassword = confirmPassEdit.text.toString()
         val confirmPassEditWrapper = findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper)
 
         if (password.isEmpty()) {
             confirmPassEditWrapper.error = null
-            return //user entered confirm password before entering normal password
+            return true //user entered confirm password before entering normal password
         }
 
         for (i in 0 until confirmPassword.length) {
             if (password[i] != confirmPassword[i]) { //passwords do not match
                 confirmPassEditWrapper.error = getString(R.string.password_no_match)
-                return
+                return false
             }
         }
         confirmPassEditWrapper.error = null
-        return
+        return true
     }
 
     //TODO: https://developer.android.com/guide/topics/search/search-dialog
