@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main_feed.*
 
@@ -16,6 +19,10 @@ import kotlinx.android.synthetic.main.activity_main_feed.*
 class MainFeedActivity : AppCompatActivity() {
 
     private var pagerAdapter: TabAdapter? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: SingleAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private var users = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +39,7 @@ class MainFeedActivity : AppCompatActivity() {
             setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
         }
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        //set adapter to return single/couple fragments
         pagerAdapter = TabAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
@@ -76,7 +82,7 @@ class MainFeedActivity : AppCompatActivity() {
             return when (position) {
                 0 -> SinglesTabFragment()
                 1 -> CouplesTabFragment()
-                else -> null
+                else -> throw Exception("Invalid tab value")
             }
         }
 

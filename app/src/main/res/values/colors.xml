@@ -4,8 +4,9 @@
     <color name="colorPrimaryDark">#008BA3</color>
     <color name="colorAccent">#009688</color>
     <color name="colorPrimaryLight">#62efff</color>
-    <color name="redButton">#FF6E6E</color>
-    <color name="buttonBlue">#4285f4</color>
+    <color name="lightRed">#FF6E6E</color>
+    <color name="linkBlue">#4285f4</color>
     <color name="darkGray">#727272</color>
-    <color name="tabUnderline">#FFFF8D</color>
+    <color name="darkerGray">#202020</color>
+    <color name="yellow">#FFFF8D</color>
 </resources>

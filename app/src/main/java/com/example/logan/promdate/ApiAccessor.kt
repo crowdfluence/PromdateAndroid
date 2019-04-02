@@ -41,7 +41,7 @@ interface ServerInterface {
 }
 
 //initializes the standard api accessor that is reused throughout the code
-class APIAccessor {
+class ApiAccessor {
     var apiService: ServerInterface
     init {
         val gson = GsonBuilder()

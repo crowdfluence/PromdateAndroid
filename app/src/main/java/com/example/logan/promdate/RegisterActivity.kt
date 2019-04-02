@@ -8,16 +8,11 @@ import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-//TODO: (MAYBE) clear all errors after user starts typing
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -142,7 +137,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
 
-        val apiAccessor = APIAccessor()
+        val apiAccessor = ApiAccessor()
 
         val call: Call<DefaultResponse> = apiAccessor.apiService.register(email, password, checkPassword, firstName,
             lastName, schoolId, gender, grade)

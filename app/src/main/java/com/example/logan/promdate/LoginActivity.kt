@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
     fun login(view: View) {
         val email = findViewById<EditText>(R.id.email_edit).text.toString()
         val password = findViewById<EditText>(R.id.password_edit).text.toString()
-        val apiAccessor = APIAccessor()
+        val apiAccessor = ApiAccessor()
 
         val call: Call<DefaultResponse> = apiAccessor.apiService.login(email, password)
         call.enqueue(object : Callback<DefaultResponse> {
