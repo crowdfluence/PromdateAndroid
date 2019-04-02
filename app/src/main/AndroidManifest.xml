@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".MainFeedActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainFeedActivity"
             android:label="@string/title_activity_main_feed"
             android:theme="@style/AppTheme"/>
     </application>

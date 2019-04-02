@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main_feed.*
-import android.support.design.widget.TabLayout
 
 
 class MainFeedActivity : AppCompatActivity() {

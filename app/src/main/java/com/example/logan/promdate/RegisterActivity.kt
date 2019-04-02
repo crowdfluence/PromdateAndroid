@@ -36,6 +36,20 @@ class RegisterActivity : AppCompatActivity() {
             signIn(it)
         }
 
+        //set textChangedListener on all input fields to remove error upon typing (except confirm password)
+        val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
+        emailEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.email_edit_wrapper)))
+        val passwordEdit = findViewById<TextInputEditText>(R.id.password_edit)
+        passwordEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.password_edit_wrapper)))
+        val firstNameEdit = findViewById<TextInputEditText>(R.id.first_name_edit)
+        firstNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.first_name_edit_wrapper)))
+        val lastNameEdit = findViewById<TextInputEditText>(R.id.last_name_edit)
+        lastNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.last_name_edit_wrapper)))
+        val genderEdit = findViewById<TextInputEditText>(R.id.gender_edit)
+        genderEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.gender_edit_wrapper)))
+        val gradeEdit = findViewById<TextInputEditText>(R.id.grade_edit)
+        gradeEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.grade_edit_wrapper)))
+
         //validate that user's password matches as they are entering it
         val confirmPassEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
         confirmPassEdit.addTextChangedListener(object : TextWatcher {
@@ -77,7 +91,7 @@ class RegisterActivity : AppCompatActivity() {
             missingFields = true
         }
         else {
-            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
+            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = null
         }
         if (!isValidPasswordConfirmation(checkPasswordEdit)) {
             missingFields = true
