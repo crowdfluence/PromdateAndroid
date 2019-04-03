@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
+import com.example.logan.promdate.data.DefaultResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

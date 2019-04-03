@@ -1,19 +1,30 @@
 package com.example.logan.promdate
 
+import android.arch.paging.PagedListAdapter
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.example.logan.promdate.data.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_single.view.*
 
+
+//Checks if list is updated
+class SingleUserDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean = oldItem == newItem
+}
+
 //adapter for the singles recyclerview
-class SingleAdapter(private val singleList: ArrayList<User>,
-                    private val clickListener: (User) -> Unit): RecyclerView.Adapter<SingleAdapter.SingleViewHolder>() {
+class SingleAdapter(private val clickListener: (User) -> Unit) :
+    PagedListAdapter<User, SingleAdapter.SingleViewHolder>(SingleUserDiffCallback()) {
 
     //sets content of view
-    inner class SingleViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class SingleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(user: User, clickListener: (User) -> Unit) = with(itemView) {
             name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
             if (!user.profilePictureUrl.isEmpty()) {
@@ -35,11 +46,12 @@ class SingleAdapter(private val singleList: ArrayList<User>,
 
     //replace contents of view
     override fun onBindViewHolder(holder: SingleViewHolder, position: Int) {
-        holder.bind(singleList[position], clickListener)
-    }
+        val user = getItem(position)
 
-    //return size of dataset
-    override fun getItemCount() = singleList.size
+        if (user != null) {
+            holder.bind(user, clickListener)
+        }
+    }
 
     //sets image from url
     fun ImageView.loadUrl(url: String) {

@@ -1,5 +1,7 @@
 package com.example.logan.promdate
 
+import com.example.logan.promdate.data.DefaultResponse
+import com.example.logan.promdate.data.FeedResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -29,6 +31,13 @@ interface ServerInterface {
                  @Field("school-id") schoolId: Int,
                  @Field("gender") gender: String,
                  @Field("grade") grade: Int): Call<DefaultResponse>
+
+    //feed
+    @GET("php/feed.php")
+    fun getFeed(@Query("token") token: String,
+                @Query("max-users") maxUsers: Int,
+                @Query("school-id") schoolId: Int?,
+                @Query("offset") offset: Int?): Call<FeedResponse>
 /*    //list of collections
     @GET("custom_collections.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")
     fun loadAllCollections(): Call<CollectionsList>

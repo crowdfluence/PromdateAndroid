@@ -19,10 +19,6 @@ import kotlinx.android.synthetic.main.activity_main_feed.*
 class MainFeedActivity : AppCompatActivity() {
 
     private var pagerAdapter: TabAdapter? = null
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: SingleAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
-    private var users = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

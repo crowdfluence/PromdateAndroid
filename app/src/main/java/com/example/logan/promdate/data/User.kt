@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 //stores a team that can be easily converted to json
 @Parcelize
-class User(@SerializedName("UserId")             var id: Int = -1,
+data class User(@SerializedName("UserId")        var id: Int = -1,
            @SerializedName("Email")              var email: String = "",
            @SerializedName("FirstName")          var firstName: String = "",
            @SerializedName("LastName")           var lastName: String = "",

@@ -1,5 +1,7 @@
 package com.example.logan.promdate
 
+import android.arch.lifecycle.Observer
+import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.logan.promdate.data.User
 
 class SinglesTabFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -24,7 +27,7 @@ class SinglesTabFragment : Fragment() {
 
         //sets up recycler view
         viewManager = LinearLayoutManager(context)
-        viewAdapter = SingleAdapter(users) {
+        viewAdapter = SingleAdapter {
             onUserClick(it) //sets onClick function for each item in the list
         }
         recyclerView = view.findViewById<RecyclerView>(R.id.user_recycler).apply {
@@ -38,6 +41,19 @@ class SinglesTabFragment : Fragment() {
         }
 
         viewAdapter.notifyDataSetChanged()
+    }
+
+    fun initializeList() {
+        val config = PagedList.Config.Builder()
+            .setPageSize(30)
+            .setEnablePlaceholders(false)
+            .build()
+
+        val liveData = initializedPagedListBuilder(config).build()
+
+        liveData.observe(this, Observer<PagedList<User>> { pagedList ->
+            viewAdapter.submitList(pagedList)
+        })
     }
 
     private fun onUserClick(user: User) {
