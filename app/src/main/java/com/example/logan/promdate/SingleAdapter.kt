@@ -11,7 +11,6 @@ import com.example.logan.promdate.data.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_single.view.*
 
-
 //Checks if list is updated
 class SingleUserDiffCallback : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem.id == newItem.id
@@ -55,8 +54,11 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
 
     //sets image from url
     fun ImageView.loadUrl(url: String) {
+        val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
         Picasso.get()
-            .load(url)
+            .load(fullUrl)
+            .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
+            .error(R.drawable.promdate_logo) //TODO: Change to actual error
             .into(this)
     }
 }

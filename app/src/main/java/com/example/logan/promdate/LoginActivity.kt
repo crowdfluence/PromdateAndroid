@@ -13,6 +13,7 @@ import com.example.logan.promdate.data.DefaultResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,11 +41,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     //successfully logged in; stores authentication token in file
-                    val filename = "token.txt"
-                    val fileContents: String = response.body()?.result ?: ""
-                    this@LoginActivity.openFileOutput(filename, Context.MODE_PRIVATE).use {
-                        it.write(fileContents.toByteArray())
-                    }
+                    File(this@LoginActivity.filesDir, "token.txt").writeText(response.body()?.result ?: "")
 
                     //opens up main feed
                     val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
