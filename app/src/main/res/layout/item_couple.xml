@@ -3,8 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- A CardView that contains a TextView -->
+    android:layout_height="wrap_content">
+
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
@@ -13,13 +13,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         card_view:cardCornerRadius="1dp"
         tools:layout_height="100dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <ImageView
                 android:id="@+id/profile_picture_image"
@@ -32,7 +34,7 @@
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars[0]" />
+                card_view:srcCompat="@drawable/default_profile" />
 
             <TextView
                 android:id="@+id/grade_text"
@@ -52,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:text="@string/full_name"
                 android:textColor="@color/darkerGray"
                 android:textSize="16sp"
                 card_view:layout_constraintStart_toEndOf="@+id/profile_picture_image"
@@ -63,13 +66,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:lines="2"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toEndOf="@+id/profile_picture_image"
                 card_view:layout_constraintTop_toBottomOf="@+id/name_text"
+                card_view:layout_constraintVertical_bias="0.3"
                 tools:text="This is a very very very very very very very very very very very very very long bio." />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

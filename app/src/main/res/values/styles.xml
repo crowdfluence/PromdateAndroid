@@ -35,9 +35,10 @@
 
     </style>
 
-    <style name="editTextHighlight" parent="Widget.AppCompat.EditText">
+    <style name="EditText">
         <item name="colorControlNormal">@android:color/darker_gray</item>
-        <item name="android:colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
