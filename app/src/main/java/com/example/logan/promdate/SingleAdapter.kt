@@ -25,14 +25,16 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
 
     //sets content of view
     inner class SingleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(user: User, clickListener: (User) -> Unit) = with(itemView) {
-            name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
-            if (!user.profilePictureUrl.isEmpty()) {
-                profile_picture_image.loadUrl(user.profilePictureUrl)
+        fun bind(user: User, clickListener: (User) -> Unit) {
+            with(itemView) {
+                name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
+                if (!user.profilePictureUrl.isEmpty()) {
+                    profile_picture_image.loadUrl(user.profilePictureUrl)
+                }
+                grade_text.text = context.getString(R.string.grade_number, user.grade)
+                bio_text.text = user.bio
+                setOnClickListener { clickListener(user) }
             }
-            grade_text.text = context.getString(R.string.grade_number, user.grade)
-            bio_text.text = user.bio
-            setOnClickListener { clickListener(user) }
         }
     }
 

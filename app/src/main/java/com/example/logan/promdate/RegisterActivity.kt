@@ -9,11 +9,15 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import com.example.logan.promdate.data.DefaultResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.ViewGroup
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -29,8 +33,24 @@ class RegisterActivity : AppCompatActivity() {
         //make tapping on sign in return user to other activity
         val signInText = findViewById<TextView>(R.id.sign_in_text)
         signInText.setOnClickListener {
-            signIn(it)
+            finish()
         }
+
+        //set up gender adapter with hint
+        val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
+        val genderAdapter = HintAdapter(this, genderOptions, android.R.layout.simple_spinner_dropdown_item)
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val genderSpinner: Spinner = findViewById(R.id.gender_spinner)
+        genderSpinner.adapter = genderAdapter
+        genderSpinner.setSelection(genderAdapter.count)
+
+        //set up grade adapter with hint
+        val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
+        val gradeAdapter = HintAdapter(this, gradeOptions, android.R.layout.simple_spinner_dropdown_item)
+        gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val gradeSpinner: Spinner = findViewById(R.id.grade_spinner)
+        gradeSpinner.adapter = gradeAdapter
+        gradeSpinner.setSelection(gradeAdapter.count)
 
         //set textChangedListener on all input fields to remove error upon typing (except confirm password)
         val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
@@ -41,10 +61,6 @@ class RegisterActivity : AppCompatActivity() {
         firstNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.first_name_edit_wrapper)))
         val lastNameEdit = findViewById<TextInputEditText>(R.id.last_name_edit)
         lastNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.last_name_edit_wrapper)))
-        val genderEdit = findViewById<TextInputEditText>(R.id.gender_edit)
-        genderEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.gender_edit_wrapper)))
-        val gradeEdit = findViewById<TextInputEditText>(R.id.grade_edit)
-        gradeEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.grade_edit_wrapper)))
 
         //validate that user's password matches as they are entering it
         val confirmPassEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
@@ -55,11 +71,12 @@ class RegisterActivity : AppCompatActivity() {
 
             //don't need these but have to override as it is an interface
             override fun afterTextChanged(s: Editable?) {}
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         })
     }
 
-    fun register(view: View) {
+    fun onRegister(view: View) {
         val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
         val email = emailEdit.text.toString()
         val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
@@ -67,70 +84,57 @@ class RegisterActivity : AppCompatActivity() {
         val checkPassword = checkPasswordEdit.text.toString()
         val firstName = findViewById<TextInputEditText>(R.id.first_name_edit).text.toString()
         val lastName = findViewById<TextInputEditText>(R.id.last_name_edit).text.toString()
-        val gender = findViewById<TextInputEditText>(R.id.gender_edit).text.toString()
-        val grade = findViewById<TextInputEditText>(R.id.grade_edit).text.toString().toIntOrNull() ?: -1
+        val gender = findViewById<Spinner>(R.id.gender_spinner).selectedItem.toString()
+        val grade = findViewById<Spinner>(R.id.grade_spinner).selectedItem.toString().toInt()
         val schoolId = 1
 
         var missingFields = false
         if (!isValidEmail(emailEdit)) {
             missingFields = true
-        }
-        else if (email.isEmpty()) {
+        } else if (email.isEmpty()) {
             findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = null
         }
         if (password.isEmpty()) {
             findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = null
         }
         if (!isValidPasswordConfirmation(checkPasswordEdit)) {
             missingFields = true
-        }
-        else if (checkPassword.isEmpty()) {
+        } else if (checkPassword.isEmpty()) {
             findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = null
         }
         if (firstName.isEmpty()) {
             findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = null
         }
         if (lastName.isEmpty()) {
             findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = null
         }
-        if (gender.isEmpty()) {
+        //TODO: Fix this
+        /*if (!isValidGender(gender)) {
             findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
-            findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = null
         }
         if (!isValidGrade(grade)) {
             findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
-            findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = null
-        }
+        }*/
         if (!isValidSchoolId(schoolId)) {
             missingFields = true
-        }
-        else {
+        } else {
             findViewById<TextInputLayout>(R.id.school_edit_wrapper).error = null
         }
         if (missingFields) {
@@ -140,33 +144,36 @@ class RegisterActivity : AppCompatActivity() {
 
         val apiAccessor = ApiAccessor()
 
-        val call: Call<DefaultResponse> = apiAccessor.apiService.register(email, password, checkPassword, firstName,
-            lastName, schoolId, gender, grade)
+        val call: Call<DefaultResponse> = apiAccessor.apiService.register(
+            email, password, checkPassword, firstName,
+            lastName, schoolId, gender, grade
+        )
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     //successfully logged in
-                    Snackbar.make(findViewById(R.id.constraint_layout), R.string.register_success,
-                        Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        findViewById(R.id.constraint_layout), R.string.register_success,
+                        Snackbar.LENGTH_LONG
+                    )
                         .show()
-                }
-                else {
-                    Snackbar.make(findViewById(R.id.constraint_layout), response.body()?.result ?: "",
-                        Snackbar.LENGTH_LONG)
+                } else {
+                    Snackbar.make(
+                        findViewById(R.id.constraint_layout), response.body()?.result ?: "",
+                        Snackbar.LENGTH_LONG
+                    )
                         .show()
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                Snackbar.make(findViewById(R.id.constraint_layout), R.string.no_internet,
-                    Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    findViewById(R.id.constraint_layout), R.string.no_internet,
+                    Snackbar.LENGTH_LONG
+                )
                     .show()
             }
         })
-    }
-
-    private fun signIn(view: View) {
-        finish()
     }
 
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
@@ -175,8 +182,7 @@ class RegisterActivity : AppCompatActivity() {
         return if (!email.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditWrapper.error = getString(R.string.invalid_email)
             false
-        }
-        else {
+        } else {
             emailEditWrapper.error = null
             true
         }

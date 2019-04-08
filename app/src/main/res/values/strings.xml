@@ -32,4 +32,21 @@
     <string name="grade_number">Grade %d</string>
     <string name="full_name">%s %s</string>
     <string name="couple_name"><![CDATA[%s %c. & %s %c.]]></string>
+    <string name="select_gender">Select your gender</string>
+    <string name="select_grade">Select your grade</string>
+
+    <string-array name="genders_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+        <item>Select Gender</item>
+    </string-array>
+
+    <string-array name="grades_array">
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>Select Grade</item>
+    </string-array>
 </resources>
