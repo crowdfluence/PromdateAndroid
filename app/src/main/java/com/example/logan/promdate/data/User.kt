@@ -22,3 +22,5 @@ data class User(@SerializedName("UserId")        var id: Int = -1,
            @SerializedName("Matched")            var matched: Int = -1,
            @SerializedName("PartnerID")          var partnerId: Int = -1,
            @SerializedName("ProfilePicture")     var profilePictureUrl: String = ""): Parcelable
+
+data class Couple(var user1: User, var user2: User)

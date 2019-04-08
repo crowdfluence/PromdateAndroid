@@ -172,13 +172,13 @@ class RegisterActivity : AppCompatActivity() {
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
         val email = emailEdit.text.toString()
         val emailEditWrapper = findViewById<TextInputLayout>(R.id.email_edit_wrapper)
-        if (!email.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        return if (!email.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditWrapper.error = getString(R.string.invalid_email)
-            return false
+            false
         }
         else {
             emailEditWrapper.error = null
-            return true
+            true
         }
     }
 

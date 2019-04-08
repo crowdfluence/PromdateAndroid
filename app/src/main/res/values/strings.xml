@@ -31,4 +31,5 @@
     <string name="action_filter">Filter</string>
     <string name="grade_number">Grade %d</string>
     <string name="full_name">%s %s</string>
+    <string name="couple_name"><![CDATA[%s %c. & %s %c.]]></string>
 </resources>

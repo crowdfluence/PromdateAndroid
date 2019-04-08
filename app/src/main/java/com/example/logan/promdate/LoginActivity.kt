@@ -39,13 +39,14 @@ class LoginActivity : AppCompatActivity() {
         val call: Call<DefaultResponse> = apiAccessor.apiService.login(email, password)
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful && response.body()?.status == 200) {
                     //successfully logged in; stores authentication token in file
                     File(this@LoginActivity.filesDir, "token.txt").writeText(response.body()?.result ?: "")
 
                     //opens up main feed
                     val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
                     startActivity(mainFeedIntent)
+                    finish()
                 }
                 else {
                     Snackbar.make(findViewById(R.id.constraint_layout), R.string.failed_login,

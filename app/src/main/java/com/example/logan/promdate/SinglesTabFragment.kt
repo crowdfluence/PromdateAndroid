@@ -43,7 +43,7 @@ class SinglesTabFragment : Fragment() {
 
     private fun initializeList() {
         val config = PagedList.Config.Builder()
-            .setPageSize(35)
+            .setPageSize(10)
             .setEnablePlaceholders(true)
             .build()
 
@@ -67,6 +67,6 @@ class SinglesTabFragment : Fragment() {
     }
 
     private fun onUserClick(user: User) {
-        //not finished yet
+        //open user profile
     }
 }

@@ -8,13 +8,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
+class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSource<Couple>() {
 
-class SinglesDataSource(private val tokenDirectory: File?) : PositionalDataSource<User>() {
-
-    private val users: MutableList<User> = ArrayList()
+    private val couples: MutableList<Couple> = ArrayList()
     val api = ApiAccessor().apiService
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<User>) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Couple>) {
         try {
             val token = File(tokenDirectory, "token.txt").readText()
             Log.d("SingleDataSource", "Request size: ${params.requestedLoadSize}")
@@ -24,14 +23,19 @@ class SinglesDataSource(private val tokenDirectory: File?) : PositionalDataSourc
 
                     override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
                         Log.e(
-                            "SinglesDataSource",
+                            "CouplesDataSource",
                             "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
                         )
                     }
 
                     override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
-                        val singles = response.body()?.result ?: FeedInnerResponse(listOf(), listOf(), 0, 0)
-                        callback.onResult(singles.unmatchedUsers, 0, singles.maxUnmatched)
+                        val users = response.body()?.result?.matchedUsers ?: listOf()
+                        val couplesList: MutableList<Couple> = mutableListOf()
+                        for (i in 0 until users.size step 2) {
+                            val couple = Couple(users[i], users[i + 1])
+                            couplesList.add(couple)
+                        }
+                        callback.onResult(couplesList, 0, response.body()?.result?.maxMatched ?: 0)
                     }
                 })
         } catch (e: Exception) {
@@ -39,20 +43,26 @@ class SinglesDataSource(private val tokenDirectory: File?) : PositionalDataSourc
         }
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<User>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Couple>) {
         try {
             val token = File(tokenDirectory, "token.txt").readText()
             api.getFeed(token, params.loadSize, params.startPosition).enqueue(object : Callback<FeedResponse> {
 
                 override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
-                    Log.e("SinglesDataSource",
-                          "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
+                    Log.e(
+                        "CouplesDataSource",
+                        "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
                     )
                 }
 
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
-                    val singles = response.body()?.result ?: FeedInnerResponse(listOf(), listOf(), 0, 0)
-                    callback.onResult(singles.unmatchedUsers)
+                    val users = response.body()?.result?.matchedUsers ?: listOf()
+                    val couplesList: MutableList<Couple> = mutableListOf()
+                    for (i in 0 until users.size step 2) {
+                        val couple = Couple(users[i], users[i + 1])
+                        couplesList.add(couple)
+                    }
+                    callback.onResult(couplesList)
                 }
             })
         } catch (e: Exception) {
