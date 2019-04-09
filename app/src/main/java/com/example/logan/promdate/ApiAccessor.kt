@@ -40,9 +40,14 @@ interface ServerInterface {
                 @Query("school-id") schoolId: Int? = null,
                 @Query("name") name: String? = null,
                 @Query("gender") gender: String? = null,
-                @Query("grade-min") minGrade: Int? = 0,
-                @Query("grade-max") maxGrade: Int? = 256,
+                @Query("grade-min") minGrade: Int? = null,
+                @Query("grade-max") maxGrade: Int? = null,
                 @Query("dress-id") dressId: Int? = null): Call<FeedResponse>
+
+    //regenerate token
+    @GET("php/regentoken.php")
+    fun regenToken(@Query("token") token: String): Call<DefaultResponse>
+
 /*    //list of collections
     @GET("custom_collections.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")
     fun loadAllCollections(): Call<CollectionsList>

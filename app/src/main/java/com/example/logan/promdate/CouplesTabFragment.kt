@@ -12,9 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.logan.promdate.data.Couple
 import com.example.logan.promdate.data.CouplesDataSource
-import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
 
 class CouplesTabFragment : Fragment() {
@@ -51,24 +49,24 @@ class CouplesTabFragment : Fragment() {
 
         val liveData = initializedPagedListBuilder(config).build()
 
-        liveData.observe(this, Observer<PagedList<Couple>> { pagedList ->
+        liveData.observe(this, Observer<PagedList<List<User>>> { pagedList ->
             viewAdapter.submitList(pagedList)
         })
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
-            LivePagedListBuilder<Int, Couple> {
+            LivePagedListBuilder<Int, List<User>> {
 
-        val dataSourceFactory = object : DataSource.Factory<Int, Couple>() {
-            override fun create(): DataSource<Int, Couple> {
+        val dataSourceFactory = object : DataSource.Factory<Int, List<User>>() {
+            override fun create(): DataSource<Int, List<User>> {
                 return CouplesDataSource(context?.filesDir)
             }
         }
-        return LivePagedListBuilder<Int, Couple>(dataSourceFactory, config)
+        return LivePagedListBuilder<Int, List<User>>(dataSourceFactory, config)
 
     }
 
-    private fun onUserClick(couple: Couple) {
+    private fun onUserClick(couple: List<User>) {
         //open user profile
     }
 }

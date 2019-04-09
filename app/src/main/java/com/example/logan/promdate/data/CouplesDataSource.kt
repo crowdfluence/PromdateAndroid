@@ -8,12 +8,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSource<Couple>() {
+class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSource<List<User>>() {
 
-    private val couples: MutableList<Couple> = ArrayList()
-    val api = ApiAccessor().apiService
+    private val api = ApiAccessor().apiService
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Couple>) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<List<User>>) {
         try {
             val token = File(tokenDirectory, "token.txt").readText()
             Log.d("SingleDataSource", "Request size: ${params.requestedLoadSize}")
@@ -29,13 +28,8 @@ class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSourc
                     }
 
                     override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
-                        val users = response.body()?.result?.matchedUsers ?: listOf()
-                        val couplesList: MutableList<Couple> = mutableListOf()
-                        for (i in 0 until users.size step 2) {
-                            val couple = Couple(users[i], users[i + 1])
-                            couplesList.add(couple)
-                        }
-                        callback.onResult(couplesList, 0, response.body()?.result?.maxMatched ?: 0)
+                        val couples = response.body()?.result?.couples ?: listOf()
+                        callback.onResult(couples, 0, (response.body()?.result?.maxMatched ?: 0) / 2)
                     }
                 })
         } catch (e: Exception) {
@@ -43,7 +37,7 @@ class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSourc
         }
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Couple>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<List<User>>) {
         try {
             val token = File(tokenDirectory, "token.txt").readText()
             api.getFeed(token, params.loadSize, params.startPosition).enqueue(object : Callback<FeedResponse> {
@@ -56,13 +50,8 @@ class CouplesDataSource(private val tokenDirectory: File?) : PositionalDataSourc
                 }
 
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
-                    val users = response.body()?.result?.matchedUsers ?: listOf()
-                    val couplesList: MutableList<Couple> = mutableListOf()
-                    for (i in 0 until users.size step 2) {
-                        val couple = Couple(users[i], users[i + 1])
-                        couplesList.add(couple)
-                    }
-                    callback.onResult(couplesList)
+                    val couples = response.body()?.result?.couples ?: listOf()
+                    callback.onResult(couples)
                 }
             })
         } catch (e: Exception) {

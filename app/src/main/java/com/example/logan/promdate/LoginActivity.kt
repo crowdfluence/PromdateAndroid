@@ -18,6 +18,9 @@ import java.io.File
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //check if token exists; if it does, skips this activity
+        checkToken()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -47,18 +50,17 @@ class LoginActivity : AppCompatActivity() {
                     val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
                     startActivity(mainFeedIntent)
                     finish()
-                }
-                else {
+                } else {
                     Snackbar.make(findViewById(R.id.constraint_layout), R.string.failed_login,
-                        Snackbar.LENGTH_LONG)
-                        .show()
+                            Snackbar.LENGTH_LONG)
+                            .show()
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Snackbar.make(findViewById(R.id.constraint_layout), R.string.no_internet,
-                    Snackbar.LENGTH_LONG)
-                    .show()
+                        Snackbar.LENGTH_LONG)
+                        .show()
             }
         })
     }
@@ -66,5 +68,35 @@ class LoginActivity : AppCompatActivity() {
     private fun signUp(view: View) {
         val registerIntent = Intent(this, RegisterActivity::class.java)
         startActivity(registerIntent)
+    }
+
+    private fun checkToken() {
+        //check if currently stored token works; if so, skips login and goes directly to main feed
+        val tokenFile = File(this.filesDir, "token.txt")
+        if (tokenFile.exists()) {
+            val apiAccessor = ApiAccessor()
+
+            val call = apiAccessor.apiService.regenToken(tokenFile.readText())
+            call.enqueue(object : Callback<DefaultResponse> {
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful && response.body()?.status == 200) {
+                        //successfully logged in; stores authentication token in file
+                        File(this@LoginActivity.filesDir, "token.txt").writeText(response.body()?.result
+                                ?: "")
+
+                        //opens up main feed
+                        val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
+                        startActivity(mainFeedIntent)
+                        finish()
+                    } else {
+                        tokenFile.delete()
+                    }
+                }
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    tokenFile.delete()
+                }
+            })
+        }
     }
 }

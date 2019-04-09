@@ -10,33 +10,44 @@ class CircleTransformation(
 
     override fun transform(source: Bitmap): Bitmap {
 
-        val paint = Paint()
-        paint.isAntiAlias = true
-        paint.shader = BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-
         val output = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
+
+        val paint0 = Paint()
+        paint0.color = Color.WHITE
+        paint0.style = Paint.Style.FILL
+        paint0.isAntiAlias = true
         canvas.drawCircle(
             (source.width.toFloat() - margin.toFloat()) / 2f,
             (source.height.toFloat() - margin.toFloat()) / 2f,
             radius.toFloat() - 2f,
-            paint
+            paint0
+        )
+
+        val paint1 = Paint()
+        paint1.isAntiAlias = true
+        paint1.shader = BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        canvas.drawCircle(
+            (source.width.toFloat() - margin.toFloat()) / 2f,
+            (source.height.toFloat() - margin.toFloat()) / 2f,
+            radius.toFloat() - 2f,
+            paint1
         )
 
         if (source != output) {
             source.recycle()
         }
 
-        val paint1 = Paint()
-        paint1.color = borderColor
-        paint1.style = Paint.Style.STROKE
-        paint1.isAntiAlias = true
-        paint1.strokeWidth = 2f
+        val paint2 = Paint()
+        paint2.color = borderColor
+        paint2.style = Paint.Style.STROKE
+        paint2.isAntiAlias = true
+        paint2.strokeWidth = 2f
         canvas.drawCircle(
             (source.width.toFloat() - margin.toFloat()) / 2f,
             (source.height.toFloat() - margin.toFloat()) / 2f,
             radius.toFloat() - 2f,
-            paint1
+            paint2
         )
 
         return output
