@@ -27,9 +27,9 @@ interface ServerInterface {
                  @Field("password") password: String,
                  @Field("password-retype") checkPassword: String,
                  @Field("first-name") firstName: String,
-                 @Field("last-name") lastName: String,
+                 @Field("last-name") lastName: String?,
                  @Field("school-id") schoolId: Int,
-                 @Field("gender") gender: String,
+                 @Field("gender") gender: String?,
                  @Field("grade") grade: Int): Call<DefaultResponse>
 
     //feed
@@ -45,8 +45,9 @@ interface ServerInterface {
                 @Query("dress-id") dressId: Int? = null): Call<FeedResponse>
 
     //regenerate token
-    @GET("php/regentoken.php")
-    fun regenToken(@Query("token") token: String): Call<DefaultResponse>
+    @POST("php/regenToken.php")
+    @FormUrlEncoded
+    fun regenToken(@Field("token") token: String): Call<DefaultResponse>
 
 /*    //list of collections
     @GET("custom_collections.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")

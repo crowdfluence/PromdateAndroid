@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.paging.DataSource
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -14,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.logan.promdate.data.CouplesDataSource
 import com.example.logan.promdate.data.User
+import java.lang.Exception
 
 class CouplesTabFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -59,7 +62,8 @@ class CouplesTabFragment : Fragment() {
 
         val dataSourceFactory = object : DataSource.Factory<Int, List<User>>() {
             override fun create(): DataSource<Int, List<User>> {
-                return CouplesDataSource(context?.filesDir)
+                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw Exception("Oh no")
+                return CouplesDataSource(sp.getString("token", null) ?: "")
             }
         }
         return LivePagedListBuilder<Int, List<User>>(dataSourceFactory, config)

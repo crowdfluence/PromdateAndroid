@@ -9,14 +9,13 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import com.example.logan.promdate.data.DefaultResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.view.ViewGroup
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -53,14 +52,13 @@ class RegisterActivity : AppCompatActivity() {
         gradeSpinner.setSelection(gradeAdapter.count)
 
         //set textChangedListener on all input fields to remove error upon typing (except confirm password)
+        //also not set for optional fields
         val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
         emailEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.email_edit_wrapper)))
         val passwordEdit = findViewById<TextInputEditText>(R.id.password_edit)
         passwordEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.password_edit_wrapper)))
         val firstNameEdit = findViewById<TextInputEditText>(R.id.first_name_edit)
         firstNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.first_name_edit_wrapper)))
-        val lastNameEdit = findViewById<TextInputEditText>(R.id.last_name_edit)
-        lastNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.last_name_edit_wrapper)))
 
         //validate that user's password matches as they are entering it
         val confirmPassEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
@@ -84,10 +82,15 @@ class RegisterActivity : AppCompatActivity() {
         val checkPassword = checkPasswordEdit.text.toString()
         val firstName = findViewById<TextInputEditText>(R.id.first_name_edit).text.toString()
         val lastName = findViewById<TextInputEditText>(R.id.last_name_edit).text.toString()
-        val gender = findViewById<Spinner>(R.id.gender_spinner).selectedItem.toString()
-        val grade = findViewById<Spinner>(R.id.grade_spinner).selectedItem.toString().toInt()
+        var gender: String? = findViewById<Spinner>(R.id.gender_spinner).selectedItem.toString()
+        val grade = try {
+            findViewById<Spinner>(R.id.grade_spinner).selectedItem.toString().toInt()
+        } catch (e: Exception) {
+            -1
+        }
         val schoolId = 1
 
+        //check that all required fields are there & valid
         var missingFields = false
         if (!isValidEmail(emailEdit)) {
             missingFields = true
@@ -117,21 +120,13 @@ class RegisterActivity : AppCompatActivity() {
         } else {
             findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = null
         }
-        if (lastName.isEmpty()) {
-            findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = getString(R.string.required_field)
-            missingFields = true
-        } else {
-            findViewById<TextInputLayout>(R.id.last_name_edit_wrapper).error = null
-        }
-        //TODO: Fix this
-        /*if (!isValidGender(gender)) {
-            findViewById<TextInputLayout>(R.id.gender_edit_wrapper).error = getString(R.string.required_field)
-            missingFields = true
+        if (gender == resources.getStringArray(R.array.genders_array)[3]) {
+            //gender is optional, so doesn't put error if it is not entered
+            gender = null
         }
         if (!isValidGrade(grade)) {
-            findViewById<TextInputLayout>(R.id.grade_edit_wrapper).error = getString(R.string.required_field)
             missingFields = true
-        }*/
+        }
         if (!isValidSchoolId(schoolId)) {
             missingFields = true
         } else {
@@ -141,41 +136,46 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-
         val apiAccessor = ApiAccessor()
 
+        //create request
         val call: Call<DefaultResponse> = apiAccessor.apiService.register(
-            email, password, checkPassword, firstName,
-            lastName, schoolId, gender, grade
+                email, password, checkPassword, firstName,
+                lastName, schoolId, gender, grade
         )
+
+        val loadingAnim = findViewById<ProgressBar>(R.id.loading_pb)
+        loadingAnim.visibility = View.VISIBLE
+
+        //send request
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     //successfully logged in
                     Snackbar.make(
-                        findViewById(R.id.constraint_layout), R.string.register_success,
-                        Snackbar.LENGTH_LONG
-                    )
-                        .show()
+                            findViewById(R.id.constraint_layout), R.string.register_success,
+                            Snackbar.LENGTH_LONG
+                    ).show()
                 } else {
                     Snackbar.make(
-                        findViewById(R.id.constraint_layout), response.body()?.result ?: "",
-                        Snackbar.LENGTH_LONG
-                    )
-                        .show()
+                            findViewById(R.id.constraint_layout), response.body()?.result ?: "",
+                            Snackbar.LENGTH_LONG
+                    ).show()
+                    loadingAnim.visibility = View.VISIBLE
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Snackbar.make(
-                    findViewById(R.id.constraint_layout), R.string.no_internet,
-                    Snackbar.LENGTH_LONG
-                )
-                    .show()
+                        findViewById(R.id.constraint_layout), R.string.no_internet,
+                        Snackbar.LENGTH_LONG
+                ).show()
+                loadingAnim.visibility = View.VISIBLE
             }
         })
     }
 
+    //checks that email format is valid
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
         val email = emailEdit.text.toString()
         val emailEditWrapper = findViewById<TextInputLayout>(R.id.email_edit_wrapper)

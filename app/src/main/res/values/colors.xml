@@ -10,4 +10,5 @@
     <color name="darkerGray">#202020</color>
     <color name="yellow">#FFFF8D</color>
     <color name="lightGray">#EEEEEE</color>
+    <color name="navMenuIcon">#606060</color>
 </resources>

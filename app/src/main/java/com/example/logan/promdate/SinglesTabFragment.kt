@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.paging.DataSource
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -59,7 +61,8 @@ class SinglesTabFragment : Fragment() {
 
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): DataSource<Int, User> {
-                return SinglesDataSource(context?.filesDir)
+                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw Exception("Oh no")
+                return SinglesDataSource(sp.getString("token", null) ?: "")
             }
         }
         return LivePagedListBuilder<Int, User>(dataSourceFactory, config)
