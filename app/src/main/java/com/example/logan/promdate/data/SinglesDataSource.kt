@@ -1,6 +1,6 @@
 package com.example.logan.promdate.data
 
-import android.arch.paging.PositionalDataSource
+import androidx.paging.PositionalDataSource
 import android.util.Log
 import com.example.logan.promdate.ApiAccessor
 import retrofit2.Call

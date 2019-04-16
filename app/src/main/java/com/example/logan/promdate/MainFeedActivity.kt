@@ -1,15 +1,15 @@
 package com.example.logan.promdate
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.widget.Toolbar
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 
@@ -27,6 +27,7 @@ class MainFeedActivity : AppCompatActivity() {
 
         //set up navigation drawer
         drawerLayout = findViewById(R.id.drawer_layout)
+
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setCheckedItem(0)
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -73,7 +74,8 @@ class MainFeedActivity : AppCompatActivity() {
         }
     }
 
-    inner class TabAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class TabAdapter(fm: FragmentManager) :
+        FragmentPagerAdapter(fm) {
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when (position) {
@@ -83,7 +85,7 @@ class MainFeedActivity : AppCompatActivity() {
             }
         }
 
-        override fun getItem(position: Int): Fragment? {
+        override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> SinglesTabFragment()
                 1 -> CouplesTabFragment()
