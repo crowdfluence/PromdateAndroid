@@ -41,6 +41,8 @@
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
     <string name="notifications">Notifications</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string-array name="genders_array">
         <item>Male</item>
@@ -56,4 +58,7 @@
         <item>12</item>
         <item>Select Grade*</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

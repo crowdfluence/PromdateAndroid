@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
                     sp.edit().putString("token", response.body()?.result).apply()
 
                     //opens up main feed
-                    val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
+                    val mainFeedIntent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(mainFeedIntent)
                     finish()
                 } else {
@@ -76,10 +76,10 @@ class LoginActivity : AppCompatActivity() {
         //check if currently stored token works; if so, skips login and goes directly to main feed
         val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
         val token = sp.getString("token", null)
+        val loadingAnim = findViewById<ProgressBar>(R.id.loading_pb)
         if (token != null) {
             val apiAccessor = ApiAccessor()
 
-            val loadingAnim = findViewById<ProgressBar>(R.id.loading_pb)
             loadingAnim.visibility = View.VISIBLE
 
             val call = apiAccessor.apiService.regenToken(token)
@@ -89,12 +89,12 @@ class LoginActivity : AppCompatActivity() {
                         //token still works; stores newly generated token in file and starts main feed activity
                         sp.edit().putString("token", response.body()?.result).apply()
 
-                        //opens up main feed
-                        val mainFeedIntent = Intent(this@LoginActivity, MainFeedActivity::class.java)
-                        startActivity(mainFeedIntent)
+                        //stops loading anim and starts main activity
+                        val mainIntent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(mainIntent)
                         finish()
+
                     } else {
-                        Log.d("CheckToken", "${response.body()?.status ?: ""}, ${response.body()?.result ?: ""}")
                         sp.edit().putString("token", null).apply()
 
                         //sets up normal layout if token doesn't work
@@ -114,7 +114,6 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-
                     //sets up normal layout if token doesn't work
                     loadingAnim.visibility = View.GONE
 
@@ -130,6 +129,12 @@ class LoginActivity : AppCompatActivity() {
                     findViewById<Group>(R.id.blank_group).visibility = View.VISIBLE
                 }
             })
+        }
+        else {
+            //no token found
+
+            loadingAnim.visibility = View.GONE
+            findViewById<Group>(R.id.blank_group).visibility = View.VISIBLE
         }
     }
 }
