@@ -17,39 +17,130 @@
     <ImageView
         android:id="@+id/profile_picture_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:srcCompat="@tools:sample/avatars[0]" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/profile_picture_image"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_height="128dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/default_profile" />
 
-        tools:text="John Smith"
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/roboto_medium"
+        android:textColor="@android:color/black"
         android:textSize="22sp"
-        android:textColor="@android:color/black" />
+        app:layout_constraintBottom_toTopOf="@id/school_text"
+        app:layout_constraintStart_toEndOf="@id/profile_picture_image"
+        app:layout_constraintTop_toTopOf="@id/profile_picture_image"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="John Smith" />
 
     <TextView
         android:id="@+id/school_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Merivale High School, Ottawa"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="113dp" />
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@android:color/black"
+        android:text="@string/school_location"
+        app:layout_constraintBottom_toTopOf="@id/grade_text"
+        app:layout_constraintStart_toStartOf="@id/name_text"
+        app:layout_constraintTop_toBottomOf="@id/name_text"
+        tools:text="Merivale High School, Ottawa" />
 
     <TextView
         android:id="@+id/grade_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Grade 12, Single"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="151dp" />
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/black"
+        android:text="@string/grade_and_relationship"
+        app:layout_constraintBottom_toBottomOf="@id/profile_picture_image"
+        app:layout_constraintStart_toStartOf="@id/school_text"
+        app:layout_constraintTop_toBottomOf="@id/school_text"
+        tools:text="Grade 12, Single" />
+
+    <TextView
+        android:id="@+id/bio_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture_image"
+        tools:text="I'm an incredibly intelligent individual. Please do not attempt to match with me if your IQ is below 150." />
+
+    <ImageView
+        android:id="@+id/instagram_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bio_text"
+        app:srcCompat="@drawable/instagram_logo" />
+
+    <ImageView
+        android:id="@+id/snapchat_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instagram_image"
+        app:srcCompat="@drawable/snapchat_logo" />
+
+    <ImageView
+        android:id="@+id/twitter_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/snapchat_image"
+        app:srcCompat="@drawable/twitter_logo" />
+
+    <TextView
+        android:id="@+id/instagram_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/instagram_image"
+        app:layout_constraintStart_toEndOf="@+id/instagram_image"
+        app:layout_constraintTop_toTopOf="@+id/instagram_image"
+        tools:text="\@Instagram" />
+
+    <TextView
+        android:id="@+id/snapchat_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/snapchat_image"
+        app:layout_constraintStart_toEndOf="@+id/snapchat_image"
+        app:layout_constraintTop_toTopOf="@+id/snapchat_image"
+        tools:text="Snapchat" />
+
+    <TextView
+        android:id="@+id/twitter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/twitter_image"
+        app:layout_constraintStart_toEndOf="@+id/twitter_image"
+        app:layout_constraintTop_toTopOf="@+id/twitter_image"
+        tools:text="\@Twitter" />
+
+    <!-- TODO: Add dress image and description to profile -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

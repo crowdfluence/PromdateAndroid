@@ -2,6 +2,7 @@ package com.example.logan.promdate
 
 import com.example.logan.promdate.data.DefaultResponse
 import com.example.logan.promdate.data.FeedResponse
+import com.example.logan.promdate.data.UserResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -49,15 +50,10 @@ interface ServerInterface {
     @FormUrlEncoded
     fun regenToken(@Field("token") token: String): Call<DefaultResponse>
 
-/*    //list of collections
-    @GET("custom_collections.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")
-    fun loadAllCollections(): Call<CollectionsList>
-    //specific collection
-    @GET("collects.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")
-    fun loadCollectionProducts(@Query("collection_id") id: Long): Call<ProductIdList>
-    //products
-    @GET("products.json?page=1&access_token=c32313df0d0ef512ca64d5b336a0d7c6")
-    fun loadProducts(@Query("ids") id: String): Call<ProductList>*/
+    //get user
+    @GET("php/user.php")
+    fun getUser(@Query("token") token: String,
+                @Query("user-id") userId: Int): Call<UserResponse>
 }
 
 //initializes the standard api accessor that is reused throughout the code

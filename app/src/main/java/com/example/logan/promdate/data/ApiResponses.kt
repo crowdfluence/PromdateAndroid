@@ -13,8 +13,13 @@ class FeedResponse(
 )
 
 class FeedInnerResponse(
-    @SerializedName("matched")         var couples: List<List<User>>,
-    @SerializedName("unmatched")       var unmatchedUsers: List<User>,
-    @SerializedName("matchedMax")      var maxMatched: Int,
-    @SerializedName("unmatchedMax")    var maxUnmatched: Int
+    @SerializedName("matched")      var couples: List<List<User>>,
+    @SerializedName("unmatched")    var unmatchedUsers: List<User>,
+    @SerializedName("matchedMax")   var maxMatched: Int,
+    @SerializedName("unmatchedMax") var maxUnmatched: Int
+)
+
+class UserResponse(
+    @SerializedName("status") var status: Int,
+    @SerializedName("result") var result: User
 )

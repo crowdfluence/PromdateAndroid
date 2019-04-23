@@ -3,31 +3,31 @@
     tools:context="com.example.logan.promdate.MainActivity">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home_activity"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/home" />
         <item
-            android:id="@+id/nav_deals_activity"
+            android:id="@+id/nav_deals"
             android:icon="@drawable/ic_deals"
             android:title="@string/deals" />
         <item
-            android:id="@+id/nav_dress_registry_activity"
+            android:id="@+id/nav_dress_registry"
             android:icon="@drawable/ic_dress"
             android:title="@string/dress_registry" />
         <item
-            android:id="@+id/nav_limo_planner_activity"
+            android:id="@+id/nav_limo_planner"
             android:icon="@drawable/ic_limo"
             android:title="@string/limo_planner" />
         <item
-            android:id="@+id/nav_profile_activity"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
             android:title="@string/profile" />
         <item
-            android:id="@+id/nav_settings_activity"
+            android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
         <item
-            android:id="@+id/nav_notifications_activity"
+            android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications"
             android:title="@string/notifications" />
     </group>
