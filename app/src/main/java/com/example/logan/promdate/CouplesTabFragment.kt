@@ -62,7 +62,7 @@ class CouplesTabFragment : Fragment() {
 
         val dataSourceFactory = object : DataSource.Factory<Int, List<User>>() {
             override fun create(): DataSource<Int, List<User>> {
-                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw Exception("Oh no")
+                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw BadTokenException() //TODO: Return to login
                 return CouplesDataSource(sp.getString("token", null) ?: "")
             }
         }

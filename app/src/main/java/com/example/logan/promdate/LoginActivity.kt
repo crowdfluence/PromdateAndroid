@@ -87,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful && response.body()?.status == 200) {
                         //token still works; stores newly generated token in file and starts main feed activity
+                        Log.d("TokenRegen", response.body()?.result)
                         sp.edit().putString("token", response.body()?.result).apply()
 
                         //stops loading anim and starts main activity

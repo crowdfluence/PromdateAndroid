@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
+import androidx.navigation.fragment.findNavController
 import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
+import kotlinx.android.synthetic.main.activity_main.*
 
 class SinglesTabFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -61,7 +64,7 @@ class SinglesTabFragment : Fragment() {
 
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): DataSource<Int, User> {
-                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw Exception("Oh no")
+                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw BadTokenException() //TODO: Return to login on failed token
                 return SinglesDataSource(sp.getString("token", null) ?: "")
             }
         }
@@ -71,5 +74,8 @@ class SinglesTabFragment : Fragment() {
 
     private fun onUserClick(user: User) {
         //open user profile
+        val action = FeedFragmentDirections.navProfile(-1)
+        findNavController().navigate(action)
+        drawer_layout.closeDrawer(GravityCompat.START)
     }
 }

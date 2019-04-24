@@ -4,7 +4,6 @@ import androidx.paging.PagedListAdapter
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,13 +35,13 @@ class CoupleAdapter(private val clickListener: (List<User>) -> Unit) :
                 couple[1].firstName,
                 couple[1].lastName[0]
             )
-            if (!couple[0].profilePictureUrl.isEmpty()) {
+            if (couple[0].profilePictureUrl.isNotEmpty()) {
                 profile_picture_1_image.loadUrl(couple[0].profilePictureUrl)
             }
-            if (!couple[0].profilePictureUrl.isEmpty()) {
+            if (couple[1].profilePictureUrl.isNotEmpty()) {
                 profile_picture_2_image.loadUrl(couple[1].profilePictureUrl)
             }
-            location_text
+            //TODO: Set prom location
             setOnClickListener { clickListener(couple) }
         }
     }
@@ -67,14 +66,13 @@ class CoupleAdapter(private val clickListener: (List<User>) -> Unit) :
     //sets image from url & converts it to a circle
     fun ImageView.loadUrl(url: String) {
         val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
-        Log.d("CoupleAdapter", fullUrl)
         Picasso.get()
             .load(fullUrl)
             .transform(CircleTransformation(40, 1, ContextCompat.getColor(context, R.color.lightGray)))
             .resize(80, 80)
             .centerCrop()
             .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
-            .error(R.drawable.promdate_logo) //TODO: Change to actual error
+            .error(R.drawable.default_profile) //TODO: Change to actual error
             .into(this)
     }
 }

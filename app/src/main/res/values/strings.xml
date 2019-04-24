@@ -44,7 +44,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="school_location">%s, %s</string>
-    <string name="grade_and_relationship">Grade %d, %s</string>
+    <string name="grade_variable">Grade %d</string>
+    <string name="single">Single</string>
+    <string name="going_with">Going to prom with %s</string>
 
     <string-array name="genders_array">
         <item>Male</item>

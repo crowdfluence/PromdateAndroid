@@ -9,11 +9,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
+import android.app.Activity
+import android.content.Context
 
 
 class FeedFragment : Fragment() {
 
     private var pagerAdapter: TabAdapter? = null
+    private lateinit var drawerInterface: DrawerInterface
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            drawerInterface = activity as DrawerInterface
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$activity must implement MyInterface")
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +34,7 @@ class FeedFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        drawerInterface.unlockDrawer()
         return inflater.inflate(R.layout.fragment_feed, container, false)
     }
 
@@ -32,7 +46,7 @@ class FeedFragment : Fragment() {
         val toolbar: Toolbar = include as Toolbar
         toolbar.title = getString(R.string.app_name)
         appCompatActivity.setSupportActionBar(toolbar)
-        (activity as MainActivity).setupNavDrawer(toolbar)
+        drawerInterface.setupDrawer(toolbar)
 
         //add menu button to toolbar
         appCompatActivity.supportActionBar?.apply {

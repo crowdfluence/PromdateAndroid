@@ -53,7 +53,7 @@ interface ServerInterface {
     //get user
     @GET("php/user.php")
     fun getUser(@Query("token") token: String,
-                @Query("user-id") userId: Int): Call<UserResponse>
+                @Query("id") userId: Int? = null): Call<UserResponse>
 }
 
 //initializes the standard api accessor that is reused throughout the code

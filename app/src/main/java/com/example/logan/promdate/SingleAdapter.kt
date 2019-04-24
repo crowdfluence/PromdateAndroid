@@ -28,7 +28,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
         fun bind(user: User, clickListener: (User) -> Unit) {
             with(itemView) {
                 name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
-                if (!user.profilePictureUrl.isEmpty()) {
+                if (user.profilePictureUrl.isNotEmpty()) {
                     profile_picture_image.loadUrl(user.profilePictureUrl)
                 }
                 grade_text.text = context.getString(R.string.grade_number, user.grade)
@@ -64,7 +64,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
             .resize(80, 80)
             .centerCrop()
             .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
-            .error(R.drawable.promdate_logo) //TODO: Change to actual error
+            .error(R.drawable.default_profile) //TODO: Change to actual error
             .into(this)
     }
 }
