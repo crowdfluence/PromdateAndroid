@@ -1,5 +1,8 @@
 package com.example.logan.promdate
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
@@ -58,6 +61,15 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                         val action = FeedFragmentDirections.navProfile(-1)
                         findNavController(R.id.nav_host_fragment).navigate(action) //TODO: Change to logged in user
                         drawer_layout.closeDrawer(GravityCompat.START)
+                    }
+                    R.id.nav_logout -> {
+                        val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+                        sp.edit().putString("token", null).apply()
+
+                        //returns to login activity
+                        val loginIntent = Intent(this@MainActivity, LoginActivity::class.java)
+                        startActivity(loginIntent)
+                        finish()
                     }
                 }
                 true

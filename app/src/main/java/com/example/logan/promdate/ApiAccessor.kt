@@ -51,7 +51,7 @@ interface ServerInterface {
     fun regenToken(@Field("token") token: String): Call<DefaultResponse>
 
     //get user
-    @GET("php/user.php")
+    @GET("php/getUser.php")
     fun getUser(@Query("token") token: String,
                 @Query("id") userId: Int? = null): Call<UserResponse>
 }

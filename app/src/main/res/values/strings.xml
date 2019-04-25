@@ -2,9 +2,9 @@
     <string name="app_name">PromDate</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
-    <string name="email_required">Email*</string>
+    <string name="email_required">Email</string>
     <string name="password">Password</string>
-    <string name="password_required">Password*</string>
+    <string name="password_required">Password</string>
     <string name="log_in">Log In</string>
     <string name="forgot_password">Forgot your password?</string>
     <string name="not_registered">Not registered?</string>
@@ -14,10 +14,10 @@
     <string name="no_internet">Unable to connect to the server. Check your internet connection and try again.</string>
     <string name="failed_login">Invalid login credentials. Please check your username and password and try again.</string>
     <string name="register">Register</string>
-    <string name="confirm_password">Confirm password*</string>
-    <string name="first_name">First name*</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
-    <string name="school">School*</string>
+    <string name="school">School</string>
     <string name="password_no_match">Both passwords must match.</string>
     <string name="invalid_email">The provided email is invalid.</string>
     <string name="required_field">This field is required.</string>
@@ -33,7 +33,7 @@
     <string name="full_name">%s %s</string>
     <string name="couple_name"><![CDATA[%s %c. & %s %c.]]></string>
     <string name="select_gender">Select your gender</string>
-    <string name="select_grade">Select your grade*</string>
+    <string name="select_grade">Select your grade</string>
     <string name="home">Home</string>
     <string name="deals">Deals</string>
     <string name="dress_registry">Dress Registry</string>
@@ -47,6 +47,7 @@
     <string name="grade_variable">Grade %d</string>
     <string name="single">Single</string>
     <string name="going_with">Going to prom with %s</string>
+    <string name="logout">Logout</string>
 
     <string-array name="genders_array">
         <item>Male</item>
@@ -60,6 +61,6 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
-        <item>Select Grade*</item>
+        <item>Select Grade</item>
     </string-array>
 </resources>

@@ -88,8 +88,7 @@ class ProfileFragment : Fragment() {
                 }
 
                 override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                    val user = response.body()?.result ?: User()
-                    Log.d("ProfileFragmentOnCreate", "${response.body()}")
+                    val user: User = response.body()?.result ?: User()
 
                     if (user.profilePictureUrl.isNotEmpty()) {
                         profile_picture_image.loadUrl(user.profilePictureUrl)
@@ -104,9 +103,25 @@ class ProfileFragment : Fragment() {
                         relationship_text.text = context?.getString(R.string.going_with, "Temporary") //TODO: fix
                     }
                     bio_text.text = user.bio
-                    snapchat_text.text = user.snapchat
-                    twitter_text.text = user.twitter
-                    instagram_text.text = user.instagram
+
+                    if (user.snapchat != null) {
+                        snapchat_text.text = user.snapchat
+                    }
+                    else {
+                        snapchat_image.visibility = View.GONE
+                    }
+                    if (user.twitter != null) {
+                        twitter_text.text = user.twitter
+                    }
+                    else {
+                        twitter_image.visibility = View.GONE
+                    }
+                    if (user.instagram != null) {
+                        instagram_text.text = user.instagram
+                    }
+                    else {
+                        instagram_image.visibility = View.GONE
+                    }
                 }
             })
     }

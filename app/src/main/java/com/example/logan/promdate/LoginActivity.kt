@@ -25,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         checkToken()
+
+        findViewById<TextView>(R.id.sign_in_text).setOnClickListener {
+            signUp(it)
+        }
     }
 
     fun login(view: View) {

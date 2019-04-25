@@ -156,12 +156,13 @@ class RegisterActivity : AppCompatActivity() {
                             findViewById(R.id.constraint_layout), R.string.register_success,
                             Snackbar.LENGTH_LONG
                     ).show()
+                    loadingAnim.visibility = View.GONE
                 } else {
                     Snackbar.make(
                             findViewById(R.id.constraint_layout), response.body()?.result ?: "",
                             Snackbar.LENGTH_LONG
                     ).show()
-                    loadingAnim.visibility = View.VISIBLE
+                    loadingAnim.visibility = View.GONE
                 }
             }
 
@@ -170,7 +171,7 @@ class RegisterActivity : AppCompatActivity() {
                         findViewById(R.id.constraint_layout), R.string.no_internet,
                         Snackbar.LENGTH_LONG
                 ).show()
-                loadingAnim.visibility = View.VISIBLE
+                loadingAnim.visibility = View.GONE
             }
         })
     }
