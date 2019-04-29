@@ -7,7 +7,6 @@ import androidx.paging.PagedList
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.GravityCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
+
 
 class SinglesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
