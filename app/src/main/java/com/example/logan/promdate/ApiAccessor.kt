@@ -28,10 +28,10 @@ interface ServerInterface {
                  @Field("password") password: String,
                  @Field("password-retype") checkPassword: String,
                  @Field("first-name") firstName: String,
-                 @Field("last-name") lastName: String?,
+                 @Field("last-name") lastName: String,
                  @Field("school-id") schoolId: Int,
                  @Field("gender") gender: String?,
-                 @Field("grade") grade: Int): Call<DefaultResponse>
+                 @Field("grade") grade: Int?): Call<DefaultResponse>
 
     //feed
     @GET("php/search.php")

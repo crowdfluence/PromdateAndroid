@@ -48,6 +48,8 @@
     <string name="single">Single</string>
     <string name="going_with">Going to prom with %s</string>
     <string name="logout">Logout</string>
+    <string name="unexpected_error">An unexpected error has occurred.</string>
+    <string name="your_profile">Your profile</string>
 
     <string-array name="genders_array">
         <item>Male</item>

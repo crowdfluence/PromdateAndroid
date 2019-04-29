@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.logan.promdate.data.User
 import com.example.logan.promdate.data.UserResponse
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import retrofit2.Call
@@ -46,25 +47,18 @@ class ProfileFragment : Fragment() {
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
-        toolbar.title = getString(R.string.app_name)
+        if (profileFragmentArgs.userName != null) {
+            toolbar.title = profileFragmentArgs.userName
+        }
+        else {
+            toolbar.title = getString(R.string.your_profile)
+        }
         appCompatActivity.setSupportActionBar(toolbar)
 
-        //set up menu if it's their own profile; otherwise, back arrow
-        if (profileFragmentArgs.userId == -1) {
-            drawerInterface.setupDrawer(toolbar)
-            drawerInterface.unlockDrawer()
-
-            //add menu button to toolbar
-            appCompatActivity.supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_menu)
-            }
-        }
-       else {
-            appCompatActivity.supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(true)
-                setDisplayShowHomeEnabled(true)
-            }
+        //set up back arrow
+        appCompatActivity.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
         }
 
         //load user data
@@ -77,53 +71,73 @@ class ProfileFragment : Fragment() {
         if (userId == -1) {
             userId = null
         }
-        accessor.apiService.getUser(token, userId)
-            .enqueue(object : Callback<UserResponse> {
 
-                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    Log.e(
-                        "ProfileFragmentOnCreate",
-                        "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
-                    )
-                }
+        val call = accessor.apiService.getUser(token, userId)
 
-                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                    val user: User = response.body()?.result ?: User()
+        loading_pb.visibility = View.VISIBLE
 
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Log.e(
+                    "ProfileFragmentOnCreate",
+                    "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
+                )
+                Snackbar.make(constraint_layout, R.string.no_internet,
+                    Snackbar.LENGTH_LONG)
+                    .show()
+                loading_pb.visibility = View.GONE
+                //TODO: Proper no internet
+            }
+
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.body()?.status == 200) {
+                    val user: User = response.body()?.result?.user ?: User()
+                    val partner: User? = response.body()?.result?.partner
+
+                    loading_pb.visibility = View.GONE
+                    blank_group.visibility = View.VISIBLE
+
+                    //set up user profile with user's information
                     if (user.profilePictureUrl.isNotEmpty()) {
                         profile_picture_image.loadUrl(user.profilePictureUrl)
                     }
                     name_text.text = context?.getString(R.string.full_name, user.firstName, user.lastName)
                     school_text.text = "Placeholder High School, Matrix" //TODO: Schools API
                     grade_text.text = context?.getString(R.string.grade_variable, user.grade)
-                    if (user.matched == 0) {
+                    if (partner == null) {
                         relationship_text.text = context?.getString(R.string.single)
-                    }
-                    else {
-                        relationship_text.text = context?.getString(R.string.going_with, "Temporary") //TODO: fix
+                    } else {
+                        relationship_text.text = context?.getString(R.string.going_with, partner.firstName) //TODO: fix
                     }
                     bio_text.text = user.bio
 
                     if (user.snapchat != null) {
+                        snapchat_image.visibility = View.VISIBLE
                         snapchat_text.text = user.snapchat
-                    }
-                    else {
+                    } else {
                         snapchat_image.visibility = View.GONE
                     }
                     if (user.twitter != null) {
+                        twitter_image.visibility = View.VISIBLE
                         twitter_text.text = user.twitter
-                    }
-                    else {
+                    } else {
                         twitter_image.visibility = View.GONE
                     }
                     if (user.instagram != null) {
+                        instagram_image.visibility = View.VISIBLE
                         instagram_text.text = user.instagram
-                    }
-                    else {
+                    } else {
                         instagram_image.visibility = View.GONE
                     }
                 }
-            })
+                else {
+                    Snackbar.make(constraint_layout, R.string.unexpected_error,
+                        Snackbar.LENGTH_LONG)
+                        .show()
+                    loading_pb.visibility = View.GONE
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {

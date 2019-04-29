@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
     }
 
     //sets up drawer with toolbar
-    override fun setupDrawer(toolbar: Toolbar) {
+    override fun setupDrawer(toolbar: Toolbar, currentLocation: Int) {
         val navController = findNavController(R.id.nav_host_fragment)
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -52,10 +52,11 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
 
         drawer_layout.nav_view.setupWithNavController(navController)
 
-        drawer_layout.nav_view.menu.getItem(0).isChecked = true
+        drawer_layout.nav_view.menu.getItem(currentLocation).isChecked = true
 
         val nv = findViewById<NavigationView>(R.id.nav_view)
         nv.setNavigationItemSelectedListener { item ->
+                drawer_layout.closeDrawer(GravityCompat.START)
                 when (item.itemId) {
                     R.id.nav_profile -> {
                         val action = FeedFragmentDirections.navProfile(-1)

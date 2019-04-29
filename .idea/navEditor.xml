@@ -8,7 +8,19 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="navigationFragment">
+                  <entry key="feedFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="mainActivity">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -19,6 +31,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="nav_home">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="nav_profile">
                               <value>
                                 <LayoutPositions />

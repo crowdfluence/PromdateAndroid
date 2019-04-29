@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -104,6 +105,7 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
         app:srcCompat="@drawable/instagram_logo" />
@@ -114,6 +116,7 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instagram_image"
         app:srcCompat="@drawable/snapchat_logo" />
@@ -124,6 +127,7 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/snapchat_image"
         app:srcCompat="@drawable/twitter_logo" />
@@ -162,5 +166,27 @@
         tools:text="\@Twitter" />
 
     <!-- TODO: Add dress image and description to profile -->
+
+    <ProgressBar
+        android:id="@+id/loading_pb"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/blank_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="instagram_text,name_text,snapchat_text,twitter_text,grade_text,school_text,bio_text,relationship_text,profile_picture_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

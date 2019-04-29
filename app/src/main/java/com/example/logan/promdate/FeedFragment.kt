@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
-import android.app.Activity
 import android.content.Context
 
 
@@ -46,7 +45,7 @@ class FeedFragment : Fragment() {
         val toolbar: Toolbar = include as Toolbar
         toolbar.title = getString(R.string.app_name)
         appCompatActivity.setSupportActionBar(toolbar)
-        drawerInterface.setupDrawer(toolbar)
+        drawerInterface.setupDrawer(toolbar, 0)
 
         //add menu button to toolbar
         appCompatActivity.supportActionBar?.apply {
