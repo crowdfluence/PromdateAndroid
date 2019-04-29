@@ -7,6 +7,7 @@ import androidx.paging.PagedList
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,14 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import com.example.logan.promdate.data.CouplesDataSource
 import com.example.logan.promdate.data.User
 import java.lang.Exception
 
-class CouplesTabFragment : Fragment() {
+class CouplesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: CoupleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var liveData: LiveData<PagedList<List<User>>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -50,11 +53,20 @@ class CouplesTabFragment : Fragment() {
             .setEnablePlaceholders(true)
             .build()
 
-        val liveData = initializedPagedListBuilder(config).build()
+        liveData = initializedPagedListBuilder(config).build()
 
         liveData.observe(this, Observer<PagedList<List<User>>> { pagedList ->
             viewAdapter.submitList(pagedList)
         })
+    }
+
+    override fun invalidate() {
+        if (!this::liveData.isInitialized) {
+            initializeList()
+        }
+        else {
+            liveData.value!!.dataSource.invalidate()
+        }
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):

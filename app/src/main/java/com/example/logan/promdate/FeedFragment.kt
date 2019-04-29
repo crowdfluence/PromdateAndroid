@@ -10,7 +10,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
-
+import androidx.navigation.fragment.NavHostFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class FeedFragment : Fragment() {
 
@@ -54,13 +55,13 @@ class FeedFragment : Fragment() {
         }
 
         //set adapter to return single/couple fragments
-        pagerAdapter = TabAdapter(activity?.supportFragmentManager ?: throw Exception("WTF")) //TODO: Change
+        pagerAdapter = TabAdapter(childFragmentManager)
 
         //set up view pager with selections adapter
-        container.adapter = pagerAdapter
+        view_pager.adapter = pagerAdapter
 
         //set up tab layout
-        tab_layout.setupWithViewPager(container)
+        tab_layout.setupWithViewPager(view_pager)
     }
 
     inner class TabAdapter(fm: FragmentManager) :

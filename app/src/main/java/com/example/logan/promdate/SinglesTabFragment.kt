@@ -16,15 +16,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
-class SinglesTabFragment : Fragment() {
+class SinglesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: SingleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var liveData: LiveData<PagedList<User>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -53,11 +56,20 @@ class SinglesTabFragment : Fragment() {
             .setEnablePlaceholders(true)
             .build()
 
-        val liveData = initializedPagedListBuilder(config).build()
+        liveData = initializedPagedListBuilder(config).build()
 
         liveData.observe(this, Observer<PagedList<User>> { pagedList ->
             viewAdapter.submitList(pagedList)
         })
+    }
+
+    override fun invalidate() {
+        if (!this::liveData.isInitialized) {
+            initializeList()
+        }
+        else {
+            liveData.value!!.dataSource.invalidate()
+        }
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
@@ -69,6 +81,7 @@ class SinglesTabFragment : Fragment() {
                 return SinglesDataSource(sp.getString("token", null) ?: "")
             }
         }
+
         return LivePagedListBuilder<Int, User>(dataSourceFactory, config)
 
     }
