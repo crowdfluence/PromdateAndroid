@@ -16,8 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
+import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 
 
 class SinglesTabFragment : Fragment(), TabInterface {
@@ -42,6 +44,12 @@ class SinglesTabFragment : Fragment(), TabInterface {
             layoutManager = viewManager
             itemAnimator = DefaultItemAnimator()
             adapter = viewAdapter
+        }
+
+        //set up swipe to refresh
+        swipe_refresh.setOnRefreshListener {
+            invalidate()
+            swipe_refresh.isRefreshing = false
         }
 
         initializeList()

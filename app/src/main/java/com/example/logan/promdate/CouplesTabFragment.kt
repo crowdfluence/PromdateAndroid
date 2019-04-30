@@ -7,7 +7,6 @@ import androidx.paging.PagedList
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import com.example.logan.promdate.data.CouplesDataSource
 import com.example.logan.promdate.data.User
-import java.lang.Exception
+import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
+
 
 class CouplesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
@@ -42,6 +42,12 @@ class CouplesTabFragment : Fragment(), TabInterface {
             layoutManager = viewManager
             itemAnimator = DefaultItemAnimator()
             adapter = viewAdapter
+        }
+
+        //set up swipe to refresh
+        swipe_refresh.setOnRefreshListener {
+            invalidate()
+            swipe_refresh.isRefreshing = false
         }
 
         initializeList()
