@@ -1,7 +1,6 @@
 package com.example.logan.promdate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -10,7 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
-import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class FeedFragment : Fragment() {
@@ -23,7 +21,7 @@ class FeedFragment : Fragment() {
         try {
             drawerInterface = activity as DrawerInterface
         } catch (e: ClassCastException) {
-            throw ClassCastException("$activity must implement MyInterface")
+            throw ClassCastException("$activity must implement DrawerInterface")
         }
 
     }

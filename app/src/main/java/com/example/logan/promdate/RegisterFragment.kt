@@ -1,5 +1,6 @@
 package com.example.logan.promdate
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -8,63 +9,85 @@ import com.google.android.material.textfield.TextInputLayout
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.logan.promdate.data.DefaultResponse
+import kotlinx.android.synthetic.main.fragment_register.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+    private lateinit var drawerInterface: DrawerInterface
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            drawerInterface = activity as DrawerInterface
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$activity must implement DrawerInterface")
+        }
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        drawerInterface.lockDrawer()
+        return inflater.inflate(R.layout.fragment_register, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //set up toolbar at top of layout
-        val toolbar: Toolbar = findViewById(R.id.include)
+        val appCompatActivity = activity as AppCompatActivity
+        val toolbar: Toolbar = include as Toolbar
         toolbar.title = getString(R.string.register)
-        setSupportActionBar(toolbar)
+        appCompatActivity.setSupportActionBar(toolbar)
 
-        //make tapping on sign in return user to other activity
-        val signInText = findViewById<TextView>(R.id.sign_in_text)
-        signInText.setOnClickListener {
-            finish()
+        //set blue text to return to login
+        sign_in_text.setOnClickListener {
+            signIn(it)
+        }
+
+        //set up register button
+        register_button.setOnClickListener {
+            register(it)
         }
 
         //set up gender adapter with hint
         val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
-        val genderAdapter = HintAdapter(this, genderOptions, android.R.layout.simple_spinner_dropdown_item)
+        val genderAdapter = HintAdapter(context!!, genderOptions, android.R.layout.simple_spinner_dropdown_item)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val genderSpinner: Spinner = findViewById(R.id.gender_spinner)
+        val genderSpinner: Spinner = gender_spinner
         genderSpinner.adapter = genderAdapter
         genderSpinner.setSelection(genderAdapter.count)
 
         //set up grade adapter with hint
         val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
-        val gradeAdapter = HintAdapter(this, gradeOptions, android.R.layout.simple_spinner_dropdown_item)
+        val gradeAdapter = HintAdapter(context!!, gradeOptions, android.R.layout.simple_spinner_dropdown_item)
         gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val gradeSpinner: Spinner = findViewById(R.id.grade_spinner)
+        val gradeSpinner: Spinner = grade_spinner
         gradeSpinner.adapter = gradeAdapter
         gradeSpinner.setSelection(gradeAdapter.count)
 
         //set textChangedListener on all input fields to remove error upon typing (except confirm password)
         //also not set for optional fields
-        val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
-        emailEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.email_edit_wrapper)))
-        val passwordEdit = findViewById<TextInputEditText>(R.id.password_edit)
-        passwordEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.password_edit_wrapper)))
-        val firstNameEdit = findViewById<TextInputEditText>(R.id.first_name_edit)
-        firstNameEdit.addTextChangedListener(InputTextWatcher(findViewById(R.id.first_name_edit_wrapper)))
+        email_edit.addTextChangedListener(InputTextWatcher(email_edit_wrapper))
+        password_edit.addTextChangedListener(InputTextWatcher(password_edit_wrapper))
+        first_name_edit.addTextChangedListener(InputTextWatcher(first_name_edit_wrapper))
 
         //validate that user's password matches as they are entering it
-        val confirmPassEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
-        confirmPassEdit.addTextChangedListener(object : TextWatcher {
+        confirm_password_edit.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                isValidPasswordConfirmation(confirmPassEdit)
+                isValidPasswordConfirmation(confirm_password_edit)
             }
 
             //don't need these but have to override as it is an interface
@@ -74,17 +97,17 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    fun onRegister(view: View) {
-        val emailEdit = findViewById<TextInputEditText>(R.id.email_edit)
+    private fun register(view: View) {
+        val emailEdit = email_edit
         val email = emailEdit.text.toString()
-        val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
-        val checkPasswordEdit = findViewById<TextInputEditText>(R.id.confirm_password_edit)
+        val password = password_edit.text.toString()
+        val checkPasswordEdit = confirm_password_edit
         val checkPassword = checkPasswordEdit.text.toString()
-        val firstName = findViewById<TextInputEditText>(R.id.first_name_edit).text.toString()
-        val lastName = findViewById<TextInputEditText>(R.id.last_name_edit).text.toString()
-        var gender: String? = findViewById<Spinner>(R.id.gender_spinner).selectedItem.toString()
+        val firstName = first_name_edit.text.toString()
+        val lastName = last_name_edit.text.toString()
+        var gender: String? = gender_spinner.selectedItem.toString()
         val grade = try {
-            findViewById<Spinner>(R.id.grade_spinner).selectedItem.toString().toInt()
+            grade_spinner.selectedItem.toString().toInt()
         } catch (e: Exception) {
             -1
         }
@@ -95,30 +118,30 @@ class RegisterActivity : AppCompatActivity() {
         if (!isValidEmail(emailEdit)) {
             missingFields = true
         } else if (email.isEmpty()) {
-            findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = getString(R.string.required_field)
+            email_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
-            findViewById<TextInputLayout>(R.id.email_edit_wrapper).error = null
+            email_edit_wrapper.error = null
         }
         if (password.isEmpty()) {
-            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = getString(R.string.required_field)
+            password_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
-            findViewById<TextInputLayout>(R.id.password_edit_wrapper).error = null
+            password_edit_wrapper.error = null
         }
         if (!isValidPasswordConfirmation(checkPasswordEdit)) {
             missingFields = true
         } else if (checkPassword.isEmpty()) {
-            findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = getString(R.string.required_field)
+            confirm_password_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
-            findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper).error = null
+            confirm_password_edit_wrapper.error = null
         }
         if (firstName.isEmpty()) {
-            findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = getString(R.string.required_field)
+            first_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
-            findViewById<TextInputLayout>(R.id.first_name_edit_wrapper).error = null
+            first_name_edit_wrapper.error = null
         }
         if (gender == resources.getStringArray(R.array.genders_array)[3]) {
             //gender is optional, so doesn't put error if it is not entered
@@ -130,7 +153,7 @@ class RegisterActivity : AppCompatActivity() {
         if (!isValidSchoolId(schoolId)) {
             missingFields = true
         } else {
-            findViewById<TextInputLayout>(R.id.school_edit_wrapper).error = null
+            school_edit_wrapper.error = null
         }
         if (missingFields) {
             return
@@ -144,7 +167,7 @@ class RegisterActivity : AppCompatActivity() {
                 lastName, schoolId, gender, grade
         )
 
-        val loadingAnim = findViewById<ProgressBar>(R.id.loading_pb)
+        val loadingAnim = loading_pb
         loadingAnim.visibility = View.VISIBLE
 
         //send request
@@ -153,13 +176,15 @@ class RegisterActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     //successfully logged in
                     Snackbar.make(
-                            findViewById(R.id.constraint_layout), R.string.register_success,
+                            constraint_layout,
+                            R.string.register_success,
                             Snackbar.LENGTH_LONG
                     ).show()
                     loadingAnim.visibility = View.GONE
                 } else {
                     Snackbar.make(
-                            findViewById(R.id.constraint_layout), response.body()?.result ?: "",
+                            constraint_layout,
+                        response.body()?.result ?: "",
                             Snackbar.LENGTH_LONG
                     ).show()
                     loadingAnim.visibility = View.GONE
@@ -168,7 +193,8 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Snackbar.make(
-                        findViewById(R.id.constraint_layout), R.string.no_internet,
+                        constraint_layout,
+                        R.string.no_internet,
                         Snackbar.LENGTH_LONG
                 ).show()
                 loadingAnim.visibility = View.GONE
@@ -179,7 +205,7 @@ class RegisterActivity : AppCompatActivity() {
     //checks that email format is valid
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
         val email = emailEdit.text.toString()
-        val emailEditWrapper = findViewById<TextInputLayout>(R.id.email_edit_wrapper)
+        val emailEditWrapper = email_edit_wrapper
         return if (!email.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditWrapper.error = getString(R.string.invalid_email)
             false
@@ -194,9 +220,9 @@ class RegisterActivity : AppCompatActivity() {
     private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0
 
     private fun isValidPasswordConfirmation(confirmPassEdit: TextInputEditText): Boolean {
-        val password = findViewById<TextInputEditText>(R.id.password_edit).text.toString()
+        val password = password_edit.text.toString()
         val confirmPassword = confirmPassEdit.text.toString()
-        val confirmPassEditWrapper = findViewById<TextInputLayout>(R.id.confirm_password_edit_wrapper)
+        val confirmPassEditWrapper = confirm_password_edit_wrapper
 
         if (password.isEmpty()) {
             confirmPassEditWrapper.error = null
@@ -211,6 +237,10 @@ class RegisterActivity : AppCompatActivity() {
         }
         confirmPassEditWrapper.error = null
         return true
+    }
+
+    private fun signIn(view: View) {
+        findNavController().navigate(R.id.nav_login)
     }
 
     //TODO: https://developer.android.com/guide/topics/search/search-dialog

@@ -67,10 +67,7 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                         val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
                         sp.edit().putString("token", null).apply()
 
-                        //returns to login activity
-                        val loginIntent = Intent(this@MainActivity, LoginActivity::class.java)
-                        startActivity(loginIntent)
-                        finish()
+                        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
                     }
                 }
                 true
