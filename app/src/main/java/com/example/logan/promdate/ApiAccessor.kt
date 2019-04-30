@@ -11,8 +11,6 @@ import retrofit2.http.*
 
 const val BASE_URL = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com"
 
-//TODO: https://stackoverflow.com/questions/35693680/how-to-send-form-data-in-retrofit2-android/35698175
-
 //Requests that can be sent to the api
 interface ServerInterface {
     //login
@@ -30,8 +28,7 @@ interface ServerInterface {
                  @Field("first-name") firstName: String,
                  @Field("last-name") lastName: String,
                  @Field("school-id") schoolId: Int,
-                 @Field("gender") gender: String?,
-                 @Field("grade") grade: Int?): Call<DefaultResponse>
+                 @Field("grade") grade: Int): Call<DefaultResponse>
 
     //feed
     @GET("php/search.php")
