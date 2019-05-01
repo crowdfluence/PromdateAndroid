@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import android.os.Bundle
 import android.view.*
@@ -9,7 +9,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.logan.promdate.DrawerInterface
+import com.example.logan.promdate.R
 
 class FeedFragment : Fragment() {
 
@@ -85,7 +86,7 @@ class FeedFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        activity?.menuInflater?.inflate(R.menu.menu_main_feed_appbar, menu)
+        activity?.menuInflater?.inflate(R.menu.menu_feed_appbar, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

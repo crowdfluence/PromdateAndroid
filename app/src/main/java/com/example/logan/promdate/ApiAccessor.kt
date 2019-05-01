@@ -8,6 +8,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import kotlin.random.Random
 
 const val BASE_URL = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com"
 
@@ -51,6 +52,14 @@ interface ServerInterface {
     @GET("php/getUser.php")
     fun getUser(@Query("token") token: String,
                 @Query("id") userId: Int? = null): Call<UserResponse>
+
+    //match with user
+    @POST("php/match.php")
+    @FormUrlEncoded
+    fun matchUser(@Field("token") token: String,
+                  @Field("partner-id") partnerId: Int? = null,
+                  @Field("accept") accept: Boolean? = null,
+                  @Field("unmatch") unmatch: Boolean? = null): Call<DefaultResponse>
 }
 
 //initializes the standard api accessor that is reused throughout the code

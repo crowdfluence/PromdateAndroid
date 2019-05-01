@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.DrawerInterface
+import com.example.logan.promdate.R
 import com.example.logan.promdate.data.DefaultResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,6 +72,7 @@ class LoginFragment : Fragment() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful && response.body()?.status == 200) {
                     loadingAnim.visibility = View.GONE
+
                     //successfully logged in; stores authentication token in file
                     val sp: SharedPreferences? = context?.getSharedPreferences("login", Context.MODE_PRIVATE)
                     sp?.edit()?.putString("token", response.body()?.result)?.apply()

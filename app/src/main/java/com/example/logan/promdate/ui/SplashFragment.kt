@@ -1,17 +1,15 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.constraintlayout.widget.Group
 import androidx.navigation.fragment.findNavController
+import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.DrawerInterface
+import com.example.logan.promdate.R
 import com.example.logan.promdate.data.DefaultResponse
 import kotlinx.android.synthetic.main.fragment_splash.*
 import retrofit2.Call

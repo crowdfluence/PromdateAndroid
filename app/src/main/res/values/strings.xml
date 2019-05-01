@@ -29,6 +29,7 @@
     <string name="couples">Couples</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
+    <string name="action_match">Match with this user</string>
     <string name="grade_number">Grade %d</string>
     <string name="full_name">%s %s</string>
     <string name="couple_name"><![CDATA[%s %c. & %s %c.]]></string>
@@ -50,6 +51,13 @@
     <string name="logout">Logout</string>
     <string name="unexpected_error">An unexpected error has occurred.</string>
     <string name="your_profile">Your profile</string>
+    <string name="match_error">Failed to send match request! Please try again later.</string>
+    <string name="action_edit">Edit your profile</string>
+    <string name="bio">Bio</string>
+    <string name="instagram">Instagram</string>
+    <string name="snapchat">Snapchat</string>
+    <string name="twitter">Twitter</string>
+    <string name="edit_profile">Edit Profile</string>
 
     <string-array name="genders_array">
         <item>Male</item>

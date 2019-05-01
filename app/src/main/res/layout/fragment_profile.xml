@@ -87,7 +87,7 @@
         tools:text="Single" />
 
     <TextView
-        android:id="@+id/bio_text"
+        android:id="@+id/bio_edit_wrapper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -107,7 +107,7 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bio_text"
+        app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper"
         app:srcCompat="@drawable/instagram_logo" />
 
     <ImageView
@@ -133,7 +133,7 @@
         app:srcCompat="@drawable/twitter_logo" />
 
     <TextView
-        android:id="@+id/instagram_text"
+        android:id="@+id/instagram_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -144,7 +144,7 @@
         tools:text="\@Instagram" />
 
     <TextView
-        android:id="@+id/snapchat_text"
+        android:id="@+id/snapchat_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -155,7 +155,7 @@
         tools:text="Snapchat" />
 
     <TextView
-        android:id="@+id/twitter_text"
+        android:id="@+id/twitter_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -187,6 +187,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="instagram_text,name_text,snapchat_text,twitter_text,grade_text,school_text,bio_text,relationship_text,profile_picture_image" />
+        app:constraint_referenced_ids="instagram_edit,name_text,snapchat_edit,twitter_edit,grade_text,school_text,bio_edit_wrapper,relationship_text,profile_picture_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

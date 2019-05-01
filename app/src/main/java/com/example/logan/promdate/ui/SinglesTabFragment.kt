@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import androidx.lifecycle.Observer
 import androidx.paging.DataSource
@@ -16,7 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.logan.promdate.*
 import com.example.logan.promdate.data.SinglesDataSource
 import com.example.logan.promdate.data.User
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
@@ -93,7 +93,10 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
     private fun onUserClick(user: User) {
         //open user profile
-        val action = FeedFragmentDirections.navProfile(user.id, user.firstName +  " " + user.lastName)
+        val action = FeedFragmentDirections.navProfile(
+            user.id,
+            user.firstName + " " + user.lastName
+        )
         findNavController().navigate(action)
     }
 }

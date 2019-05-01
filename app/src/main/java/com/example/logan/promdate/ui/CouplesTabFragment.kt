@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import androidx.lifecycle.Observer
 import androidx.paging.DataSource
@@ -15,6 +15,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
+import com.example.logan.promdate.BadTokenException
+import com.example.logan.promdate.CoupleAdapter
+import com.example.logan.promdate.R
+import com.example.logan.promdate.TabInterface
 import com.example.logan.promdate.data.CouplesDataSource
 import com.example.logan.promdate.data.User
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*

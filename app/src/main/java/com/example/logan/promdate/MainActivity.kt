@@ -1,10 +1,8 @@
 package com.example.logan.promdate
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -12,9 +10,9 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.logan.promdate.ui.FeedFragmentDirections
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 
 class MainActivity : AppCompatActivity(), DrawerInterface {
@@ -50,11 +48,11 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        drawer_layout.nav_view.setupWithNavController(navController)
+        nav_view.setupWithNavController(navController)
 
-        drawer_layout.nav_view.menu.getItem(currentLocation).isChecked = true
+        nav_view.menu.getItem(currentLocation).isChecked = true
 
-        val nv = findViewById<NavigationView>(R.id.nav_view)
+        val nv = nav_view
         nv.setNavigationItemSelectedListener { item ->
                 drawer_layout.closeDrawer(GravityCompat.START)
                 when (item.itemId) {
@@ -68,6 +66,9 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                         sp.edit().putString("token", null).apply()
 
                         findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
+                    }
+                    R.id.nav_settings -> {
+                        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_settings)
                     }
                 }
                 true

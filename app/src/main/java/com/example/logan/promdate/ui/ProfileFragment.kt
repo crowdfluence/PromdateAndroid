@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.example.logan.promdate.*
+import com.example.logan.promdate.data.DefaultResponse
 import com.example.logan.promdate.data.User
 import com.example.logan.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
@@ -34,6 +36,11 @@ class ProfileFragment : Fragment() {
             throw ClassCastException("$activity must implement MyInterface")
         }
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -109,23 +116,23 @@ class ProfileFragment : Fragment() {
                     } else {
                         relationship_text.text = context?.getString(R.string.going_with, partner.firstName) //TODO: fix
                     }
-                    bio_text.text = user.bio
+                    bio_edit_wrapper.text = user.bio
 
                     if (user.snapchat != null) {
                         snapchat_image.visibility = View.VISIBLE
-                        snapchat_text.text = user.snapchat
+                        snapchat_edit.text = user.snapchat
                     } else {
                         snapchat_image.visibility = View.GONE
                     }
                     if (user.twitter != null) {
                         twitter_image.visibility = View.VISIBLE
-                        twitter_text.text = user.twitter
+                        twitter_edit.text = user.twitter
                     } else {
                         twitter_image.visibility = View.GONE
                     }
                     if (user.instagram != null) {
                         instagram_image.visibility = View.VISIBLE
-                        instagram_text.text = user.instagram
+                        instagram_edit.text = user.instagram
                     } else {
                         instagram_image.visibility = View.GONE
                     }
@@ -150,12 +157,77 @@ class ProfileFragment : Fragment() {
         val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
         Picasso.get()
             .load(fullUrl)
-            .transform(CircleTransformation(40, 1, ContextCompat.getColor(context, R.color.lightGray)))
-            .resize(80, 80)
+            .transform(
+                CircleTransformation(
+                    64,
+                    1,
+                    ContextCompat.getColor(context, R.color.lightGray)
+                )
+            )
+            .resize(128, 128)
             .centerCrop()
             .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
             .error(R.drawable.default_profile) //TODO: Change to actual error
             .into(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        when (profileFragmentArgs.userId) {
+            -1 -> activity?.menuInflater?.inflate(R.menu.menu_self_profile, menu)
+            else -> activity?.menuInflater?.inflate(R.menu.menu_other_profile, menu)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    //controls what happens when button on toolbar is selected
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        //checks to make sure it was not the back button pressed
+        if (item.itemId == R.id.action_match || item.itemId == R.id.action_edit)
+            //switch depending on whether it is another user's profile or your own
+            when (profileFragmentArgs.userId) {
+                -1 -> {
+                    //nav to edit profile
+                }
+                else -> {
+                    match()
+                }
+            }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun match() {
+
+        //send match request
+        val api = ApiAccessor().apiService
+        val sp: SharedPreferences? = context?.getSharedPreferences("login", Context.MODE_PRIVATE)
+        val token = sp?.getString("token", "") ?: ""
+
+        //TODO: Change heart color while not currently matched with user
+
+        api.matchUser(token, partnerId = profileFragmentArgs.userId)
+            .enqueue(object : Callback<DefaultResponse> {
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    Log.e(
+                        "MatchUser",
+                        "Failed to send match request!"
+                    )
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.body()?.status ?: 0 != 200) {
+                        //Match request failed
+                        Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
+                        //TODO: Change heart back
+                        Snackbar.make(
+                            constraint_layout,
+                            R.string.match_error,
+                            Snackbar.LENGTH_SHORT
+                        )
+                    }
+                }
+            })
     }
 }
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.logan.promdate.SplashFragment"
+        android:name="com.example.logan.promdate.ui.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.logan.promdate.LoginFragment"
+        android:name="com.example.logan.promdate.ui.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.logan.promdate.RegisterFragment"
+        android:name="com.example.logan.promdate.ui.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.example.logan.promdate.FeedFragment"
+        android:name="com.example.logan.promdate.ui.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed">
 
@@ -73,11 +73,14 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/feedFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/nav_settings"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.logan.promdate.ProfileFragment"
+        android:name="com.example.logan.promdate.ui.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -89,5 +92,13 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/nav_settings"
+            app:destination="@id/settingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.logan.promdate.ui.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings"/>
 </navigation>

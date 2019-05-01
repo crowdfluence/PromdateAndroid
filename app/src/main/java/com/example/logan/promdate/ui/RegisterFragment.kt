@@ -1,22 +1,20 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.logan.promdate.*
 import com.example.logan.promdate.data.DefaultResponse
 import kotlinx.android.synthetic.main.fragment_register.*
 import retrofit2.Call
@@ -64,7 +62,11 @@ class RegisterFragment : Fragment() {
 
         //set up gender adapter with hint
         val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
-        val genderAdapter = HintAdapter(context!!, genderOptions, android.R.layout.simple_spinner_dropdown_item)
+        val genderAdapter = HintAdapter(
+            context!!,
+            genderOptions,
+            android.R.layout.simple_spinner_dropdown_item
+        )
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val genderSpinner: Spinner = gender_spinner
         genderSpinner.adapter = genderAdapter
@@ -72,7 +74,11 @@ class RegisterFragment : Fragment() {
 
         //set up grade adapter with hint
         val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
-        val gradeAdapter = HintAdapter(context!!, gradeOptions, android.R.layout.simple_spinner_dropdown_item)
+        val gradeAdapter = HintAdapter(
+            context!!,
+            gradeOptions,
+            android.R.layout.simple_spinner_dropdown_item
+        )
         gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val gradeSpinner: Spinner = grade_spinner
         gradeSpinner.adapter = gradeAdapter
@@ -143,6 +149,13 @@ class RegisterFragment : Fragment() {
         } else {
             first_name_edit_wrapper.error = null
         }
+        if (lastName.isEmpty()) {
+            last_name_edit_wrapper.error = getString(R.string.required_field)
+            missingFields = true
+        }
+        else {
+            last_name_edit_wrapper.error = null
+        }
         if (gender == resources.getStringArray(R.array.genders_array)[3]) {
             //gender is optional, so doesn't put error if it is not entered
             gender = null
@@ -164,7 +177,7 @@ class RegisterFragment : Fragment() {
         //create request
         val call: Call<DefaultResponse> = apiAccessor.apiService.register(
                 email, password, checkPassword, firstName,
-                lastName, schoolId, gender, grade
+                lastName, schoolId, grade
         )
 
         val loadingAnim = loading_pb
@@ -177,7 +190,7 @@ class RegisterFragment : Fragment() {
                     //successfully logged in
                     Snackbar.make(
                             constraint_layout,
-                            R.string.register_success,
+                        R.string.register_success,
                             Snackbar.LENGTH_LONG
                     ).show()
                     loadingAnim.visibility = View.GONE
@@ -194,7 +207,7 @@ class RegisterFragment : Fragment() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Snackbar.make(
                         constraint_layout,
-                        R.string.no_internet,
+                    R.string.no_internet,
                         Snackbar.LENGTH_LONG
                 ).show()
                 loadingAnim.visibility = View.GONE
