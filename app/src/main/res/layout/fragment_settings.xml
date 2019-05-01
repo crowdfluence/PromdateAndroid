@@ -32,6 +32,17 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/default_profile" />
 
+        <TextView
+            android:id="@+id/change_profile_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_picture"
+            android:textAllCaps="false"
+            android:textColor="@color/linkBlue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_picture_image" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/first_name_edit_wrapper"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -40,11 +51,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            app:errorEnabled="true"
+            app:errorEnabled="false"
             app:layout_constraintBottom_toTopOf="@id/last_name_edit_wrapper"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_picture_image">
+            app:layout_constraintTop_toBottomOf="@+id/change_profile_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/first_name_edit"
@@ -65,7 +76,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            app:errorEnabled="true"
+            app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/first_name_edit_wrapper">
@@ -79,7 +90,6 @@
                 android:maxLength="190"
                 android:theme="@style/EditText"
                 tools:text="Smith" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +100,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            app:errorEnabled="true"
+            app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/last_name_edit_wrapper">
@@ -104,80 +114,170 @@
                 android:maxLength="190"
                 android:theme="@style/EditText"
                 tools:text="I'm an incredibly intelligent individual. Please do not attempt to match with me if your IQ is below 150." />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/instagram_image"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/instagram_edit_wrapper"
+            app:layout_constraintEnd_toStartOf="@id/instagram_edit_wrapper"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper"
+            app:layout_constraintTop_toTopOf="@+id/instagram_edit_wrapper"
             app:srcCompat="@drawable/instagram_logo" />
 
         <ImageView
             android:id="@+id/snapchat_image"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/snapchat_edit_wrapper"
+            app:layout_constraintEnd_toStartOf="@id/snapchat_edit_wrapper"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/instagram_image"
+            app:layout_constraintTop_toTopOf="@+id/snapchat_edit_wrapper"
             app:srcCompat="@drawable/snapchat_logo" />
 
         <ImageView
             android:id="@+id/twitter_image"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/twitter_edit_wrapper"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/snapchat_image"
+            app:layout_constraintTop_toTopOf="@+id/twitter_edit_wrapper"
             app:srcCompat="@drawable/twitter_logo" />
 
-        <EditText
-            android:id="@+id/instagram_edit"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/instagram_edit_wrapper"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/instagram"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/instagram_image"
+            app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/instagram_image"
-            app:layout_constraintTop_toTopOf="@+id/instagram_image" />
+            app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper">
 
-        <EditText
-            android:id="@+id/snapchat_edit"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/instagram_edit"
+                style="@style/loginEditText"
+                android:hint="@string/instagram"
+                android:maxLength="190"
+                android:theme="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/snapchat_edit_wrapper"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/snapchat"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/snapchat_image"
+            app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/snapchat_image"
-            app:layout_constraintTop_toTopOf="@+id/snapchat_image" />
+            app:layout_constraintTop_toBottomOf="@+id/instagram_edit_wrapper">
 
-        <EditText
-            android:id="@+id/twitter_edit"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/snapchat_edit"
+                style="@style/loginEditText"
+                android:hint="@string/snapchat"
+                android:maxLength="190"
+                android:theme="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/twitter_edit_wrapper"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/twitter"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/twitter_image"
+            app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/twitter_image"
-            app:layout_constraintTop_toTopOf="@+id/twitter_image" />
+            app:layout_constraintTop_toBottomOf="@+id/snapchat_edit_wrapper">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/twitter_edit"
+                style="@style/loginEditText"
+                android:hint="@string/twitter"
+                android:maxLength="190"
+                android:theme="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/school_edit_wrapper"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/twitter_edit_wrapper">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/school_edit"
+                style="@style/loginEditText"
+                android:hint="@string/school"
+                android:inputType="textNoSuggestions|textPersonName"
+                android:theme="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="2dp"
+            android:prompt="@string/select_gender"
+            app:layout_constraintEnd_toStartOf="@+id/grade_spinner"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/school_edit_wrapper" />
+
+        <Spinner
+            android:id="@+id/grade_spinner"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="16dp"
+            android:prompt="@string/select_grade"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/gender_spinner"
+            app:layout_constraintTop_toTopOf="@+id/gender_spinner" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/grade_spinner"
+            tools:layout_editor_absoluteY="120dp" />
 
         <ProgressBar
             android:id="@+id/loading_pb"

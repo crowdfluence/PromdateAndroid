@@ -6,14 +6,19 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.logan.promdate.CircleTransformation
+import com.example.logan.promdate.HintAdapter
 import com.example.logan.promdate.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_settings.gender_spinner
+import kotlinx.android.synthetic.main.fragment_settings.grade_spinner
 
 
 class SettingsFragment : Fragment() {
@@ -49,6 +54,30 @@ class SettingsFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        //set up gender spinner with hint
+        val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
+        val genderAdapter = HintAdapter(
+            context!!,
+            genderOptions,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val genderSpinner: Spinner = gender_spinner
+        genderSpinner.adapter = genderAdapter
+        genderSpinner.setSelection(genderAdapter.count)
+
+        //set up grade spinner with hint
+        val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
+        val gradeAdapter = HintAdapter(
+            context!!,
+            gradeOptions,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val gradeSpinner: Spinner = grade_spinner
+        gradeSpinner.adapter = gradeAdapter
+        gradeSpinner.setSelection(gradeAdapter.count)
     }
 
     override fun onDestroyView() {

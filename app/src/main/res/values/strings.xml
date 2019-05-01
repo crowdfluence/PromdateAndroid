@@ -58,6 +58,8 @@
     <string name="snapchat">Snapchat</string>
     <string name="twitter">Twitter</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="save">Save</string>
+    <string name="change_picture">Change Picture</string>
 
     <string-array name="genders_array">
         <item>Male</item>
