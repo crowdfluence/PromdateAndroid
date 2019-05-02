@@ -68,6 +68,15 @@ class SinglesTabFragment : Fragment(), TabInterface {
         })
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val lastKey = viewAdapter.currentList?.lastKey as Int
+
+        outState.putInt("lastKey", lastKey)
+        outState.putParcelable("layout_manager_state", recyclerView.layoutManager?.onSaveInstanceState())
+    }
+
     override fun invalidate() {
         if (!this::liveData.isInitialized) {
             initializeList()

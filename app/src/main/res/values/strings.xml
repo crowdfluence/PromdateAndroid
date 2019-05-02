@@ -60,6 +60,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="save">Save</string>
     <string name="change_picture">Change Picture</string>
+    <string name="grade_required">No grade selected</string>
+    <string name="duplicate_email">An account with that email already exists</string>
+    <string name="server_error">Internal server error</string>
 
     <string-array name="genders_array">
         <item>Male</item>

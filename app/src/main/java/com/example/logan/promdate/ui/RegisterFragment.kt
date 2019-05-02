@@ -1,6 +1,7 @@
 package com.example.logan.promdate.ui
 
 import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -8,6 +9,7 @@ import com.google.android.material.textfield.TextInputEditText
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 
 class RegisterFragment : Fragment() {
@@ -60,19 +64,7 @@ class RegisterFragment : Fragment() {
             register(it)
         }
 
-        //set up gender adapter with hint
-        val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
-        val genderAdapter = HintAdapter(
-            context!!,
-            genderOptions,
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val genderSpinner: Spinner = gender_spinner
-        genderSpinner.adapter = genderAdapter
-        genderSpinner.setSelection(genderAdapter.count)
-
-        //set up grade adapter with hint
+        //set up grade spinner with hint
         val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
         val gradeAdapter = HintAdapter(
             context!!,
@@ -111,7 +103,6 @@ class RegisterFragment : Fragment() {
         val checkPassword = checkPasswordEdit.text.toString()
         val firstName = first_name_edit.text.toString()
         val lastName = last_name_edit.text.toString()
-        var gender: String? = gender_spinner.selectedItem.toString()
         val grade = try {
             grade_spinner.selectedItem.toString().toInt()
         } catch (e: Exception) {
@@ -152,15 +143,14 @@ class RegisterFragment : Fragment() {
         if (lastName.isEmpty()) {
             last_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
-        }
-        else {
+        } else {
             last_name_edit_wrapper.error = null
         }
-        if (gender == resources.getStringArray(R.array.genders_array)[3]) {
-            //gender is optional, so doesn't put error if it is not entered
-            gender = null
-        }
         if (!isValidGrade(grade)) {
+            val errorText = grade_spinner.selectedView as TextView
+            errorText.error = ""
+            errorText.setTextColor(ContextCompat.getColor(context!!, R.color.errorRed))
+            errorText.text = getString(R.string.grade_required)
             missingFields = true
         }
         if (!isValidSchoolId(schoolId)) {
@@ -176,8 +166,7 @@ class RegisterFragment : Fragment() {
 
         //create request
         val call: Call<DefaultResponse> = apiAccessor.apiService.register(
-                email, password, checkPassword, firstName,
-                lastName, schoolId, grade
+            email, password, firstName, lastName, schoolId, grade
         )
 
         val loadingAnim = loading_pb
@@ -186,29 +175,38 @@ class RegisterFragment : Fragment() {
         //send request
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                if (response.isSuccessful) {
+                if (response.body()?.status == 200) {
                     //successfully logged in
                     Snackbar.make(
-                            constraint_layout,
+                        constraint_layout,
                         R.string.register_success,
-                            Snackbar.LENGTH_LONG
+                        Snackbar.LENGTH_LONG
                     ).show()
                     loadingAnim.visibility = View.GONE
                 } else {
-                    Snackbar.make(
+                    if (response.body()?.result?.contains("duplicate entry", true) == true) {
+                        Snackbar.make(
                             constraint_layout,
-                        response.body()?.result ?: "",
+                            R.string.duplicate_email,
                             Snackbar.LENGTH_LONG
-                    ).show()
+                        ).show()
+                    }
+                    else {
+                        Snackbar.make(
+                            constraint_layout,
+                            R.string.server_error,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                     loadingAnim.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Snackbar.make(
-                        constraint_layout,
+                    constraint_layout,
                     R.string.no_internet,
-                        Snackbar.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 ).show()
                 loadingAnim.visibility = View.GONE
             }
@@ -219,7 +217,7 @@ class RegisterFragment : Fragment() {
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
         val email = emailEdit.text.toString()
         val emailEditWrapper = email_edit_wrapper
-        return if (!email.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        return if (email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditWrapper.error = getString(R.string.invalid_email)
             false
         } else {

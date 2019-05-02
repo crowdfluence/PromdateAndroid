@@ -16,6 +16,7 @@ class FeedFragment : Fragment() {
 
     private var pagerAdapter: TabAdapter? = null
     private lateinit var drawerInterface: DrawerInterface
+    var offset = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,6 +53,8 @@ class FeedFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
+
+        //TODO: Make scroll position get preserved (room library?)
 
         //set adapter to return single/couple fragments
         pagerAdapter = TabAdapter(childFragmentManager)

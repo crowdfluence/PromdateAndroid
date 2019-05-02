@@ -15,7 +15,6 @@ import com.example.logan.promdate.CircleTransformation
 import com.example.logan.promdate.HintAdapter
 import com.example.logan.promdate.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.gender_spinner
 import kotlinx.android.synthetic.main.fragment_settings.grade_spinner
@@ -83,6 +82,7 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         drawerInterface.unlockDrawer() //unlocks drawer upon exiting fragment
+
     }
 
     //sets image from url & converts it to a circle

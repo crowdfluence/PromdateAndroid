@@ -36,6 +36,7 @@
             android:id="@+id/change_profile_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text="@string/change_picture"
             android:textAllCaps="false"
             android:textColor="@color/linkBlue"
@@ -174,6 +175,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/instagram_edit"
                 style="@style/loginEditText"
+                android:drawableStart="@drawable/at_sign"
                 android:hint="@string/instagram"
                 android:maxLength="190"
                 android:theme="@style/EditText" />
@@ -216,6 +218,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/twitter_edit"
                 style="@style/loginEditText"
+                android:drawableStart="@drawable/at_sign"
                 android:hint="@string/twitter"
                 android:maxLength="190"
                 android:theme="@style/EditText" />

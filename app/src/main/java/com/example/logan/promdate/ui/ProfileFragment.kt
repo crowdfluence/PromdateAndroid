@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.logan.promdate.*
 import com.example.logan.promdate.data.DefaultResponse
@@ -21,6 +22,9 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.content.Intent
+import android.content.ActivityNotFoundException
+import android.net.Uri
 
 
 class ProfileFragment : Fragment() {
@@ -118,21 +122,70 @@ class ProfileFragment : Fragment() {
                     }
                     bio_edit_wrapper.text = user.bio
 
-                    if (user.snapchat != null) {
+                    if (user.snapchat != null && user.snapchat?.isNotEmpty() == true) {
                         snapchat_image.visibility = View.VISIBLE
-                        snapchat_edit.text = user.snapchat
+
+                        snapchat_image.setOnClickListener {
+
+                            try {
+                                val snapUrl = "snapchat://add/${user.snapchat}"
+                                val nativeAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
+                                startActivity(nativeAppIntent)
+                            }
+                            catch (e: ActivityNotFoundException) {
+                                val snapUrl = "https://snapchat.com/add/${user.snapchat}"
+                                val websiteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
+                                startActivity(websiteIntent)
+                            }
+
+                        }
                     } else {
                         snapchat_image.visibility = View.GONE
                     }
-                    if (user.twitter != null) {
+                    if (user.twitter != null && user.twitter?.isNotEmpty() == true) {
                         twitter_image.visibility = View.VISIBLE
-                        twitter_edit.text = user.twitter
+
+                        twitter_image.setOnClickListener {
+                            val uri = Uri.parse("http://twitter.com/${user.twitter}")
+                            val twitterIntent = Intent(Intent.ACTION_VIEW, uri)
+
+                            twitterIntent.setPackage("com.twitter.android")
+
+                            try {
+                                startActivity(twitterIntent)
+                            } catch (e: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("http://twitter.com/{${user.twitter}")
+                                    )
+                                )
+                            }
+                        }
                     } else {
                         twitter_image.visibility = View.GONE
                     }
-                    if (user.instagram != null) {
+                    if (user.instagram != null && user.instagram?.isNotEmpty() == true) {
                         instagram_image.visibility = View.VISIBLE
-                        instagram_edit.text = user.instagram
+
+                        instagram_image.setOnClickListener {
+                            val uri = Uri.parse("http://instagram.com/_u/${user.instagram}")
+                            val instaIntent = Intent(Intent.ACTION_VIEW, uri)
+
+                            instaIntent.setPackage("com.instagram.android")
+
+                            try {
+                                startActivity(instaIntent)
+                            } catch (e: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("http://instagram.com/{${user.instagram}")
+                                    )
+                                )
+                            }
+                        }
+
                     } else {
                         instagram_image.visibility = View.GONE
                     }
@@ -187,7 +240,7 @@ class ProfileFragment : Fragment() {
             //switch depending on whether it is another user's profile or your own
             when (profileFragmentArgs.userId) {
                 -1 -> {
-                    //nav to edit profile
+                    findNavController().navigate(R.id.nav_settings)
                 }
                 else -> {
                     match()

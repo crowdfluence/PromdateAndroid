@@ -101,69 +101,40 @@
 
     <ImageView
         android:id="@+id/instagram_image"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/snapchat_image"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper"
         app:srcCompat="@drawable/instagram_logo" />
 
     <ImageView
         android:id="@+id/snapchat_image"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/instagram_image"
+        app:layout_constraintEnd_toStartOf="@+id/twitter_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/instagram_image"
+        app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper"
         app:srcCompat="@drawable/snapchat_logo" />
 
     <ImageView
         android:id="@+id/twitter_image"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/snapchat_image"
-        app:srcCompat="@drawable/twitter_logo" />
-
-    <TextView
-        android:id="@+id/instagram_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/instagram_image"
-        app:layout_constraintStart_toEndOf="@+id/instagram_image"
-        app:layout_constraintTop_toTopOf="@+id/instagram_image"
-        tools:text="\@Instagram" />
-
-    <TextView
-        android:id="@+id/snapchat_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/snapchat_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/snapchat_image"
-        app:layout_constraintTop_toTopOf="@+id/snapchat_image"
-        tools:text="Snapchat" />
-
-    <TextView
-        android:id="@+id/twitter_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/twitter_image"
-        app:layout_constraintStart_toEndOf="@+id/twitter_image"
-        app:layout_constraintTop_toTopOf="@+id/twitter_image"
-        tools:text="\@Twitter" />
+        app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper"
+        app:srcCompat="@drawable/twitter_logo" />
 
     <!-- TODO: Add dress image and description to profile -->
 
@@ -187,6 +158,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="instagram_edit,name_text,snapchat_edit,twitter_edit,grade_text,school_text,bio_edit_wrapper,relationship_text,profile_picture_image" />
+        app:constraint_referenced_ids="name_text,grade_text,school_text,bio_edit_wrapper,relationship_text,profile_picture_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), DrawerInterface {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,7 +45,8 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
     override fun setupDrawer(toolbar: Toolbar, currentLocation: Int) {
         val navController = findNavController(R.id.nav_host_fragment)
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -54,24 +56,24 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
 
         val nv = nav_view
         nv.setNavigationItemSelectedListener { item ->
-                drawer_layout.closeDrawer(GravityCompat.START)
-                when (item.itemId) {
-                    R.id.nav_profile -> {
-                        val action = FeedFragmentDirections.navProfile(-1)
-                        findNavController(R.id.nav_host_fragment).navigate(action) //TODO: Change to logged in user
-                        drawer_layout.closeDrawer(GravityCompat.START)
-                    }
-                    R.id.nav_logout -> {
-                        val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
-                        sp.edit().putString("token", null).apply()
-
-                        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
-                    }
-                    R.id.nav_settings -> {
-                        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_settings)
-                    }
+            drawer_layout.closeDrawer(GravityCompat.START)
+            when (item.itemId) {
+                R.id.nav_profile -> {
+                    val action = FeedFragmentDirections.navProfile(-1)
+                    findNavController(R.id.nav_host_fragment).navigate(action) //TODO: Change to logged in user
+                    drawer_layout.closeDrawer(GravityCompat.START)
                 }
-                true
+                R.id.nav_logout -> {
+                    val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+                    sp.edit().putString("token", null).apply()
+
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
+                }
+                R.id.nav_settings -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.nav_settings)
+                }
+            }
+            true
         }
     }
 }

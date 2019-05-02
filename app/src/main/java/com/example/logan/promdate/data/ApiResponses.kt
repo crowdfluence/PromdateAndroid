@@ -21,10 +21,16 @@ class FeedInnerResponse(
 
 class UserResponse(
     @SerializedName("status") var status: Int,
-    @SerializedName("result") var result: UserWithPartner
+    @SerializedName("result") var result: FullUser
 )
 
-class UserWithPartner(
+class FullUser(
     @SerializedName("user")    var user: User,
     @SerializedName("partner") var partner: User?
+)
+
+class UpdateResponse(
+    @SerializedName("status")  var status: Int,
+    @SerializedName("updated") var updated: List<String>,
+    @SerializedName("errors")  var errors: List<String>
 )

@@ -14,8 +14,6 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
     private val api = ApiAccessor().apiService
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<User>) {
-        Log.d("SingleDataSource", "Request size: ${params.requestedLoadSize}")
-        Log.d("SingleDataSource", "Request start position: ${params.requestedStartPosition}")
         api.getFeed(token, params.requestedLoadSize, params.requestedStartPosition)
             .enqueue(object : Callback<FeedResponse> {
 
@@ -28,7 +26,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
 
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                     val singles = response.body()?.result ?: FeedInnerResponse(listOf(), listOf(), 0, 0)
-                    callback.onResult(singles.unmatchedUsers, 0, singles.maxUnmatched)
+                    callback.onResult(singles.unmatchedUsers, params.requestedStartPosition, singles.maxUnmatched)
                 }
             })
     }

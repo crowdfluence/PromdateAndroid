@@ -2,6 +2,7 @@ package com.example.logan.promdate
 
 import com.example.logan.promdate.data.DefaultResponse
 import com.example.logan.promdate.data.FeedResponse
+import com.example.logan.promdate.data.UpdateResponse
 import com.example.logan.promdate.data.UserResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Call
@@ -25,11 +26,24 @@ interface ServerInterface {
     @FormUrlEncoded
     fun register(@Field("email") email: String,
                  @Field("password") password: String,
-                 @Field("password-retype") checkPassword: String,
                  @Field("first-name") firstName: String,
                  @Field("last-name") lastName: String,
                  @Field("school-id") schoolId: Int,
                  @Field("grade") grade: Int): Call<DefaultResponse>
+
+    //update
+    @POST("php/update.php")
+    @FormUrlEncoded
+    fun update(@Field("token") token: String,
+               @Field("social-instagram") instagram: String,
+               @Field("social-snapchat") snapchat: String,
+               @Field("social-twitter") twitter: String,
+               @Field("bio") bio: String,
+               @Field("first-name") firstName: String,
+               @Field("last-name") lastName: String,
+               @Field("school-id") schoolId: Int,
+               @Field("grade") grade: Int,
+               @Field("gender") gender: String): Call<UpdateResponse>
 
     //feed
     @GET("php/search.php")
