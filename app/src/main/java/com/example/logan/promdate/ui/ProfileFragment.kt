@@ -136,7 +136,7 @@ class ProfileFragment : Fragment() {
                     } else {
                         relationship_text.text = context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
                     }
-                    bio_edit_wrapper.text = user.self.bio
+                    bio_text.text = user.self.bio
 
                     if (user.self.snapchat != null && user.self.snapchat?.isNotEmpty() == true) {
                         snapchat_image.visibility = View.VISIBLE

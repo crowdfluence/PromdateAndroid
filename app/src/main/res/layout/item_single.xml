@@ -60,7 +60,7 @@
             tools:text="John Smith" />
 
         <TextView
-            android:id="@+id/bio_edit_wrapper"
+            android:id="@+id/bio_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

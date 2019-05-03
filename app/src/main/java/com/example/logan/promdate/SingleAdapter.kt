@@ -32,7 +32,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
                     profile_picture_image.loadUrl(user.profilePictureUrl)
                 }
                 grade_text.text = context.getString(R.string.grade_number, user.grade)
-                bio_edit_wrapper.text = user.bio
+                bio_text.text = user.bio
                 setOnClickListener { clickListener(user) }
             }
         }
