@@ -80,8 +80,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
     override fun invalidate() {
         if (!this::liveData.isInitialized) {
             initializeList()
-        }
-        else {
+        } else {
             liveData.value!!.dataSource.invalidate()
         }
     }
@@ -91,7 +90,9 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): DataSource<Int, User> {
-                val sp: SharedPreferences = context?.getSharedPreferences("login", Context.MODE_PRIVATE) ?: throw BadTokenException() //TODO: Return to login on failed token
+                val sp: SharedPreferences =
+                    context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                        ?: throw BadTokenException() //TODO: Return to login on failed token
                 return SinglesDataSource(sp.getString("token", null) ?: "")
             }
         }

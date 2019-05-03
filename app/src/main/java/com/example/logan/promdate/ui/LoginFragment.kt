@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                     loadingAnim.visibility = View.GONE
 
                     //successfully logged in; stores authentication token in file
-                    val sp: SharedPreferences? = context?.getSharedPreferences("login", Context.MODE_PRIVATE)
+                    val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
                     sp?.edit()?.putString("token", response.body()?.result)?.apply()
 
                     //opens up main feed

@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                     drawer_layout.closeDrawer(GravityCompat.START)
                 }
                 R.id.nav_logout -> {
-                    val sp: SharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
+                    val sp: SharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
                     sp.edit().putString("token", null).apply()
 
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)

@@ -9,8 +9,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
+import com.example.logan.promdate.ApiAccessor
 import com.example.logan.promdate.DrawerInterface
 import com.example.logan.promdate.R
+import com.example.logan.promdate.data.UserResponse
+import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FeedFragment : Fragment() {
 
@@ -64,6 +72,33 @@ class FeedFragment : Fragment() {
 
         //set up tab layout
         tab_layout.setupWithViewPager(view_pager)
+
+        //gets user id to store in file
+        val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val token: String = sp?.getString("token", null) ?: ""
+
+        val accessor = ApiAccessor()
+        val call = accessor.apiService.getUser(token)
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Snackbar.make(main_content, R.string.no_internet,
+                    Snackbar.LENGTH_LONG)
+                    .show()
+            }
+
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                val serverResponse = response.body()
+                if (serverResponse != null && serverResponse.status == 200) {
+                    sp?.edit()?.putInt("userId", serverResponse.result.self.id)?.apply()
+                }
+                else {
+                    Snackbar.make(main_content, R.string.unexpected_error,
+                        Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
+        })
+
     }
 
     inner class TabAdapter(fm: FragmentManager) :

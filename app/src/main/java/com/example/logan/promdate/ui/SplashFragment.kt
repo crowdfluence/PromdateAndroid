@@ -42,7 +42,7 @@ class SplashFragment : Fragment() {
         loading_pb.visibility = View.VISIBLE
 
         //check if currently stored token works; if so, skips login and goes directly to main feed
-        val sp: SharedPreferences? = context?.getSharedPreferences("login", Context.MODE_PRIVATE)
+        val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         val token = sp?.getString("token", null)
         if (token != null) {
             val apiAccessor = ApiAccessor()

@@ -64,18 +64,6 @@ class RegisterFragment : Fragment() {
             register(it)
         }
 
-        //set up grade spinner with hint
-        val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
-        val gradeAdapter = HintAdapter(
-            context!!,
-            gradeOptions,
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val gradeSpinner: Spinner = grade_spinner
-        gradeSpinner.adapter = gradeAdapter
-        gradeSpinner.setSelection(gradeAdapter.count)
-
         //set textChangedListener on all input fields to remove error upon typing (except confirm password)
         //also not set for optional fields
         email_edit.addTextChangedListener(InputTextWatcher(email_edit_wrapper))
@@ -103,11 +91,6 @@ class RegisterFragment : Fragment() {
         val checkPassword = checkPasswordEdit.text.toString()
         val firstName = first_name_edit.text.toString()
         val lastName = last_name_edit.text.toString()
-        val grade = try {
-            grade_spinner.selectedItem.toString().toInt()
-        } catch (e: Exception) {
-            -1
-        }
         val schoolId = 1
 
         //check that all required fields are there & valid
@@ -146,13 +129,6 @@ class RegisterFragment : Fragment() {
         } else {
             last_name_edit_wrapper.error = null
         }
-        if (!isValidGrade(grade)) {
-            val errorText = grade_spinner.selectedView as TextView
-            errorText.error = ""
-            errorText.setTextColor(ContextCompat.getColor(context!!, R.color.errorRed))
-            errorText.text = getString(R.string.grade_required)
-            missingFields = true
-        }
         if (!isValidSchoolId(schoolId)) {
             missingFields = true
         } else {
@@ -166,7 +142,7 @@ class RegisterFragment : Fragment() {
 
         //create request
         val call: Call<DefaultResponse> = apiAccessor.apiService.register(
-            email, password, firstName, lastName, schoolId, grade
+            email, password, firstName, lastName, schoolId
         )
 
         val loadingAnim = loading_pb
@@ -225,8 +201,6 @@ class RegisterFragment : Fragment() {
             true
         }
     }
-
-    private fun isValidGrade(grade: Int): Boolean = grade > 0
 
     private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0
 

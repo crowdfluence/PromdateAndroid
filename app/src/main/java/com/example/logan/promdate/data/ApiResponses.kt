@@ -25,8 +25,10 @@ class UserResponse(
 )
 
 class FullUser(
-    @SerializedName("user")    var user: User,
-    @SerializedName("partner") var partner: User?
+    @SerializedName("user")    var self: User,
+    @SerializedName("partner") var partner: User?,
+    @SerializedName("dress")   var dress: Dress?,
+    @SerializedName("school")  var school: School
 )
 
 class UpdateResponse(

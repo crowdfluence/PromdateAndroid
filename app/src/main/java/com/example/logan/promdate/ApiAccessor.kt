@@ -28,8 +28,7 @@ interface ServerInterface {
                  @Field("password") password: String,
                  @Field("first-name") firstName: String,
                  @Field("last-name") lastName: String,
-                 @Field("school-id") schoolId: Int,
-                 @Field("grade") grade: Int): Call<DefaultResponse>
+                 @Field("school-id") schoolId: Int): Call<DefaultResponse>
 
     //update
     @POST("php/update.php")
