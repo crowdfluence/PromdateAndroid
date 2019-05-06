@@ -153,7 +153,6 @@ class ProfileFragment : Fragment() {
                                 val websiteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
                                 startActivity(websiteIntent)
                             }
-
                         }
                     } else {
                         snapchat_image.visibility = View.GONE
@@ -173,7 +172,7 @@ class ProfileFragment : Fragment() {
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("http://twitter.com/{${user.self.twitter}")
+                                        Uri.parse("http://twitter.com/${user.self.twitter}")
                                     )
                                 )
                             }
@@ -196,7 +195,7 @@ class ProfileFragment : Fragment() {
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("http://instagram.com/{${user.self.instagram}")
+                                        Uri.parse("http://instagram.com/${user.self.instagram}")
                                     )
                                 )
                             }

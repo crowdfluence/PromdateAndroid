@@ -64,6 +64,11 @@
     <string name="duplicate_email">An account with that email already exists</string>
     <string name="server_error">Internal server error</string>
     <string name="preference_file_key">com.example.logan.promdate</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+    <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
 
     <string-array name="genders_array">
         <item>Male</item>

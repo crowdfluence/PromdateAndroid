@@ -25,9 +25,7 @@
             android:layout_height="128dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/default_profile" />
@@ -40,8 +38,8 @@
             android:text="@string/change_picture"
             android:textAllCaps="false"
             android:textColor="@color/linkBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/profile_picture_image"
+            app:layout_constraintStart_toStartOf="@+id/profile_picture_image"
             app:layout_constraintTop_toBottomOf="@id/profile_picture_image" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,14 +47,15 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:errorEnabled="false"
             app:layout_constraintBottom_toTopOf="@id/last_name_edit_wrapper"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/change_profile_text">
+            app:layout_constraintStart_toEndOf="@+id/profile_picture_image"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/first_name_edit"
@@ -74,12 +73,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             app:errorEnabled="false"
+            app:layout_constraintBottom_toBottomOf="@+id/change_profile_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_picture_image"
             app:layout_constraintTop_toBottomOf="@id/first_name_edit_wrapper">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,17 +95,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/bio_text"
+            android:id="@+id/bio_edit_wrapper"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:errorEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/last_name_edit_wrapper">
+            app:layout_constraintTop_toBottomOf="@+id/change_profile_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/bio_edit"
@@ -177,7 +178,7 @@
                 style="@style/loginEditText"
                 android:drawableStart="@drawable/at_sign"
                 android:hint="@string/instagram"
-                android:maxLength="190"
+                android:maxLength="30"
                 android:theme="@style/EditText" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,7 +199,7 @@
                 android:id="@+id/snapchat_edit"
                 style="@style/loginEditText"
                 android:hint="@string/snapchat"
-                android:maxLength="190"
+                android:maxLength="15"
                 android:theme="@style/EditText" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -220,7 +221,7 @@
                 style="@style/loginEditText"
                 android:drawableStart="@drawable/at_sign"
                 android:hint="@string/twitter"
-                android:maxLength="190"
+                android:maxLength="15"
                 android:theme="@style/EditText" />
         </com.google.android.material.textfield.TextInputLayout>
 
