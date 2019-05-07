@@ -126,7 +126,7 @@ class ProfileFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        profile_picture_image.loadUrl(user.self.profilePictureUrl)
+                        LoadUrl.loadUrl(context!!, profile_picture_image, user.self.profilePictureUrl)
                     }
                     name_text.text = context?.getString(R.string.full_name, user.self.firstName, user.self.lastName)
                     school_text.text = user.school.name
@@ -213,25 +213,6 @@ class ProfileFragment : Fragment() {
                 }
             }
         })
-    }
-
-    //sets image from url & converts it to a circle
-    fun ImageView.loadUrl(url: String) {
-        val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
-        Picasso.get()
-            .load(fullUrl)
-            .transform(
-                CircleTransformation(
-                    64,
-                    1,
-                    ContextCompat.getColor(context, R.color.lightGray)
-                )
-            )
-            .resize(128, 128)
-            .centerCrop()
-            .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
-            .error(R.drawable.default_profile) //TODO: Change to actual error
-            .into(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

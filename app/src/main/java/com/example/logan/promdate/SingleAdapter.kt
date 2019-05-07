@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.logan.promdate.data.User
+import com.example.logan.promdate.ui.LoadUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_single.view.*
 
@@ -29,7 +30,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
             with(itemView) {
                 name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
                 if (user.profilePictureUrl.isNotEmpty()) {
-                    profile_picture_image.loadUrl(user.profilePictureUrl)
+                    LoadUrl.loadUrl(context, profile_picture_image, user.profilePictureUrl)
                 }
                 grade_text.text = context.getString(R.string.grade_number, user.grade)
                 bio_text.text = user.bio
@@ -53,18 +54,5 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
         if (user != null) {
             holder.bind(user, clickListener)
         }
-    }
-
-    //sets image from url
-    fun ImageView.loadUrl(url: String) {
-        val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
-        Picasso.get()
-            .load(fullUrl)
-            .transform(CircleTransformation(40, 1, ContextCompat.getColor(context, R.color.lightGray)))
-            .resize(80, 80)
-            .centerCrop()
-            .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
-            .error(R.drawable.default_profile) //TODO: Change to actual error
-            .into(this)
     }
 }

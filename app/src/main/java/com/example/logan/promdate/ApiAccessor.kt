@@ -5,6 +5,8 @@ import com.example.logan.promdate.data.FeedResponse
 import com.example.logan.promdate.data.UpdateResponse
 import com.example.logan.promdate.data.UserResponse
 import com.google.gson.GsonBuilder
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,18 +33,19 @@ interface ServerInterface {
                  @Field("school-id") schoolId: Int): Call<DefaultResponse>
 
     //update
+    @Multipart
     @POST("php/update.php")
-    @FormUrlEncoded
-    fun update(@Field("token") token: String,
-               @Field("social-instagram") instagram: String,
-               @Field("social-snapchat") snapchat: String,
-               @Field("social-twitter") twitter: String,
-               @Field("bio") bio: String,
-               @Field("first-name") firstName: String,
-               @Field("last-name") lastName: String,
-               @Field("school-id") schoolId: Int,
-               @Field("grade") grade: Int,
-               @Field("gender") gender: String): Call<UpdateResponse>
+    fun update(@Part("token") token: RequestBody,
+               @Part("social-instagram") instagram: RequestBody,
+               @Part("social-snapchat") snapchat: RequestBody,
+               @Part("social-twitter") twitter: RequestBody,
+               @Part("bio") bio: RequestBody,
+               @Part("first-name") firstName: RequestBody,
+               @Part("last-name") lastName: RequestBody,
+               @Part("school-id") schoolId: RequestBody,
+               @Part("grade") grade: RequestBody,
+               @Part("gender") gender: RequestBody,
+               @Part image: MultipartBody.Part? = null): Call<UpdateResponse>
 
     //feed
     @GET("php/search.php")

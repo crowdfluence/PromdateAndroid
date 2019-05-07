@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.logan.promdate.data.User
+import com.example.logan.promdate.ui.LoadUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_couple.view.*
 
@@ -36,10 +37,10 @@ class CoupleAdapter(private val clickListener: (List<User>) -> Unit) :
                 couple[1].lastName[0]
             )
             if (couple[0].profilePictureUrl.isNotEmpty()) {
-                profile_picture_1_image.loadUrl(couple[0].profilePictureUrl)
+                LoadUrl.loadUrl(context, profile_picture_1_image, couple[0].profilePictureUrl)
             }
             if (couple[1].profilePictureUrl.isNotEmpty()) {
-                profile_picture_2_image.loadUrl(couple[1].profilePictureUrl)
+                LoadUrl.loadUrl(context, profile_picture_2_image, couple[1].profilePictureUrl)
             }
             //TODO: Set prom location
             setOnClickListener { clickListener(couple) }
@@ -61,18 +62,5 @@ class CoupleAdapter(private val clickListener: (List<User>) -> Unit) :
         if (couple != null) {
             holder.bind(couple, clickListener)
         }
-    }
-
-    //sets image from url & converts it to a circle
-    fun ImageView.loadUrl(url: String) {
-        val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com${url.substring(2 until url.length)}"
-        Picasso.get()
-            .load(fullUrl)
-            .transform(CircleTransformation(40, 1, ContextCompat.getColor(context, R.color.lightGray)))
-            .resize(80, 80)
-            .centerCrop()
-            .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
-            .error(R.drawable.default_profile) //TODO: Change to actual error
-            .into(this)
     }
 }
