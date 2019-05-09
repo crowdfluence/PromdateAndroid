@@ -1,6 +1,7 @@
 package com.example.logan.promdate.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -43,13 +44,17 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SettingsFragment : Fragment() {
 
     private lateinit var drawerInterface: DrawerInterface
-    private var currentPhotoPath = ""
     private var profilePicUri: Uri? = null
+    private var currentPhotoPath = ""
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -112,10 +117,10 @@ class SettingsFragment : Fragment() {
 
         //set up change profile picture
         profile_picture_image.setOnClickListener {
-            selectPhoto(it)
+            showImagePickerDialog()
         }
         change_profile_text.setOnClickListener {
-            selectPhoto(it)
+            showImagePickerDialog()
         }
 
         //load data
@@ -316,11 +321,16 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CAMERA_ACTION_PICK_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == PICK_IMAGE_CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             val uri = Uri.parse(currentPhotoPath)
             openCropActivity(uri, uri)
-        } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+            val uri = data?.data ?: throw Exception("Failed to load image from gallery")
+            openCropActivity(uri, uri)
+        }
+        else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             val uri = UCrop.getOutput(data!!)
+            profilePicUri = uri
             showImage(uri!!)
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -329,17 +339,18 @@ class SettingsFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-                showImagePickerDialog()
-            else {
-                snackbar("ImageCropper needs Storage access in order to store your profile picture.")
-            }
-        } else if (requestCode == REQUEST_CAMERA) {
+        if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                showImagePickerDialog()
+                openCamera()
             else {
-                snackbar("ImageCropper needs Camera access in order to take profile picture.")
+                snackbar("PromDate requires camera access in order to take a photo.")
+            }
+        }
+        else if (requestCode == REQUEST_EXTERNAL_STORAGE){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                openGallery()
+            else {
+                snackbar("PromDate requires storage and camera access in order to select a photo from gallery.")
             }
         }
     }
@@ -370,43 +381,48 @@ class SettingsFragment : Fragment() {
             .start(context!!, this, UCrop.REQUEST_CROP)
     }
 
-    private fun selectPhoto(view: View) {
-        openCamera()
+    @Throws(IOException::class)
+    private fun getImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: throw Exception("Context not found")
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = "file:" + absolutePath
+        }
     }
 
     private fun openCamera() {
-        val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val file = try {
-            getImageFile()
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(activity?.packageManager ?: throw Exception("PackageManager not found"))?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    getImageFile()
+                } catch (ex: IOException) {
+                    return
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        context!!,
+                        "com.example.logan.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, PICK_IMAGE_CAMERA_REQUEST_CODE)
+                }
+            }
         }
-        catch (e: Exception) {
-            return
-        }
-        val uri: Uri =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                FileProvider.getUriForFile(context!!, BuildConfig.APPLICATION_ID.plus(".provider"), file)
-            else
-                Uri.fromFile(file)
-        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                activity as Activity,
-                PERMISSIONS_CAMERA,
-                REQUEST_CAMERA
-            )
-            return
-        }
-        startActivityForResult(pictureIntent, CAMERA_ACTION_PICK_REQUEST_CODE)
     }
 
     private fun openGallery() {
-
-    }
-
-    private fun getImageFile(): File {
-        //get file permission
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(
                 activity as Activity,
@@ -416,14 +432,8 @@ class SettingsFragment : Fragment() {
             throw Exception("Missing required permissions!")
         }
 
-        val imageFileName = "JPEG_" + System.currentTimeMillis() + "_"
-        val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-        storageDir.mkdirs()
-        val file = File.createTempFile(
-            imageFileName, ".jpg", storageDir
-        )
-        currentPhotoPath = "file:" + file.absolutePath
-        return file
+        val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY_REQUEST_CODE)
     }
 
     private fun snackbar(msg: String) {
@@ -434,22 +444,19 @@ class SettingsFragment : Fragment() {
         AlertDialog.Builder(context)
             .setCancelable(true)
             .setPositiveButton("From Gallery") { _, _ ->
-                openCamera()
+                openGallery()
             }
             .setNegativeButton("From Camera") { _, _ ->
-                openGallery()
+                openCamera()
             }
             .show()
     }
 
     companion object {
-        private const val CAMERA_ACTION_PICK_REQUEST_CODE = 610
+        private const val PICK_IMAGE_CAMERA_REQUEST_CODE = 610
         private const val PICK_IMAGE_GALLERY_REQUEST_CODE = 609
-        const val CAMERA_STORAGE_REQUEST_CODE = 611
-        const val ONLY_CAMERA_REQUEST_CODE = 612
-        const val ONLY_STORAGE_REQUEST_CODE = 613
-        private const val REQUEST_EXTERNAL_STORAGE = 1
-        private const val REQUEST_CAMERA = 2
+        private const val REQUEST_EXTERNAL_STORAGE = 0
+        private const val REQUEST_CAMERA = 1
         private val PERMISSIONS_STORAGE =
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         private val PERMISSIONS_CAMERA = arrayOf(Manifest.permission.CAMERA)
