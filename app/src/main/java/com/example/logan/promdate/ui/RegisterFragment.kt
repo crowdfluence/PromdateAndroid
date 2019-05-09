@@ -1,7 +1,6 @@
 package com.example.logan.promdate.ui
 
 import android.content.Context
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,11 +8,9 @@ import com.google.android.material.textfield.TextInputEditText
 import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.logan.promdate.*
@@ -22,8 +19,7 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import com.example.logan.promdate.util.ApiAccessor
 
 
 class RegisterFragment : Fragment() {

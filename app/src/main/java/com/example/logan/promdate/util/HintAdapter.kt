@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.util
 
 import android.content.Context
 import android.view.View

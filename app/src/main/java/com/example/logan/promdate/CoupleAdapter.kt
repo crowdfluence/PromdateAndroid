@@ -1,16 +1,13 @@
 package com.example.logan.promdate
 
 import androidx.paging.PagedListAdapter
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.example.logan.promdate.data.User
-import com.example.logan.promdate.ui.LoadUrl
-import com.squareup.picasso.Picasso
+import com.example.logan.promdate.util.LoadUrl
 import kotlinx.android.synthetic.main.item_couple.view.*
 
 //Checks if list is updated

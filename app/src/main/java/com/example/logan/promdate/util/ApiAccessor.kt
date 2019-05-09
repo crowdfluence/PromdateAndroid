@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.util
 
 import com.example.logan.promdate.data.DefaultResponse
 import com.example.logan.promdate.data.FeedResponse
@@ -11,7 +11,6 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import kotlin.random.Random
 
 const val BASE_URL = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com"
 

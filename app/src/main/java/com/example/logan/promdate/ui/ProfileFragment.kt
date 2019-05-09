@@ -5,19 +5,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.logan.promdate.*
 import com.example.logan.promdate.data.DefaultResponse
-import com.example.logan.promdate.data.User
 import com.example.logan.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +22,8 @@ import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.net.Uri
 import com.example.logan.promdate.data.FullUser
+import com.example.logan.promdate.util.ApiAccessor
+import com.example.logan.promdate.util.LoadUrl
 
 
 class ProfileFragment : Fragment() {

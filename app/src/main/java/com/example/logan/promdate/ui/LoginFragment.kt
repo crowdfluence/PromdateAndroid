@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.util.ApiAccessor
 import com.example.logan.promdate.DrawerInterface
 import com.example.logan.promdate.R
 import com.example.logan.promdate.data.DefaultResponse

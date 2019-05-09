@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -30,22 +29,20 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
+import com.example.logan.promdate.util.ApiAccessor
+import com.example.logan.promdate.util.CircleTransformation
+import com.example.logan.promdate.util.HintAdapter
+import com.example.logan.promdate.util.LoadUrl
 import com.squareup.picasso.MemoryPolicy
 import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.util.FileUtils
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import java.io.FileInputStream
 
 
 class SettingsFragment : Fragment() {
@@ -175,7 +172,6 @@ class SettingsFragment : Fragment() {
                     val user: FullUser = serverResponse.result
 
                     loading_pb.visibility = View.GONE
-                    blank_group.visibility = View.VISIBLE
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
@@ -352,7 +348,13 @@ class SettingsFragment : Fragment() {
         profilePicUri = imageUri
         Picasso.get()
             .load(imageUri)
-            .transform(CircleTransformation(256, 1, ContextCompat.getColor(context!!, R.color.lightGray)))
+            .transform(
+                CircleTransformation(
+                    256,
+                    1,
+                    ContextCompat.getColor(context!!, R.color.lightGray)
+                )
+            )
             .resize(512, 512)
             .centerCrop()
             .memoryPolicy(MemoryPolicy.NO_CACHE)

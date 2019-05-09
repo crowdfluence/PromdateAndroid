@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.util.ApiAccessor
 import com.example.logan.promdate.DrawerInterface
 import com.example.logan.promdate.R
 import com.example.logan.promdate.data.DefaultResponse

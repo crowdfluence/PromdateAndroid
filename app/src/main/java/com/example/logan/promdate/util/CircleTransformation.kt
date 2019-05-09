@@ -1,4 +1,4 @@
-package com.example.logan.promdate
+package com.example.logan.promdate.util
 
 import android.graphics.*
 
@@ -13,6 +13,7 @@ class CircleTransformation(
         val output = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
 
+        //fills in background
         val paint0 = Paint()
         paint0.color = Color.WHITE
         paint0.style = Paint.Style.FILL
@@ -24,6 +25,7 @@ class CircleTransformation(
             paint0
         )
 
+        //draws image as circle
         val paint1 = Paint()
         paint1.isAntiAlias = true
         paint1.shader = BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
@@ -38,11 +40,12 @@ class CircleTransformation(
             source.recycle()
         }
 
+        //adds gray border
         val paint2 = Paint()
         paint2.color = borderColor
         paint2.style = Paint.Style.STROKE
         paint2.isAntiAlias = true
-        paint2.strokeWidth = 2f
+        paint2.strokeWidth = 8f
         canvas.drawCircle(
             (source.width.toFloat() - margin.toFloat()) / 2f,
             (source.height.toFloat() - margin.toFloat()) / 2f,

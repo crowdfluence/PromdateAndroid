@@ -2,11 +2,10 @@ package com.example.logan.promdate.data
 
 import androidx.paging.PositionalDataSource
 import android.util.Log
-import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.util.ApiAccessor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 
 class SinglesDataSource(private val token: String) : PositionalDataSource<User>() {
@@ -26,6 +25,12 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
 
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                     val singles = response.body()?.result ?: FeedInnerResponse(listOf(), listOf(), 0, 0)
+                    if (response.body()?.status != 200) {
+                        Log.e(
+                            "SinglesDataSource",
+                            response.body()?.toString()
+                        )
+                    }
                     callback.onResult(singles.unmatchedUsers, params.requestedStartPosition, singles.maxUnmatched)
                 }
             })
@@ -41,6 +46,12 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
 
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 val singles = response.body()?.result ?: FeedInnerResponse(listOf(), listOf(), 0, 0)
+                if (response.body()?.status != 200) {
+                    Log.e(
+                        "SinglesDataSource",
+                        response.body()?.toString()
+                    )
+                }
                 callback.onResult(singles.unmatchedUsers)
             }
         })

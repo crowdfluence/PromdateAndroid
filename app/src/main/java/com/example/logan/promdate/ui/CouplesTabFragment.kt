@@ -40,7 +40,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
         //sets up recycler view
         viewManager = LinearLayoutManager(context)
         viewAdapter = CoupleAdapter {
-            onUserClick(it) //sets onClick function for each item in the list
+            onCouplesClick(it) //sets onClick function for each item in the list
         }
         recyclerView = view.findViewById<RecyclerView>(R.id.user_recycler).apply {
             layoutManager = viewManager
@@ -58,6 +58,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
     }
 
     private fun initializeList() {
+        //set up list of couples; load initial data
         val config = PagedList.Config.Builder()
             .setPageSize(10)
             .setEnablePlaceholders(true)
@@ -71,6 +72,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
     }
 
     override fun invalidate() {
+        //forces entire list to refresh
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
@@ -93,7 +95,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
 
     }
 
-    private fun onUserClick(couple: List<User>) {
-        //open user profile
+    private fun onCouplesClick(couple: List<User>) {
+        //open couples profile
     }
 }

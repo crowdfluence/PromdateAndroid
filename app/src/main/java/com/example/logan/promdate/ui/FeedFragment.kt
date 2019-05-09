@@ -10,8 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.util.ApiAccessor
 import com.example.logan.promdate.DrawerInterface
 import com.example.logan.promdate.R
 import com.example.logan.promdate.data.UserResponse
@@ -24,9 +23,9 @@ class FeedFragment : Fragment() {
 
     private var pagerAdapter: TabAdapter? = null
     private lateinit var drawerInterface: DrawerInterface
-    var offset = 0
 
     override fun onAttach(context: Context) {
+        //get drawerInterface to setup navigation drawer
         super.onAttach(context)
         try {
             drawerInterface = activity as DrawerInterface

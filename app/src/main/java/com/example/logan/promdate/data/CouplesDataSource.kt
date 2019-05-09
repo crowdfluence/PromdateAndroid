@@ -1,21 +1,17 @@
 package com.example.logan.promdate.data
 
 import androidx.paging.PositionalDataSource
-import android.content.SharedPreferences
 import android.util.Log
-import com.example.logan.promdate.ApiAccessor
+import com.example.logan.promdate.util.ApiAccessor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class CouplesDataSource(private val token: String) : PositionalDataSource<List<User>>() {
 
     private val api = ApiAccessor().apiService
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<List<User>>) {
-        Log.d("SingleDataSource", "Request size: ${params.requestedLoadSize}")
-        Log.d("SingleDataSource", "Request start position: ${params.requestedStartPosition}")
         api.getFeed(token, params.requestedLoadSize, params.requestedStartPosition)
             .enqueue(object : Callback<FeedResponse> {
 
@@ -28,6 +24,12 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
 
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                     val couples = response.body()?.result?.couples ?: listOf()
+                    if (response.body()?.status != 200) {
+                        Log.e(
+                            "CouplesDataSource",
+                            response.body()?.toString()
+                        )
+                    }
                     callback.onResult(couples, 0, (response.body()?.result?.maxMatched ?: 0) / 2)
                 }
             })
@@ -45,6 +47,12 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
 
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 val couples = response.body()?.result?.couples ?: listOf()
+                if (response.body()?.status != 200) {
+                    Log.e(
+                        "CouplesDataSource",
+                        response.body()?.toString()
+                    )
+                }
                 callback.onResult(couples)
             }
         })

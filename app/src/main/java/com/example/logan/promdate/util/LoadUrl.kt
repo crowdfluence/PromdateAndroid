@@ -1,9 +1,8 @@
-package com.example.logan.promdate.ui
+package com.example.logan.promdate.util
 
 import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import com.example.logan.promdate.CircleTransformation
 import com.example.logan.promdate.R
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -16,7 +15,13 @@ class LoadUrl {
             val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com$suffixUrl"
             Picasso.get()
                 .load(fullUrl)
-                .transform(CircleTransformation(256, 1, ContextCompat.getColor(context, R.color.lightGray)))
+                .transform(
+                    CircleTransformation(
+                        256,
+                        1,
+                        ContextCompat.getColor(context, R.color.lightGray)
+                    )
+                )
                 .resize(512, 512)
                 .centerCrop()
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
