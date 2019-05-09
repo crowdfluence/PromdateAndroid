@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="edge_margin">16dp</dimen>
+    <dimen name="vertical_spacing">8dp</dimen>
+    <dimen name="small_vertical_spacing">4dp</dimen>
+    <dimen name="horizontal_spacing">8dp</dimen>
+    <dimen name="large_vertical_spacing">16dp</dimen>
+    <dimen name="small_horizontal_spacing">4dp</dimen>
+</resources>

@@ -117,6 +117,9 @@ class SettingsFragment : Fragment() {
         profile_picture_image.setOnClickListener {
             selectPhoto(it)
         }
+        change_profile_text.setOnClickListener {
+            selectPhoto(it)
+        }
 
         //load data
         loadData()
