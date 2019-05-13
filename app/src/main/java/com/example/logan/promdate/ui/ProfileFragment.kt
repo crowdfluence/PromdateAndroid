@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.logan.promdate.*
-import com.example.logan.promdate.data.DefaultResponse
-import com.example.logan.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
 import retrofit2.Call
@@ -21,9 +19,17 @@ import retrofit2.Response
 import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.net.Uri
+import com.example.logan.promdate.data.DefaultResponse
 import com.example.logan.promdate.data.FullUser
+import com.example.logan.promdate.data.UserResponse
 import com.example.logan.promdate.util.ApiAccessor
 import com.example.logan.promdate.util.LoadUrl
+import android.graphics.Color
+import androidx.core.graphics.drawable.DrawableCompat
+import android.graphics.drawable.Drawable
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.ActionMenuView
+import androidx.core.content.ContextCompat
 
 
 class ProfileFragment : Fragment() {
@@ -54,6 +60,13 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Snackbar.make(
+            constraint_layout,
+            "What the f",
+            Snackbar.LENGTH_INDEFINITE
+
+        )
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
@@ -227,12 +240,8 @@ class ProfileFragment : Fragment() {
         if (item.itemId == R.id.action_match || item.itemId == R.id.action_edit)
             //switch depending on whether it is another user's profile or your own
             when (isSelf) {
-                true -> {
-                    findNavController().navigate(R.id.nav_settings)
-                }
-                false -> {
-                    match()
-                }
+                true -> findNavController().navigate(R.id.nav_settings)
+                false -> match()
             }
         return super.onOptionsItemSelected(item)
     }
@@ -245,8 +254,17 @@ class ProfileFragment : Fragment() {
         val token = sp?.getString("token", "") ?: ""
 
         //TODO: Change heart color while not currently matched with user
+        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
+        var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart)
+        if (drawable != null) {
+            drawable = DrawableCompat.wrap(drawable)
+            DrawableCompat.setTint(drawable!!.mutate(), Color.RED)
+            heartItem.post {
+                heartItem.setIcon(drawable)
+            }
+        }
 
-        api.matchUser(token, partnerId = profileFragmentArgs.userId)
+        api.matchUser(token, profileFragmentArgs.userId, 0)
             .enqueue(object : Callback<DefaultResponse> {
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
@@ -254,18 +272,30 @@ class ProfileFragment : Fragment() {
                         "MatchUser",
                         "Failed to send match request!"
                     )
+                    Snackbar.make(
+                        constraint_layout,
+                        R.string.match_error,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    if (response.body()?.status ?: 0 != 200) {
+                    if (response.body()?.status != 200) {
                         //Match request failed
                         Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
                         //TODO: Change heart back
                         Snackbar.make(
                             constraint_layout,
                             R.string.match_error,
-                            Snackbar.LENGTH_SHORT
-                        )
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    else {
+                        Snackbar.make(
+                            constraint_layout,
+                            response.body()?.result ?: "",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
             })

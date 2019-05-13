@@ -72,9 +72,8 @@ interface ServerInterface {
     @POST("php/match.php")
     @FormUrlEncoded
     fun matchUser(@Field("token") token: String,
-                  @Field("partner-id") partnerId: Int? = null,
-                  @Field("accept") accept: Boolean? = null,
-                  @Field("unmatch") unmatch: Boolean? = null): Call<DefaultResponse>
+                  @Field("partner-id") partnerId: Int,
+                  @Field("action") action: Int): Call<DefaultResponse>
 }
 
 //initializes the standard api accessor that is reused throughout the code
