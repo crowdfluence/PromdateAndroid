@@ -28,7 +28,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
                     if (response.body()?.status != 200) {
                         Log.e(
                             "SinglesDataSource",
-                            response.body()?.toString()
+                            response.body()?.toString() ?: ("No response from the server")
                         )
                     }
                     callback.onResult(singles.unmatchedUsers, params.requestedStartPosition, singles.maxUnmatched)

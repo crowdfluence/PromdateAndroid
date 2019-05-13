@@ -33,7 +33,7 @@ interface ServerInterface {
 
     //update
     @Multipart
-    @POST("php/update.php")
+    @POST("php/updateUser.php")
     fun update(@Part("token") token: RequestBody,
                @Part("social-instagram") instagram: RequestBody,
                @Part("social-snapchat") snapchat: RequestBody,
@@ -47,7 +47,7 @@ interface ServerInterface {
                @Part image: MultipartBody.Part? = null): Call<UpdateResponse>
 
     //feed
-    @GET("php/search.php")
+    @GET("php/feed.php")
     fun getFeed(@Query("token") token: String,
                 @Query("max-users") maxUsers: Int,
                 @Query("offset") offset: Int? = null,

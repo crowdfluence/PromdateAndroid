@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_spacing"
+    android:layout_marginBottom="@dimen/vertical_spacing"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/add_photo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="@dimen/vertical_spacing"
+        android:gravity="center"
+        android:text="@string/add_photo"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/from_camera_text"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:background="?attr/selectableItemBackground"
+        android:backgroundTint="@android:color/white"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_camera"
+        android:drawablePadding="32dp"
+        android:focusable="true"
+        android:gravity="start|center_vertical"
+        android:text="@string/use_camera"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/from_gallery_text"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="@dimen/edge_margin"
+        android:background="?attr/selectableItemBackground"
+        android:backgroundTint="@android:color/white"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_gallery"
+        android:drawablePadding="32dp"
+        android:focusable="true"
+        android:gravity="start|center_vertical"
+        android:text="@string/upload_from_gallery"
+        android:textSize="16sp" />
+</LinearLayout>

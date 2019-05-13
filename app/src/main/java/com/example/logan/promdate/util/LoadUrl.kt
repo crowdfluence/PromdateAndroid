@@ -5,9 +5,10 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.example.logan.promdate.R
 import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
-class LoadUrl {
+interface LoadUrl {
     companion object {
         //sets image from url & converts it to a circle
         fun loadUrl(context: Context, img: ImageView, url: String) {
@@ -25,6 +26,7 @@ class LoadUrl {
                 .resize(512, 512)
                 .centerCrop()
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
                 .error(R.drawable.default_profile) //TODO: Change to actual error
                 .into(img)

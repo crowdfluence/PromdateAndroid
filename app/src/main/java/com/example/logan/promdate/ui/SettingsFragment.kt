@@ -32,12 +32,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
+import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
-import com.example.logan.promdate.util.ApiAccessor
-import com.example.logan.promdate.util.CircleTransformation
-import com.example.logan.promdate.util.HintAdapter
-import com.example.logan.promdate.util.LoadUrl
+import com.example.logan.promdate.util.*
 import com.squareup.picasso.MemoryPolicy
 import com.yalantis.ucrop.UCrop
 import okhttp3.MediaType
@@ -441,15 +439,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showImagePickerDialog() {
-        AlertDialog.Builder(context)
-            .setCancelable(true)
-            .setPositiveButton("From Gallery") { _, _ ->
-                openGallery()
-            }
-            .setNegativeButton("From Camera") { _, _ ->
-                openCamera()
-            }
-            .show()
+        val dialog = AddPhotoDialogFragment.newInstance()
+        dialog.setOnCameraClick { openCamera() }
+        dialog.setOnGalleryClick { openGallery() }
+        dialog.show(
+            fragmentManager ?: throw Exception("Fragment manager not found"),
+            "add_photo_dialog_fragment"
+        )
     }
 
     companion object {
