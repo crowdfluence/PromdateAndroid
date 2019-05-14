@@ -45,7 +45,7 @@ class CoupleAdapter(private val clickListener: (List<User>) -> Unit) :
     }
 
     //create new view
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoupleAdapter.CoupleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoupleViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_couple, parent, false) as View
 

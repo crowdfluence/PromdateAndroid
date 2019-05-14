@@ -37,6 +37,8 @@ class ProfileFragment : Fragment() {
     private val profileFragmentArgs: ProfileFragmentArgs by navArgs()
     private lateinit var drawerInterface: DrawerInterface
     private var isSelf = false
+    private var isSelfMatched: Boolean? = null
+    private var selfPartnerId: Int? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,7 +52,15 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
+        //sets that there is no right icon if the user is already matched & it's not yourself
+        val sp: SharedPreferences =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+        val selfId = sp.getInt("userId", 0)
+        isSelf = selfId == profileFragmentArgs.userId || profileFragmentArgs.userId == -1
+        if (profileFragmentArgs.isMatched == 0 || isSelf) {
+            setHasOptionsMenu(true)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,13 +70,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Snackbar.make(
-            constraint_layout,
-            "What the f",
-            Snackbar.LENGTH_INDEFINITE
-
-        )
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
@@ -79,11 +82,6 @@ class ProfileFragment : Fragment() {
         }
         appCompatActivity.setSupportActionBar(toolbar)
 
-        val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw BadTokenException()
-        val selfId = sp.getInt("userId", 0)
-        isSelf = selfId == profileFragmentArgs.userId || profileFragmentArgs.userId == -1
-
         //set up back arrow
         appCompatActivity.supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -91,6 +89,9 @@ class ProfileFragment : Fragment() {
         }
 
         loadUser()
+        if (!isSelf) {
+            checkSelfMatched()
+        }
     }
 
     override fun onDestroyView() {
@@ -102,7 +103,7 @@ class ProfileFragment : Fragment() {
         //load user data
         val accessor = ApiAccessor()
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw BadTokenException()
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         var userId: Int? = profileFragmentArgs.userId
@@ -226,6 +227,47 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    private fun checkSelfMatched() {
+        //send match request
+        val api = ApiAccessor().apiService
+        val sp: SharedPreferences? =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val token = sp?.getString("token", "") ?: ""
+
+        api.getUser(token)
+            .enqueue(object : Callback<UserResponse> {
+
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    Log.e(
+                        "CheckSelfMatched",
+                        "Failed to get data! ${t.javaClass.canonicalName}: ${t.message}"
+                    )
+                    isSelfMatched = false
+                    selfPartnerId = -1
+                }
+
+                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                    if (response.body()?.status != 200) {
+                        //Match request failed
+                        Log.e("CheckSelfMatched", "${response.body()?.status}: ${response.body()?.result}")
+                        isSelfMatched = false
+                        selfPartnerId = -1
+                    }
+                    else {
+                        isSelfMatched = response.body()?.result?.self?.matched == 1
+                        selfPartnerId = response.body()?.result?.self?.partnerId ?: -1
+
+                        if (isSelfMatched == true && profileFragmentArgs.userId == selfPartnerId) {
+                            changeHeart(Color.RED)
+                        }
+                        else if (profileFragmentArgs.userId == selfPartnerId) {
+                            changeHeart(Color.WHITE)
+                        }
+                    }
+                }
+            })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         when (isSelf) {
             true -> activity?.menuInflater?.inflate(R.menu.menu_self_profile, menu)
@@ -248,57 +290,116 @@ class ProfileFragment : Fragment() {
 
     private fun match() {
 
-        //send match request
-        val api = ApiAccessor().apiService
-        val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val token = sp?.getString("token", "") ?: ""
+        var heartColour: Int? = null
 
-        //TODO: Change heart color while not currently matched with user
-        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
-        var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart)
-        if (drawable != null) {
-            drawable = DrawableCompat.wrap(drawable)
-            DrawableCompat.setTint(drawable!!.mutate(), Color.RED)
-            heartItem.post {
-                heartItem.setIcon(drawable)
-            }
+        //ensures that user data has been received from server before proceeding
+        if (selfPartnerId == null || isSelfMatched == null) {
+            return
         }
 
-        api.matchUser(token, profileFragmentArgs.userId, 0)
+        //Checks that the user is not currently matched
+        val action: Int = if (selfPartnerId != -1) {
+            if (selfPartnerId == profileFragmentArgs.userId) {
+                //attempting to send request to someone already matched with; removes match instead
+                //change heart to unfilled
+                if (profileFragmentArgs.isMatched == 0) {
+                    heartColour = null
+                }
+                1
+            }
+            else {
+                if (isSelfMatched == true) {
+                    //TODO: prompt "are you sure"
+                }
+                else {
+                    //TODO: prompt "only one pending request"
+                }
+                heartColour = Color.WHITE
+                0
+            }
+        }
+        else {
+            //change heart colour to white
+            if (profileFragmentArgs.isMatched == 0) {
+                heartColour = Color.WHITE
+            }
+            0
+        }
+
+        changeHeart(heartColour)
+
+        //send match request
+        val api = ApiAccessor().apiService
+        val sp: SharedPreferences? =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val token = sp?.getString("token", "") ?: ""
+
+        api.matchUser(token, profileFragmentArgs.userId, action)
             .enqueue(object : Callback<DefaultResponse> {
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     Log.e(
                         "MatchUser",
-                        "Failed to send match request!"
+                        "Failed to send match request! ${t.javaClass.canonicalName}: ${t.message}"
                     )
                     Snackbar.make(
                         constraint_layout,
                         R.string.match_error,
                         Snackbar.LENGTH_LONG
                     ).show()
+
+                    if (profileFragmentArgs.isMatched == 0) {
+                        changeHeart(heartColour)
+                    }
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    if (response.body()?.status != 200) {
+                    if (response.body()?.status != 200) { //something went wrong, but server received request
                         //Match request failed
                         Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
-                        //TODO: Change heart back
                         Snackbar.make(
                             constraint_layout,
                             R.string.match_error,
                             Snackbar.LENGTH_LONG
                         ).show()
+
+                        if (profileFragmentArgs.isMatched == 0) {
+                            changeHeart(heartColour)
+                        }
                     }
-                    else {
+                    else { //success
+                        //TODO: Make message more "human"
                         Snackbar.make(
                             constraint_layout,
                             response.body()?.result ?: "",
                             Snackbar.LENGTH_LONG
                         ).show()
+
+                        isSelfMatched = false
+                        selfPartnerId = if (action == 1) -1 else profileFragmentArgs.userId
                     }
                 }
             })
+    }
+
+    private fun changeHeart(colour: Int?) {
+        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
+        if (colour == null) {
+            //not filled
+            var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart_border)
+            if (drawable != null) {
+                drawable = DrawableCompat.wrap(drawable)
+                heartItem.setIcon(drawable)
+            }
+        }
+        else {
+            var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart)
+            if (drawable != null) {
+                drawable = DrawableCompat.wrap(drawable)
+                DrawableCompat.setTint(drawable!!.mutate(), colour)
+                heartItem.setIcon(drawable)
+            }
+        }
     }
 }
 

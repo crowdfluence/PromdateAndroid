@@ -145,8 +145,7 @@ class SettingsFragment : Fragment() {
 
         //get token
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                ?: throw BadTokenException()
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         //send request
@@ -256,8 +255,7 @@ class SettingsFragment : Fragment() {
         val apiAccessor = ApiAccessor()
 
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                ?: throw BadTokenException()
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         //new profile picture

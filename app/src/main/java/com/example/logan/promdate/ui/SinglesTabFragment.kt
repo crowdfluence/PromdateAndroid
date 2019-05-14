@@ -105,6 +105,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
         //open user profile
         val action = FeedFragmentDirections.navProfile(
             user.id,
+            0,
             user.firstName + " " + user.lastName
         )
         findNavController().navigate(action)

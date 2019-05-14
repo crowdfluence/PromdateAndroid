@@ -30,7 +30,7 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
                             response.body()?.toString()
                         )
                     }
-                    callback.onResult(couples, 0, (response.body()?.result?.maxMatched ?: 0) / 2)
+                    callback.onResult(couples, 0, (response.body()?.result?.maxMatched ?: 0) / 2 - 1)
                 }
             })
     }
