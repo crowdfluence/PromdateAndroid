@@ -117,9 +117,6 @@ class SettingsFragment : Fragment() {
         profile_picture_image.setOnClickListener {
             showImagePickerDialog()
         }
-        change_profile_text.setOnClickListener {
-            showImagePickerDialog()
-        }
 
         //load data
         loadData()
@@ -177,7 +174,7 @@ class SettingsFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadUrl(context!!, profile_picture_image, user.self.profilePictureUrl)
+                        LoadUrl.loadUrl(context!!, profile_picture_image, user.self.profilePictureUrl, 1)
                     }
                     first_name_edit.setText(user.self.firstName)
                     last_name_edit.setText(user.self.lastName)
@@ -356,10 +353,11 @@ class SettingsFragment : Fragment() {
         Picasso.get()
             .load(imageUri)
             .transform(
-                CircleTransformation(
+                SelectImageOverlayTransformation(
                     256,
                     1,
-                    ContextCompat.getColor(context!!, R.color.lightGray)
+                    ContextCompat.getColor(context!!, R.color.lightGray),
+                    context!!
                 )
             )
             .resize(512, 512)
