@@ -437,13 +437,16 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showImagePickerDialog() {
-        val dialog = AddPhotoDialogFragment.newInstance()
-        dialog.setOnCameraClick { openCamera() }
-        dialog.setOnGalleryClick { openGallery() }
-        dialog.show(
-            fragmentManager ?: throw Exception("Fragment manager not found"),
-            "add_photo_dialog_fragment"
-        )
+        AddPhotoDialogFragment.newInstance().apply {
+            setOnCameraClick { openCamera() }
+            setOnGalleryClick { openGallery() }
+        }.also { dialog ->
+            dialog.show(
+                fragmentManager ?: throw Exception("Fragment manager not found"),
+                "add_photo_dialog_fragment"
+            )
+        }
+
     }
 
     companion object {

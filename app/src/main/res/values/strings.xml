@@ -72,6 +72,14 @@
     <string name="add_photo">Add Photo</string>
     <string name="use_camera">Use Camera</string>
     <string name="upload_from_gallery">Upload from Gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="confirm_request_while_matched">
+        "Are you sure you want to send this person a match request? This action will unmatch you with your current partner."
+    </string>
+    <string name="confirm_no_multiple_requests">
+        "Are you sure you want to send this person a match request? This action will cancel your other pending request."
+    </string>
 
     <string-array name="genders_array">
         <item>Male</item>

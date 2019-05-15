@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
+import com.example.logan.promdate.util.ConfirmationDialog
 
 
 class ProfileFragment : Fragment() {
@@ -290,49 +291,78 @@ class ProfileFragment : Fragment() {
 
     private fun match() {
 
-        var heartColour: Int? = null
+        var newHeartColour: Int? = null
 
         //ensures that user data has been received from server before proceeding
         if (selfPartnerId == null || isSelfMatched == null) {
             return
         }
 
+        //gets original heart colour
+        val originalHeartColour: Int? = if (isSelfMatched == true && selfPartnerId == profileFragmentArgs.userId) {
+            Color.RED
+        }
+        else if (selfPartnerId == profileFragmentArgs.userId) {
+            Color.WHITE
+        }
+        else {
+            null
+        }
+
         //Checks that the user is not currently matched
-        val action: Int = if (selfPartnerId != -1) {
-            if (selfPartnerId == profileFragmentArgs.userId) {
+        var waitForDialogInput = false
+        val action: Int = if (selfPartnerId != -1) { //currently is matched or has sent a request that is pending
+            if (selfPartnerId == profileFragmentArgs.userId) { //matched with person whose profile they're looking at
                 //attempting to send request to someone already matched with; removes match instead
-                //change heart to unfilled
-                if (profileFragmentArgs.isMatched == 0) {
-                    heartColour = null
-                }
+
+                //sets new heart to empty
+                newHeartColour = null
                 1
             }
-            else {
-                if (isSelfMatched == true) {
-                    //TODO: prompt "are you sure"
+            else { //not matched with current person's profile
+                waitForDialogInput = true
+
+                //slightly different prompt message depending on if user is already matched
+                val promptMsg: String = if (isSelfMatched == true) { //is matched with someone
+                    getString(R.string.confirm_request_while_matched)
                 }
-                else {
-                    //TODO: prompt "only one pending request"
+                else { //has sent a pending request to someone
+                    getString(R.string.confirm_no_multiple_requests)
                 }
-                heartColour = Color.WHITE
+                //prompts user to confirm request
+                ConfirmationDialog.newInstance(promptMsg).apply {
+                    setPositiveClick { sendMatch(0, originalHeartColour) }
+                }.also { dialog ->
+                    dialog.show(
+                        fragmentManager ?: throw Exception("Fragment manager not found"),
+                        "confirm_request_dialog_fragment"
+                    )
+                }
+                newHeartColour = Color.WHITE
                 0
             }
         }
-        else {
+        else { //isn't currently matched with anyone and doesn't have any pending requests
             //change heart colour to white
             if (profileFragmentArgs.isMatched == 0) {
-                heartColour = Color.WHITE
+                newHeartColour = Color.WHITE
             }
             0
         }
 
-        changeHeart(heartColour)
+        changeHeart(newHeartColour)
 
+        if (!waitForDialogInput) {
+            sendMatch(action, originalHeartColour)
+        }
+    }
+
+    private fun sendMatch(action: Int, originalHeartColour: Int?) {
         //send match request
         val api = ApiAccessor().apiService
         val sp: SharedPreferences? =
             context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val token = sp?.getString("token", "") ?: ""
+        val token = sp?.getString("token", null) ?: ""
 
         api.matchUser(token, profileFragmentArgs.userId, action)
             .enqueue(object : Callback<DefaultResponse> {
@@ -349,7 +379,7 @@ class ProfileFragment : Fragment() {
                     ).show()
 
                     if (profileFragmentArgs.isMatched == 0) {
-                        changeHeart(heartColour)
+                        changeHeart(originalHeartColour)
                     }
                 }
 
@@ -364,10 +394,9 @@ class ProfileFragment : Fragment() {
                         ).show()
 
                         if (profileFragmentArgs.isMatched == 0) {
-                            changeHeart(heartColour)
+                            changeHeart(originalHeartColour)
                         }
-                    }
-                    else { //success
+                    } else { //success
                         //TODO: Make message more "human"
                         Snackbar.make(
                             constraint_layout,
