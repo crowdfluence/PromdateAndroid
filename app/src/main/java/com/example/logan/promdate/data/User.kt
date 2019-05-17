@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-//stores a team that can be easily converted to json
 @Parcelize
 data class User(@SerializedName("ID")            var id: Int = -1,
            @SerializedName("Email")              var email: String = "",

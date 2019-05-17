@@ -80,6 +80,9 @@
         <action
             android:id="@+id/nav_settings"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/nav_notifications"
+            app:destination="@id/notificationsFragment" />
     </fragment>
 
     <fragment
@@ -104,9 +107,16 @@
             android:id="@+id/nav_settings"
             app:destination="@id/settingsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.logan.promdate.ui.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings"/>
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.logan.promdate.ui.NotificationsFragment"
+        android:label="NotificationsFragment"
+        tools:layout="@layout/fragment_notifications"/>
 </navigation>

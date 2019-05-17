@@ -15,4 +15,5 @@
     <color name="errorRed">#B50F2D</color>
     <color name="tabColor">#CCCCCC</color>
     <color name="darkeningOverlay">#66000000</color>
+    <color name="heartRed">#FF4444</color>
 </resources>

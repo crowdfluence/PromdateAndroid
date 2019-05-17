@@ -1,10 +1,8 @@
 package com.example.logan.promdate.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -32,7 +30,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
-import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
 import com.example.logan.promdate.util.*
@@ -279,7 +276,7 @@ class SettingsFragment : Fragment() {
         val bodyGender = RequestBody.create(MediaType.parse("multipart/form-data"), gender)
 
         //create request
-        val call: Call<UpdateResponse> = apiAccessor.apiService.update(
+        val call: Call<UpdateResponse> = apiAccessor.apiService.updateUser(
             bodyToken, bodyInsta, bodySnap, bodyTwitter, bodyBio, bodyFirst, bodyLast, bodySchool, bodyGrade, bodyGender, bodyImage
         )
 

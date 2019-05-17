@@ -36,3 +36,12 @@ class UpdateResponse(
     @SerializedName("updated") var updated: List<String>,
     @SerializedName("errors")  var errors: List<String>
 )
+
+class NotificationResponse(
+    @SerializedName("status") var status: Int,
+    @SerializedName("result") var result: NotificationInnerResponse
+)
+
+class NotificationInnerResponse(
+    @SerializedName("notifications") var notifications: List<Notification>
+)

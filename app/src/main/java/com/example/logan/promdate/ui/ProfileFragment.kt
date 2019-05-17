@@ -259,7 +259,7 @@ class ProfileFragment : Fragment() {
                         selfPartnerId = response.body()?.result?.self?.partnerId ?: -1
 
                         if (isSelfMatched == true && profileFragmentArgs.userId == selfPartnerId) {
-                            changeHeart(Color.RED)
+                            changeHeart(ContextCompat.getColor(context!!, R.color.heartRed))
                         }
                         else if (profileFragmentArgs.userId == selfPartnerId) {
                             changeHeart(Color.WHITE)
@@ -300,7 +300,7 @@ class ProfileFragment : Fragment() {
 
         //gets original heart colour
         val originalHeartColour: Int? = if (isSelfMatched == true && selfPartnerId == profileFragmentArgs.userId) {
-            Color.RED
+            ContextCompat.getColor(context!!, R.color.heartRed)
         }
         else if (selfPartnerId == profileFragmentArgs.userId) {
             Color.WHITE

@@ -1,9 +1,6 @@
 package com.example.logan.promdate.util
 
-import com.example.logan.promdate.data.DefaultResponse
-import com.example.logan.promdate.data.FeedResponse
-import com.example.logan.promdate.data.UpdateResponse
-import com.example.logan.promdate.data.UserResponse
+import com.example.logan.promdate.data.*
 import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,20 +28,20 @@ interface ServerInterface {
                  @Field("last-name") lastName: String,
                  @Field("school-id") schoolId: Int): Call<DefaultResponse>
 
-    //update
+    //updateUser
     @Multipart
     @POST("php/updateUser.php")
-    fun update(@Part("token") token: RequestBody,
-               @Part("social-instagram") instagram: RequestBody,
-               @Part("social-snapchat") snapchat: RequestBody,
-               @Part("social-twitter") twitter: RequestBody,
-               @Part("bio") bio: RequestBody,
-               @Part("first-name") firstName: RequestBody,
-               @Part("last-name") lastName: RequestBody,
-               @Part("school-id") schoolId: RequestBody,
-               @Part("grade") grade: RequestBody,
-               @Part("gender") gender: RequestBody,
-               @Part image: MultipartBody.Part? = null): Call<UpdateResponse>
+    fun updateUser(@Part("token") token: RequestBody,
+                   @Part("social-instagram") instagram: RequestBody,
+                   @Part("social-snapchat") snapchat: RequestBody,
+                   @Part("social-twitter") twitter: RequestBody,
+                   @Part("bio") bio: RequestBody,
+                   @Part("first-name") firstName: RequestBody,
+                   @Part("last-name") lastName: RequestBody,
+                   @Part("school-id") schoolId: RequestBody,
+                   @Part("grade") grade: RequestBody,
+                   @Part("gender") gender: RequestBody,
+                   @Part image: MultipartBody.Part? = null): Call<UpdateResponse>
 
     //feed
     @GET("php/feed.php")
@@ -74,6 +71,10 @@ interface ServerInterface {
     fun matchUser(@Field("token") token: String,
                   @Field("partner-id") partnerId: Int,
                   @Field("action") action: Int): Call<DefaultResponse>
+
+    //get notifications
+    @GET("php/notifications.php")
+    fun getNotifications(@Query("token") token: String): Call<NotificationResponse>
 }
 
 //initializes the standard api accessor that is reused throughout the code
