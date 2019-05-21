@@ -19,12 +19,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_feedFragment_to_notificationsFragment">
+                            <entry key="nav_logout">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="nav_logout">
+                            <entry key="nav_notifications">
                               <value>
                                 <LayoutPositions />
                               </value>

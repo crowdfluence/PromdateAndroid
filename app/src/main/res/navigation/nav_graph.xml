@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.logan.promdate.ui.SplashFragment"
+        android:name="agency.digitera.android.promdate.ui.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.logan.promdate.ui.LoginFragment"
+        android:name="agency.digitera.android.promdate.ui.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.logan.promdate.ui.RegisterFragment"
+        android:name="agency.digitera.android.promdate.ui.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.example.logan.promdate.ui.FeedFragment"
+        android:name="agency.digitera.android.promdate.ui.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed">
 
@@ -87,7 +87,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.logan.promdate.ui.ProfileFragment"
+        android:name="agency.digitera.android.promdate.ui.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -110,13 +110,13 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.logan.promdate.ui.SettingsFragment"
+        android:name="agency.digitera.android.promdate.ui.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings"/>
 
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.example.logan.promdate.ui.NotificationsFragment"
+        android:name="agency.digitera.android.promdate.ui.NotificationsFragment"
         android:label="NotificationsFragment"
         tools:layout="@layout/fragment_notifications"/>
 </navigation>
