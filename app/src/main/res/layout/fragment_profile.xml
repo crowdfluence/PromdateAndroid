@@ -96,10 +96,9 @@
         android:layout_height="64dp"
         android:layout_marginStart="@dimen/edge_margin"
         android:layout_marginTop="@dimen/large_vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/snapchat_image"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
         app:srcCompat="@drawable/instagram_logo" />
@@ -108,10 +107,11 @@
         android:id="@+id/snapchat_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:layout_marginStart="@dimen/edge_margin"
         android:layout_marginTop="@dimen/large_vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/twitter_image"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/instagram_image"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
         app:srcCompat="@drawable/snapchat_logo" />
@@ -120,6 +120,7 @@
         android:id="@+id/twitter_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:layout_marginStart="@dimen/edge_margin"
         android:layout_marginTop="@dimen/large_vertical_spacing"
         android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
@@ -149,7 +150,7 @@
         android:id="@+id/blank_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="name_text,grade_text,school_text,bio_text,relationship_text,profile_picture_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

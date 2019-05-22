@@ -9,7 +9,7 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.logan.promdate"
+        applicationId "agency.digitera.android.promdate"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

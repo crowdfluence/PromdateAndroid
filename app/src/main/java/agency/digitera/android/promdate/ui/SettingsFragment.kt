@@ -30,9 +30,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
-import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
 import agency.digitera.android.promdate.util.*
+import android.app.Activity.RESULT_CANCELED
+import android.database.Cursor
+import android.widget.Toast
 import com.squareup.picasso.MemoryPolicy
 import com.yalantis.ucrop.UCrop
 import okhttp3.MediaType
@@ -311,18 +313,33 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //from camera
         if (requestCode == PICK_IMAGE_CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             val uri = Uri.parse(currentPhotoPath)
-            openCropActivity(uri, uri)
-        } else if (requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val uri = data?.data ?: throw Exception("Failed to load image from gallery")
-            openCropActivity(uri, uri)
+            openCropActivity(uri)
         }
+        //from gallery
+        else if (requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE && resultCode == RESULT_OK) { //from
+            val uri: Uri = data?.data ?: throw Exception("Failed to load image from gallery")
+            Log.d("OnActivityResult", uri.toString())
+            openCropActivity(uri)
+        }
+        //cropped image
         else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-            val uri = UCrop.getOutput(data!!)
-            profilePicUri = uri
-            showImage(uri!!)
-        } else {
+            profilePicUri = UCrop.getOutput(data!!)
+            showImage(profilePicUri!!)
+        }
+        else if (requestCode == UCrop.REQUEST_CROP && resultCode != RESULT_CANCELED) {
+            //error cropping image
+            val cropError = UCrop.getError(data!!)
+            if (cropError != null) {
+                Log.e("OnActivityResult", "handleCropError: ", cropError)
+                Toast.makeText(context, cropError.message, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Unexpected error", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -367,8 +384,8 @@ class SettingsFragment : Fragment() {
             .into(profile_picture_image)
     }
 
-    private fun openCropActivity(sourceUri: Uri, destinationUri: Uri) {
-        UCrop.of(sourceUri, destinationUri)
+    private fun openCropActivity(sourceUri: Uri) {
+        UCrop.of(sourceUri, Uri.fromFile(getImageFile()))
             .withMaxResultSize(1280, 1280)
             .withAspectRatio(5f, 5f)
             .start(context!!, this, UCrop.REQUEST_CROP)
@@ -403,16 +420,16 @@ class SettingsFragment : Fragment() {
                 activity?.packageManager ?: throw Exception("PackageManager not found")
             )?.also {
                 // Create the File where the photo should go
-                val photoFile: File? = try {
+                val photoFile: File = try {
                     getImageFile()
-                } catch (ex: IOException) {
+                } catch (e: IOException) {
                     return
                 }
                 // Continue only if the File was successfully created
-                photoFile?.also {
+                photoFile.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
-                        context!!,
-                        "com.example.logan.fileprovider",
+                        context ?: throw Exception("Unable to retrieve context"),
+                        "agency.digitera.android.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -457,7 +474,20 @@ class SettingsFragment : Fragment() {
                 "add_photo_dialog_fragment"
             )
         }
+    }
 
+    fun getRealPathFromUri(contentUri: Uri): String {
+        var cursor: Cursor? = null
+        try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context?.contentResolver?.query(contentUri, proj, null, null, null)
+            assert(cursor != null)
+            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            return cursor.getString(columnIndex)
+        } finally {
+            cursor?.close()
+        }
     }
 
     companion object {

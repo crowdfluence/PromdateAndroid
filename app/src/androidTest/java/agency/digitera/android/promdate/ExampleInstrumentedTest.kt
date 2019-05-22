@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.example.logan.promdate", appContext.packageName)
+        assertEquals("agency.digitera.android.promdate", appContext.packageName)
     }
 }
