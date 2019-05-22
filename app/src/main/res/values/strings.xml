@@ -74,6 +74,12 @@
     <string name="upload_from_gallery">Upload from Gallery</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="time_seconds">%ds</string>
+    <string name="time_minutes">%dm</string>
+    <string name="time_hours">%dh</string>
+    <string name="time_days">%dd</string>
+    <string name="time_weeks">%dw</string>
+    <string name="time_years">%dyrs</string>
     <string name="confirm_request_while_matched">
         "Are you sure you want to send this person a match request? This action will unmatch you with your current partner."
     </string>

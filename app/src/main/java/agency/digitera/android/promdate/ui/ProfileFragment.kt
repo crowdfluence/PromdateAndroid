@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.data.DefaultResponse
 import agency.digitera.android.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -365,9 +366,9 @@ class ProfileFragment : Fragment() {
         val token = sp?.getString("token", null) ?: ""
 
         api.matchUser(token, profileFragmentArgs.userId, action)
-            .enqueue(object : Callback<agency.digitera.android.promdate.data.DefaultResponse> {
+            .enqueue(object : Callback<DefaultResponse> {
 
-                override fun onFailure(call: Call<agency.digitera.android.promdate.data.DefaultResponse>, t: Throwable) {
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     Log.e(
                         "MatchUser",
                         "Failed to send match request! ${t.javaClass.canonicalName}: ${t.message}"
@@ -383,7 +384,7 @@ class ProfileFragment : Fragment() {
                     }
                 }
 
-                override fun onResponse(call: Call<agency.digitera.android.promdate.data.DefaultResponse>, response: Response<agency.digitera.android.promdate.data.DefaultResponse>) {
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.body()?.status != 200) { //something went wrong, but server received request
                         //Match request failed
                         Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")

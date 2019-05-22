@@ -35,16 +35,28 @@
         android:id="@+id/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
         android:layout_marginStart="@dimen/edge_margin"
         android:layout_marginEnd="@dimen/edge_margin"
         android:ellipsize="end"
         android:lines="2"
-        card_view:layout_constraintBottom_toBottomOf="parent"
         card_view:layout_constraintEnd_toStartOf="@id/icon_image"
         card_view:layout_constraintStart_toEndOf="@+id/sender_image"
         card_view:layout_constraintTop_toBottomOf="@+id/title_text"
-        card_view:layout_constraintVertical_bias="0.3"
         tools:text="John Smith accepted your match request." />
+
+    <TextView
+        android:id="@+id/time_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="@dimen/small_vertical_spacing"
+        android:ellipsize="end"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toStartOf="@id/icon_image"
+        card_view:layout_constraintTop_toBottomOf="@+id/body_text"
+        tools:text="30w" />
 
     <ImageView
         android:id="@+id/icon_image"

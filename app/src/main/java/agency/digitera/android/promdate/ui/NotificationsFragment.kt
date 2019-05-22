@@ -22,13 +22,16 @@ import kotlinx.android.synthetic.main.fragment_notifications.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
 
 
 class NotificationsFragment : Fragment() {
     private lateinit var viewAdapter: NotificationsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var drawerInterface: DrawerInterface
-    private var notifications = ArrayList<Notification>()
+    private val notifications = ArrayList<Notification>()
 
     override fun onAttach(context: Context) {
         //get drawerInterface to setup navigation drawer
@@ -70,6 +73,11 @@ class NotificationsFragment : Fragment() {
             layoutManager = viewManager
             itemAnimator = DefaultItemAnimator()
             adapter = viewAdapter
+            val dividerItemDecoration = DividerItemDecoration(
+                notification_recycler.context,
+                LinearLayoutManager.VERTICAL
+            )
+            addItemDecoration(dividerItemDecoration)
         }
 
         //set up swipe to refresh
@@ -112,7 +120,9 @@ class NotificationsFragment : Fragment() {
 
                 val serverResponse = response.body()
                 if (serverResponse != null && serverResponse.status == 200) {
-                    notifications = ArrayList(serverResponse.result.notifications)
+                    notifications.clear()
+                    notifications.addAll(serverResponse.result.notifications)
+                    notifications.reverse()
 
                     viewAdapter.notifyDataSetChanged()
 

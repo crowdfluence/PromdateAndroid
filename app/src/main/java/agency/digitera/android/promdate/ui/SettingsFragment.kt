@@ -451,9 +451,7 @@ class SettingsFragment : Fragment() {
                 REQUEST_EXTERNAL_STORAGE
             )
             return
-            //throw Exception("Missing required permissions!")
         }
-
         val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(pickPhoto,
             PICK_IMAGE_GALLERY_REQUEST_CODE
@@ -473,20 +471,6 @@ class SettingsFragment : Fragment() {
                 fragmentManager ?: throw Exception("Fragment manager not found"),
                 "add_photo_dialog_fragment"
             )
-        }
-    }
-
-    fun getRealPathFromUri(contentUri: Uri): String {
-        var cursor: Cursor? = null
-        try {
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context?.contentResolver?.query(contentUri, proj, null, null, null)
-            assert(cursor != null)
-            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            return cursor.getString(columnIndex)
-        } finally {
-            cursor?.close()
         }
     }
 
