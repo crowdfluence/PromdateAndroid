@@ -86,6 +86,7 @@
     <string name="confirm_no_multiple_requests">
         "Are you sure you want to send this person a match request? This action will cancel your other pending request."
     </string>
+    <string name="send_match_request">Send Match Request</string>
 
     <string-array name="genders_array">
         <item>Male</item>
@@ -107,5 +108,12 @@
         <item>Match Accepted</item>
         <item>Match Rejected</item>
         <item>Unmatched</item>
+    </string-array>
+
+    <string-array name="notification_messages_array">
+        <item>%s %s has sent you a match request.</item>
+        <item>%s %s has accepted your match request.</item>
+        <item>%s %s has rejected your match request.</item>
+        <item>%s %s has unmatched with you.</item>
     </string-array>
 </resources>

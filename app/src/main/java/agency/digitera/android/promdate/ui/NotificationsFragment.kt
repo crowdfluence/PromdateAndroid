@@ -17,14 +17,14 @@ import agency.digitera.android.promdate.*
 import agency.digitera.android.promdate.data.Notification
 import agency.digitera.android.promdate.data.NotificationResponse
 import agency.digitera.android.promdate.util.ApiAccessor
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.recyclerview.widget.DividerItemDecoration
-
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class NotificationsFragment : Fragment() {
@@ -137,6 +137,12 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun onNotificationClick(notification: Notification) {
-        //TODO: Make this
+        //open user profile
+        val action = NotificationsFragmentDirections.navProfile(
+            notification.body[0].sender.id,
+            0,
+            notification.body[0].sender.firstName + " " + notification.body[0].sender.lastName
+        )
+        findNavController().navigate(action)
     }
 }

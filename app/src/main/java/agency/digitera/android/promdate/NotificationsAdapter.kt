@@ -18,8 +18,9 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
         fun bind(notification: Notification, clickListener: (Notification) -> Unit) {
             with(itemView) {
                 title_text.text = resources.getStringArray(R.array.notification_types_array)[notification.type - 1] //TODO: Get max to change
-                body_text.text = notification.message //TODO: Change to string template
-                //LoadUrl.loadUrl(context, sender_image, notification.sender.profilePictureUrl)
+                val bodyText = resources.getStringArray(R.array.notification_messages_array)[notification.type - 1]
+                body_text.text = String.format(bodyText, notification.body[0].sender.firstName, notification.body[0].sender.lastName)
+                LoadUrl.loadUrl(context, sender_image, notification.body[0].sender.profilePictureUrl)
                 icon_image.setImageDrawable(when (notification.type) {
                     1, 2 -> context.getDrawable(R.drawable.ic_heart_red)
                     3, 4 -> context.getDrawable(R.drawable.ic_broken_heart)

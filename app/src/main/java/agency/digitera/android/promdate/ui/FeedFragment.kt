@@ -97,7 +97,11 @@ class FeedFragment : Fragment() {
                 }
             }
         })
+    }
 
+    override fun onResume() {
+        drawerInterface.unlockDrawer()
+        super.onResume()
     }
 
     inner class TabAdapter(fm: FragmentManager) :

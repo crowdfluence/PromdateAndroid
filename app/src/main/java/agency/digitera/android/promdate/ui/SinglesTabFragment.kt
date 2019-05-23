@@ -57,8 +57,8 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
     private fun initializeList() {
         val config = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setEnablePlaceholders(true)
+            .setPageSize(8)
+            .setEnablePlaceholders(false)
             .build()
 
         liveData = initializedPagedListBuilder(config).build()
@@ -85,9 +85,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
         }
     }
 
-    private fun initializedPagedListBuilder(config: PagedList.Config):
-            LivePagedListBuilder<Int, User> {
-
+    private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): DataSource<Int, User> {
                 val sp: SharedPreferences =

@@ -79,6 +79,15 @@
                             <option name="y" value="996" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="nav_profile">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>

@@ -89,14 +89,10 @@ class ProfileFragment : Fragment() {
         }
 
         loadUser()
+
         if (!isSelf) {
             checkSelfMatched()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        drawerInterface.unlockDrawer() //unlocks drawer upon exiting fragment
     }
 
     private fun loadUser() {
@@ -132,6 +128,13 @@ class ProfileFragment : Fragment() {
                 val serverResponse = response.body()
                 if (serverResponse != null && serverResponse.status == 200) {
                     val user: agency.digitera.android.promdate.data.FullUser = serverResponse.result
+
+                    if (!isSelf && profileFragmentArgs.isMatched == 0) {
+                        send_match_button.visibility = View.VISIBLE
+                        send_match_button.setOnClickListener {
+                            match()
+                        }
+                    }
 
                     loading_pb.visibility = View.GONE
                     blank_group.visibility = View.VISIBLE
@@ -289,7 +292,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun match() {
-
+        //TODO: Remove heart colour change
         var newHeartColour: Int? = null
 
         //ensures that user data has been received from server before proceeding

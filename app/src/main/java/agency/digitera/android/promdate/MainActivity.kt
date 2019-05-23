@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import agency.digitera.android.promdate.ui.FeedFragmentDirections
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
     }
 
     override fun unlockDrawer() {
+        Log.d("Whatt", "Drawer unlocked")
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 

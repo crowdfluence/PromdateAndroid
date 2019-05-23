@@ -13,7 +13,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
     private val api = ApiAccessor().apiService
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<User>) {
-        api.getFeed(token, params.requestedLoadSize, params.requestedStartPosition)
+        api.getFeed(token, params.requestedLoadSize, 0)
             .enqueue(object : Callback<FeedResponse> {
 
                 override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
@@ -36,7 +36,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
                             response.body()?.toString() ?: ("No response from the server")
                         )
                     }
-                    callback.onResult(singles.unmatchedUsers, params.requestedStartPosition, singles.maxUnmatched)
+                    callback.onResult(singles.unmatchedUsers, 0)
                 }
             })
     }

@@ -77,6 +77,20 @@
         app:layout_constraintTop_toBottomOf="@+id/grade_text"
         tools:text="Single" />
 
+    <Button
+        android:id="@+id/send_match_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:text="@string/send_match_request"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture_image" />
+
     <TextView
         android:id="@+id/bio_text"
         android:layout_width="0dp"
@@ -86,8 +100,9 @@
         android:layout_marginEnd="@dimen/edge_margin"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_picture_image"
+        app:layout_constraintTop_toBottomOf="@+id/send_match_button"
         tools:text="I'm an incredibly intelligent individual. Please do not attempt to match with me if your IQ is below 150." />
 
     <ImageView

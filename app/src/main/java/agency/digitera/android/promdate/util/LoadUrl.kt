@@ -12,6 +12,9 @@ interface LoadUrl {
     companion object {
         //sets image from url & converts it to a circle
         fun loadUrl(context: Context, img: ImageView, url: String, transformType: Int = 0) {
+            if (url == "") {
+                return
+            }
             val suffixUrl = if (url[0] == '.' && url[1] == '.') url.substring(2 until url.length) else url
             val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com$suffixUrl"
             Picasso.get()

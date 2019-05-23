@@ -60,8 +60,8 @@ class CouplesTabFragment : Fragment(), TabInterface {
     private fun initializeList() {
         //set up list of couples; load initial data
         val config = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setEnablePlaceholders(true)
+            .setPageSize(8)
+            .setEnablePlaceholders(false)
             .build()
 
         liveData = initializedPagedListBuilder(config).build()

@@ -118,5 +118,24 @@
         android:id="@+id/notificationsFragment"
         android:name="agency.digitera.android.promdate.ui.NotificationsFragment"
         android:label="NotificationsFragment"
-        tools:layout="@layout/fragment_notifications"/>
+        tools:layout="@layout/fragment_notifications">
+
+        <action
+            android:id="@+id/nav_profile"
+            app:destination="@id/profileFragment">
+            <argument
+                android:name="userId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="isMatched"
+                android:defaultValue="0"
+                app:argType="integer" />
+            <argument
+                android:name="userName"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+    </fragment>
 </navigation>

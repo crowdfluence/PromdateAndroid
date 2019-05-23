@@ -12,7 +12,7 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
     private val api = ApiAccessor().apiService
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<List<User>>) {
-        api.getFeed(token, params.requestedLoadSize, params.requestedStartPosition)
+        api.getFeed(token, params.requestedLoadSize, 0)
             .enqueue(object : Callback<FeedResponse> {
 
                 override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
@@ -30,7 +30,7 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
                             response.body()?.toString()
                         )
                     }
-                    callback.onResult(couples, 0, (response.body()?.result?.maxMatched ?: 0) / 2) //TODO: Fix
+                    callback.onResult(couples, 0)
                 }
             })
     }
