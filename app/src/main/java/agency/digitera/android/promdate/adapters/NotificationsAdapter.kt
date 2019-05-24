@@ -1,5 +1,6 @@
-package agency.digitera.android.promdate
+package agency.digitera.android.promdate.adapters
 
+import agency.digitera.android.promdate.R
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View

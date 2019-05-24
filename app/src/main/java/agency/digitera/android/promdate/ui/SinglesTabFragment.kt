@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.SinglesDataSource
 import agency.digitera.android.promdate.data.User
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*

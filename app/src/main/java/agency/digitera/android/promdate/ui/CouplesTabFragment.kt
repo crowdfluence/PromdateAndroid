@@ -16,7 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import agency.digitera.android.promdate.BadTokenException
-import agency.digitera.android.promdate.CoupleAdapter
+import agency.digitera.android.promdate.adapters.CoupleAdapter
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.data.CouplesDataSource

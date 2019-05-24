@@ -150,6 +150,8 @@ class ProfileFragment : Fragment() {
                         relationship_text.text = context?.getString(R.string.single)
                     } else {
                         relationship_text.text = context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
+                        partner_picture_image.visibility = View.VISIBLE
+                        LoadUrl.loadUrl(context!!, partner_picture_image, user.partner?.profilePictureUrl ?: "")
                     }
                     bio_text.text = user.self.bio
 

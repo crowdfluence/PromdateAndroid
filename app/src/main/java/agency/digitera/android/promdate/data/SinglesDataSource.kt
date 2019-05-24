@@ -26,9 +26,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
                 override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                     val singles = response.body()?.result ?: FeedInnerResponse(
                         listOf(),
-                        listOf(),
-                        0,
-                        0
+                        listOf()
                     )
                     if (response.body()?.status != 200) {
                         Log.e(
@@ -36,7 +34,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
                             response.body()?.toString() ?: ("No response from the server")
                         )
                     }
-                    callback.onResult(singles.unmatchedUsers, 0)
+                    callback.onResult(singles.singles, 0)
                 }
             })
     }
@@ -52,9 +50,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 val singles = response.body()?.result ?: FeedInnerResponse(
                     listOf(),
-                    listOf(),
-                    0,
-                    0
+                    listOf()
                 )
                 if (response.body()?.status != 200) {
                     Log.e(
@@ -62,7 +58,7 @@ class SinglesDataSource(private val token: String) : PositionalDataSource<User>(
                         response.body()?.toString()
                     )
                 }
-                callback.onResult(singles.unmatchedUsers)
+                callback.onResult(singles.singles)
             }
         })
     }

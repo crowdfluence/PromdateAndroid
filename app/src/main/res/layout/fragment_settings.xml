@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"
@@ -14,7 +15,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
@@ -23,13 +25,14 @@
 
             <ImageView
                 android:id="@+id/profile_picture_image"
-                android:layout_width="wrap_content"
-                android:layout_height="128dp"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="@dimen/edge_margin"
-                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginBottom="@dimen/vertical_spacing"
                 android:adjustViewBounds="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/first_name_edit_wrapper"
+                app:layout_constraintBottom_toTopOf="@id/bio_edit_wrapper"
                 app:srcCompat="@drawable/default_profile" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/horizontal_spacing"
-                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginTop="@dimen/edge_margin"
                 android:layout_marginEnd="@dimen/edge_margin"
                 app:errorEnabled="false"
                 app:layout_constraintBottom_toTopOf="@id/last_name_edit_wrapper"
@@ -93,7 +96,7 @@
                 app:errorEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_picture_image">
+                app:layout_constraintTop_toBottomOf="@+id/last_name_edit_wrapper">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/bio_edit"
@@ -253,17 +256,45 @@
                 app:layout_constraintStart_toEndOf="@+id/gender_spinner"
                 app:layout_constraintTop_toTopOf="@+id/gender_spinner" />
 
+            <TextView
+                android:id="@+id/current_partner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/currently_matched"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/unmatch_partner_button"
+                app:layout_constraintEnd_toStartOf="@+id/unmatch_partner_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/unmatch_partner_button" />
+
+            <Button
+                android:id="@+id/unmatch_partner_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/remove"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/current_partner_text"
+                app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="@dimen/edge_margin"
                 android:text="@string/save"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/grade_spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/current_partner_text" />
 
             <ProgressBar
                 android:id="@+id/loading_pb"

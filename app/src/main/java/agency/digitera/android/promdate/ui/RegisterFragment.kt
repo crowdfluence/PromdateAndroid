@@ -20,6 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import agency.digitera.android.promdate.util.ApiAccessor
+import android.util.Log
 
 
 class RegisterFragment : Fragment() {
@@ -113,13 +114,13 @@ class RegisterFragment : Fragment() {
         } else {
             confirm_password_edit_wrapper.error = null
         }
-        if (firstName.isEmpty()) {
+        if (isValidName(firstName)) {
             first_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
             first_name_edit_wrapper.error = null
         }
-        if (lastName.isEmpty()) {
+        if (isValidName(lastName)) {
             last_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
@@ -196,6 +197,20 @@ class RegisterFragment : Fragment() {
             emailEditWrapper.error = null
             true
         }
+    }
+
+    private fun isValidName(name: String): Boolean {
+        if (name.isEmpty()) {
+            return false
+        }
+        else {
+            for (i in 0 until name.length) {
+                if (name[i] != ' ' && name[i] != '\n') {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0

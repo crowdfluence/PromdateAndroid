@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.adapters.NotificationsAdapter
 import agency.digitera.android.promdate.data.Notification
 import agency.digitera.android.promdate.data.NotificationResponse
 import agency.digitera.android.promdate.util.ApiAccessor
@@ -24,7 +25,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.recyclerview.widget.DividerItemDecoration
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class NotificationsFragment : Fragment() {
@@ -122,7 +122,6 @@ class NotificationsFragment : Fragment() {
                 if (serverResponse != null && serverResponse.status == 200) {
                     notifications.clear()
                     notifications.addAll(serverResponse.result.notifications)
-                    notifications.reverse()
 
                     viewAdapter.notifyDataSetChanged()
 

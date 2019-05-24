@@ -198,16 +198,66 @@ class SettingsFragment : Fragment() {
                     instagram_edit.setText(user.self.instagram)
                     snapchat_edit.setText(user.self.snapchat)
                     twitter_edit.setText(user.self.twitter)
+
+                    if (user.partner != null) {
+                        unmatch_partner_button.visibility = View.VISIBLE
+                        current_partner_text.visibility = View.VISIBLE
+                        current_partner_text.text = getString(R.string.currently_matched, user.partner?.firstName, user.partner?.lastName)
+
+                        unmatch_partner_button.setOnClickListener {
+                            unmatch(user.partner?.id ?: -1)
+                        }
+                    }
                 } else {
                     Snackbar.make(
                         constraint_layout, R.string.unexpected_error,
                         Snackbar.LENGTH_LONG
-                    )
-                        .show()
+                    ).show()
                     loading_pb.visibility = View.GONE
                 }
             }
         })
+    }
+
+    private fun unmatch(partnerId: Int) {
+
+        //unmatch current partner
+        val api = ApiAccessor().apiService
+        val sp: SharedPreferences? =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val token = sp?.getString("token", null) ?: ""
+
+        api.matchUser(token, partnerId, 1)
+            .enqueue(object : Callback<DefaultResponse> {
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    Log.e(
+                        "MatchUser",
+                        "Failed to unmatch! ${t.javaClass.canonicalName}: ${t.message}"
+                    )
+                    Snackbar.make(
+                        constraint_layout,
+                        R.string.match_error,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.body()?.status != 200) { //something went wrong, but server received request
+                        //Match request failed
+                        Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
+                        Snackbar.make(
+                            constraint_layout,
+                            R.string.match_error,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+
+                    } else { //success
+                        unmatch_partner_button.visibility = View.GONE
+                        current_partner_text.visibility = View.GONE
+                    }
+                }
+            })
     }
 
     private fun updateUser() {
@@ -227,14 +277,14 @@ class SettingsFragment : Fragment() {
 
         //check that all required fields are there & valid
         var missingFields = false
-        if (firstName.isEmpty()) {
-            first_name_edit_wrapper.error = getString(R.string.required_field)
+        if (!isValidName(firstName)) {
+            first_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
             first_name_edit_wrapper.error = null
         }
-        if (lastName.isEmpty()) {
-            last_name_edit_wrapper.error = getString(R.string.required_field)
+        if (!isValidName(lastName)) {
+            last_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
             last_name_edit_wrapper.error = null
@@ -282,6 +332,7 @@ class SettingsFragment : Fragment() {
             bodyToken, bodyInsta, bodySnap, bodyTwitter, bodyBio, bodyFirst, bodyLast, bodySchool, bodyGrade, bodyGender, bodyImage
         )
 
+
         val loadingAnim = loading_pb
         loadingAnim.visibility = View.VISIBLE
 
@@ -289,6 +340,7 @@ class SettingsFragment : Fragment() {
         call.enqueue(object : Callback<UpdateResponse> {
             override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
                 loadingAnim.visibility = View.GONE
+
                 if (response.body()?.status != 200) {
                     Snackbar.make(
                         constraint_layout,
@@ -310,6 +362,20 @@ class SettingsFragment : Fragment() {
                 loadingAnim.visibility = View.GONE
             }
         })
+    }
+
+    private fun isValidName(name: String): Boolean {
+        if (name.isEmpty()) {
+            return false
+        }
+        else {
+            for (i in 0 until name.length) {
+                if (name[i] != ' ' && name[i] != '\n') {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

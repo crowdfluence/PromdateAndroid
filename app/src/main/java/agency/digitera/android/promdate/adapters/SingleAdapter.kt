@@ -1,5 +1,6 @@
-package agency.digitera.android.promdate
+package agency.digitera.android.promdate.adapters
 
+import agency.digitera.android.promdate.R
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,12 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
                 if (user.profilePictureUrl.isNotEmpty()) {
                     LoadUrl.loadUrl(context, profile_picture_image, user.profilePictureUrl)
                 }
-                grade_text.text = context.getString(R.string.grade_number, user.grade)
+                if (user.grade != null) {
+                    grade_text.text = context.getString(R.string.grade_number, user.grade)
+                }
+                else {
+                    grade_text.visibility = View.GONE
+                }
                 bio_text.text = user.bio
                 setOnClickListener { clickListener(user) }
             }

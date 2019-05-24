@@ -9,8 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-const val BASE_URL = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com"
-
 //Requests that can be sent to the api
 interface ServerInterface {
     //login
@@ -44,10 +42,11 @@ interface ServerInterface {
                    @Part image: MultipartBody.Part? = null): Call<UpdateResponse>
 
     //feed
-    @GET("php/feed.php")
+    @GET("php/feed.new.php")
     fun getFeed(@Query("token") token: String,
-                @Query("max-users") maxUsers: Int,
-                @Query("offset") offset: Int? = null,
+                @Query("max-size") maxUsers: Int,
+                @Query("single-offset") singlesOffset: Int? = null,
+                @Query("couple-offset") couplesOffset: Int? = null,
                 @Query("school-id") schoolId: Int? = null,
                 @Query("name") name: String? = null,
                 @Query("gender") gender: String? = null,
@@ -89,5 +88,9 @@ class ApiAccessor {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         apiService = retrofit.create(ServerInterface::class.java)
+    }
+
+    companion object {
+        const val BASE_URL = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com"
     }
 }

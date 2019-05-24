@@ -1,5 +1,6 @@
-package agency.digitera.android.promdate
+package agency.digitera.android.promdate.adapters
 
+import agency.digitera.android.promdate.R
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
