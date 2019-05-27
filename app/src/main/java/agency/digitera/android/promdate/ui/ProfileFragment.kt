@@ -293,24 +293,23 @@ class ProfileFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun favourite() {
+        val isFavourited = false
+
+        changeHeart(if (isFavourited) null else Color.WHITE)
+    }
+
     private fun match() {
-        //TODO: Remove heart colour change
-        var newHeartColour: Int? = null
 
         //ensures that user data has been received from server before proceeding
         if (selfPartnerId == null || isSelfMatched == null) {
+            Log.d("Match", "Data not loaded before attempting to send request")
+            Snackbar.make(
+                constraint_layout,
+                R.string.unexpected_error,
+                Snackbar.LENGTH_SHORT
+            ).show()
             return
-        }
-
-        //gets original heart colour
-        val originalHeartColour: Int? = if (isSelfMatched == true && selfPartnerId == profileFragmentArgs.userId) {
-            ContextCompat.getColor(context!!, R.color.heartRed)
-        }
-        else if (selfPartnerId == profileFragmentArgs.userId) {
-            Color.WHITE
-        }
-        else {
-            null
         }
 
         //Checks that the user is not currently matched
@@ -318,9 +317,6 @@ class ProfileFragment : Fragment() {
         val action: Int = if (selfPartnerId != -1) { //currently is matched or has sent a request that is pending
             if (selfPartnerId == profileFragmentArgs.userId) { //matched with person whose profile they're looking at
                 //attempting to send request to someone already matched with; removes match instead
-
-                //sets new heart to empty
-                newHeartColour = null
                 1
             }
             else { //not matched with current person's profile
@@ -335,34 +331,26 @@ class ProfileFragment : Fragment() {
                 }
                 //prompts user to confirm request
                 ConfirmationDialog.newInstance(promptMsg).apply {
-                    setPositiveClick { sendMatch(0, newHeartColour, originalHeartColour) }
+                    setPositiveClick { sendMatch(0) }
                 }.also { dialog ->
                     dialog.show(
                         fragmentManager ?: throw Exception("Fragment manager not found"),
                         "confirm_request_dialog_fragment"
                     )
                 }
-                newHeartColour = Color.WHITE
                 0
             }
         }
         else { //isn't currently matched with anyone and doesn't have any pending requests
-            //change heart colour to white
-            if (profileFragmentArgs.isMatched == 0) {
-                newHeartColour = Color.WHITE
-            }
             0
         }
 
         if (!waitForDialogInput) {
-            sendMatch(action, newHeartColour, originalHeartColour)
+            sendMatch(action)
         }
     }
 
-    private fun sendMatch(action: Int, newHeartColour: Int?, originalHeartColour: Int?) {
-
-        //change heart to new colour
-        changeHeart(newHeartColour)
+    private fun sendMatch(action: Int) {
 
         //send match request
         val api = ApiAccessor().apiService
@@ -383,10 +371,6 @@ class ProfileFragment : Fragment() {
                         R.string.match_error,
                         Snackbar.LENGTH_LONG
                     ).show()
-
-                    if (profileFragmentArgs.isMatched == 0) {
-                        changeHeart(originalHeartColour)
-                    }
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
@@ -399,9 +383,6 @@ class ProfileFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
 
-                        if (profileFragmentArgs.isMatched == 0) {
-                            changeHeart(originalHeartColour)
-                        }
                     } else { //success
                         //TODO: Make message more "human"
                         Snackbar.make(

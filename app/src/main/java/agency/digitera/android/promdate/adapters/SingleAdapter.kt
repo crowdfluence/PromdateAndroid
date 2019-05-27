@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.LoadUrl
+import android.util.Log
 import kotlinx.android.synthetic.main.item_single.view.*
 
 //Checks if list is updated

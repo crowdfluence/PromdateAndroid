@@ -114,13 +114,13 @@ class RegisterFragment : Fragment() {
         } else {
             confirm_password_edit_wrapper.error = null
         }
-        if (isValidName(firstName)) {
+        if (!isValidName(firstName)) {
             first_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {
             first_name_edit_wrapper.error = null
         }
-        if (isValidName(lastName)) {
+        if (!isValidName(lastName)) {
             last_name_edit_wrapper.error = getString(R.string.required_field)
             missingFields = true
         } else {

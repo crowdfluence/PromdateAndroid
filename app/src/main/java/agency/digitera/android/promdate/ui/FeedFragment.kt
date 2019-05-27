@@ -109,16 +109,16 @@ class FeedFragment : Fragment() {
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when (position) {
-                0 -> getString(R.string.singles)
-                1 -> getString(R.string.couples)
+                0 -> getString(R.string.couples)
+                1 -> getString(R.string.singles)
                 else -> null
             }
         }
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> SinglesTabFragment()
-                1 -> CouplesTabFragment()
+                0 -> CouplesTabFragment()
+                1 -> SinglesTabFragment()
                 else -> throw Exception("Invalid tab value")
             }
         }

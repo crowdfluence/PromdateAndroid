@@ -30,7 +30,7 @@
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="action_match">Match with this user</string>
-    <string name="grade_number">Grade %d</string>
+    <string name="grade_number">Grade %2d</string>
     <string name="full_name">%s %s</string>
     <string name="couple_name"><![CDATA[%s %c & %s %c]]></string>
     <string name="select_gender">Select your gender</string>
