@@ -35,6 +35,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
                 }
                 if (user.grade != null) {
                     grade_text.text = context.getString(R.string.grade_number, user.grade)
+                    grade_text.visibility = View.VISIBLE
                 }
                 else {
                     grade_text.visibility = View.GONE

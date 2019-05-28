@@ -35,6 +35,7 @@ import agency.digitera.android.promdate.util.*
 import android.app.Activity.RESULT_CANCELED
 import android.database.Cursor
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.MemoryPolicy
 import com.yalantis.ucrop.UCrop
 import okhttp3.MediaType
@@ -349,7 +350,7 @@ class SettingsFragment : Fragment() {
                     ).show()
                 }
                 else {
-                    fragmentManager?.popBackStackImmediate()
+                    findNavController().popBackStack()
                 }
             }
 

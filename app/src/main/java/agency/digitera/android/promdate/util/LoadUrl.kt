@@ -38,8 +38,8 @@ interface LoadUrl {
                 )
                 .resize(512, 512)
                 .centerCrop()
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
+                /*.memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)*/
                 .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
                 .error(R.drawable.default_profile) //TODO: Change to actual error
                 .into(img)

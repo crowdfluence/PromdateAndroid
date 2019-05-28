@@ -1,7 +1,6 @@
 package agency.digitera.android.promdate.ui
 
 import androidx.lifecycle.Observer
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import android.content.Context
@@ -18,9 +17,13 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import agency.digitera.android.promdate.*
 import agency.digitera.android.promdate.adapters.SingleAdapter
-import agency.digitera.android.promdate.data.SinglesDataSource
+import agency.digitera.android.promdate.data.SingleBoundaryCallback
+import agency.digitera.android.promdate.data.SingleDb
 import agency.digitera.android.promdate.data.User
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
+import java.util.concurrent.Executors
+
+
 
 
 class SinglesTabFragment : Fragment(), TabInterface {
@@ -28,6 +31,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
     private lateinit var viewAdapter: SingleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var liveData: LiveData<PagedList<User>>
+    private lateinit var database: SingleDb
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -50,8 +54,9 @@ class SinglesTabFragment : Fragment(), TabInterface {
         //set up swipe to refresh
         swipe_refresh.setOnRefreshListener {
             invalidate()
-            swipe_refresh.isRefreshing = false
         }
+
+        database = SingleDb.create(context!!)
 
         initializeList()
     }
@@ -82,22 +87,30 @@ class SinglesTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            liveData.value!!.dataSource.invalidate()
+            val executor = Executors.newSingleThreadExecutor()
+            executor.execute {
+                database.singleDao().clearDatabase()
+                activity?.runOnUiThread {
+                    initializeList()
+                    swipe_refresh.isRefreshing = false
+                }
+            }
         }
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
-        val dataSourceFactory = object : DataSource.Factory<Int, User>() {
-            override fun create(): DataSource<Int, User> {
-                val sp: SharedPreferences =
-                    context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                        ?: throw BadTokenException() //TODO: Return to login on failed token
-                return SinglesDataSource(sp.getString("token", null) ?: "")
-            }
-        }
+        val livePageListBuilder = LivePagedListBuilder<Int, User>(
+            database.singleDao().singles(),
+            config)
 
-        return LivePagedListBuilder<Int, User>(dataSourceFactory, config)
+        //get token
+        val sp: SharedPreferences =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                ?: throw BadTokenException() //TODO: Return to login
+        val token = sp.getString("token", null) ?: ""
 
+        livePageListBuilder.setBoundaryCallback(SingleBoundaryCallback(database, token))
+        return livePageListBuilder
     }
 
     private fun onUserClick(user: User) {
