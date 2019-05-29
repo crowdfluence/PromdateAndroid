@@ -1,7 +1,6 @@
 package agency.digitera.android.promdate.ui
 
 import androidx.lifecycle.Observer
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import android.content.Context
@@ -16,19 +15,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import agency.digitera.android.promdate.BadTokenException
+import agency.digitera.android.promdate.MainActivity
 import agency.digitera.android.promdate.adapters.CoupleAdapter
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.TabInterface
-import agency.digitera.android.promdate.data.CouplesDataSource
-import agency.digitera.android.promdate.data.User
+import agency.digitera.android.promdate.data.Couple
+import agency.digitera.android.promdate.data.CoupleBoundaryCallback
+import agency.digitera.android.promdate.util.CheckInternet
+
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
+import java.util.concurrent.Executors
 
 
 class CouplesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: CoupleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var liveData: LiveData<PagedList<List<User>>>
+    private lateinit var liveData: LiveData<PagedList<Couple>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -66,7 +69,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
 
         liveData = initializedPagedListBuilder(config).build()
 
-        liveData.observe(this, Observer<PagedList<List<User>>> { pagedList ->
+        liveData.observe(this, Observer<PagedList<Couple>> { pagedList ->
             viewAdapter.submitList(pagedList)
         })
     }
@@ -76,26 +79,39 @@ class CouplesTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            liveData.value!!.dataSource.invalidate()
+            if (CheckInternet.isNetworkAvailable(context!!)) {
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+                    CoupleBoundaryCallback.maxLoaded = 0
+                    (activity as MainActivity).couplesDb.coupleDao().clearDatabase()
+                    swipe_refresh.isRefreshing = false
+                }
+            }
+            else {
+                //TODO: Error message
+            }
         }
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
-            LivePagedListBuilder<Int, List<User>> {
+            LivePagedListBuilder<Int, Couple> {
 
-        val dataSourceFactory = object : DataSource.Factory<Int, List<User>>() {
-            override fun create(): DataSource<Int, List<User>> {
-                val sp: SharedPreferences =
-                    context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                        ?: throw BadTokenException() //TODO: Return to login
-                return CouplesDataSource(sp.getString("token", null) ?: "")
-            }
-        }
-        return LivePagedListBuilder<Int, List<User>>(dataSourceFactory, config)
+        val livePageListBuilder = LivePagedListBuilder<Int, Couple>(
+            (activity as MainActivity).couplesDb.coupleDao().couples(),
+            config)
+
+        //get token
+        val sp: SharedPreferences =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                ?: throw BadTokenException() //TODO: Return to login
+        val token = sp.getString("token", null) ?: ""
+
+        livePageListBuilder.setBoundaryCallback(CoupleBoundaryCallback((activity as MainActivity).couplesDb, token))
+        return livePageListBuilder
 
     }
 
-    private fun onCouplesClick(couple: List<User>) {
+    private fun onCouplesClick(couple: Couple) {
         //open couples profile
     }
 }

@@ -16,8 +16,6 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
     private val executor = Executors.newSingleThreadExecutor()
     private val helper = PagingRequestHelper(executor)
 
-    var maxLoaded = 0
-
     override fun onZeroItemsLoaded() {
         super.onZeroItemsLoaded()
 
@@ -26,7 +24,6 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                 .enqueue(object : Callback<FeedResponse> {
 
                     override fun onFailure(call: Call<FeedResponse>?, t: Throwable) {
-                        //3
                         Log.e("SingleBoundaryCallback", "Failed to load data!")
                         helperCallback.recordFailure(t)
                     }
@@ -35,7 +32,6 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                         call: Call<FeedResponse>?,
                         response: Response<FeedResponse>
                     ) {
-                        //4
                         val singles = response.body()?.result?.singles
                         executor.execute {
                             db.singleDao().insert(singles ?: listOf())
@@ -55,7 +51,7 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                 .enqueue(object : Callback<FeedResponse> {
 
                     override fun onFailure(call: Call<FeedResponse>?, t: Throwable) {
-                        Log.e("RedditBoundaryCallback", "Failed to load data!")
+                        Log.e("CoupleBoundaryCallback", "Failed to load data!")
                         helperCallback.recordFailure(t)
                     }
 
@@ -76,5 +72,6 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
 
     companion object {
         const val PAGE_SIZE = 10
+        var maxLoaded = 0
     }
 }

@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import agency.digitera.android.promdate.*
 import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.SingleBoundaryCallback
-import agency.digitera.android.promdate.data.SingleDb
 import agency.digitera.android.promdate.data.User
+import agency.digitera.android.promdate.util.CheckInternet
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
 
@@ -31,7 +31,6 @@ class SinglesTabFragment : Fragment(), TabInterface {
     private lateinit var viewAdapter: SingleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var liveData: LiveData<PagedList<User>>
-    private lateinit var database: SingleDb
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -55,8 +54,6 @@ class SinglesTabFragment : Fragment(), TabInterface {
         swipe_refresh.setOnRefreshListener {
             invalidate()
         }
-
-        database = SingleDb.create(context!!)
 
         initializeList()
     }
@@ -87,20 +84,23 @@ class SinglesTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            val executor = Executors.newSingleThreadExecutor()
-            executor.execute {
-                database.singleDao().clearDatabase()
-                activity?.runOnUiThread {
-                    initializeList()
+            if (CheckInternet.isNetworkAvailable(context!!)) {
+                val executor = Executors.newSingleThreadExecutor()
+                executor.execute {
+                    SingleBoundaryCallback.maxLoaded = 0
+                    (activity as MainActivity).singlesDb.singleDao().clearDatabase()
                     swipe_refresh.isRefreshing = false
                 }
+            }
+            else {
+                //TODO: Error message
             }
         }
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
         val livePageListBuilder = LivePagedListBuilder<Int, User>(
-            database.singleDao().singles(),
+            (activity as MainActivity).singlesDb.singleDao().singles(),
             config)
 
         //get token
@@ -109,7 +109,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
                 ?: throw BadTokenException() //TODO: Return to login
         val token = sp.getString("token", null) ?: ""
 
-        livePageListBuilder.setBoundaryCallback(SingleBoundaryCallback(database, token))
+        livePageListBuilder.setBoundaryCallback(SingleBoundaryCallback((activity as MainActivity).singlesDb, token))
         return livePageListBuilder
     }
 

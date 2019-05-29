@@ -33,7 +33,7 @@ import android.os.Environment
 import androidx.core.net.toFile
 import agency.digitera.android.promdate.util.*
 import android.app.Activity.RESULT_CANCELED
-import android.database.Cursor
+import android.os.AsyncTask
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.MemoryPolicy
@@ -262,35 +262,36 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateUser() {
-        val firstName = first_name_edit.text.toString()
-        val lastName = last_name_edit.text.toString()
-        val bio = bio_edit.text.toString()
-        val snapchat = snapchat_edit.text.toString()
-        val instagram = instagram_edit.text.toString()
-        val twitter = twitter_edit.text.toString()
-        val schoolId = 1
-        val grade: Int = try {
+        val updatedUser = User()
+        updatedUser.firstName = first_name_edit.text.toString()
+        updatedUser.lastName = last_name_edit.text.toString()
+        updatedUser.bio = bio_edit.text.toString()
+        updatedUser.snapchat = snapchat_edit.text.toString()
+        updatedUser.instagram = instagram_edit.text.toString()
+        updatedUser.twitter = twitter_edit.text.toString()
+        updatedUser.schoolId = 1
+        updatedUser.grade = try {
             grade_spinner.selectedItem.toString().toInt()
         } catch (e: NumberFormatException) {
             -1
         }
-        val gender: String = gender_spinner.selectedItem.toString()
+        updatedUser.gender = gender_spinner.selectedItem.toString()
 
         //check that all required fields are there & valid
         var missingFields = false
-        if (!isValidName(firstName)) {
+        if (!isValidName(updatedUser.firstName)) {
             first_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
             first_name_edit_wrapper.error = null
         }
-        if (!isValidName(lastName)) {
+        if (!isValidName(updatedUser.lastName)) {
             last_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
             last_name_edit_wrapper.error = null
         }
-        if (schoolId < 0) {
+        if (updatedUser.schoolId < 0) {
             missingFields = true
         } else {
             school_edit_wrapper.error = null
@@ -318,21 +319,20 @@ class SettingsFragment : Fragment() {
         }
 
         val bodyToken = RequestBody.create(MediaType.parse("multipart/form-data"), token)
-        val bodyInsta = RequestBody.create(MediaType.parse("multipart/form-data"), instagram)
-        val bodySnap = RequestBody.create(MediaType.parse("multipart/form-data"), snapchat)
-        val bodyTwitter = RequestBody.create(MediaType.parse("multipart/form-data"), twitter)
-        val bodyBio = RequestBody.create(MediaType.parse("multipart/form-data"), bio)
-        val bodyFirst = RequestBody.create(MediaType.parse("multipart/form-data"), firstName)
-        val bodyLast = RequestBody.create(MediaType.parse("multipart/form-data"), lastName)
-        val bodySchool = RequestBody.create(MediaType.parse("multipart/form-data"), schoolId.toString())
-        val bodyGrade = RequestBody.create(MediaType.parse("multipart/form-data"), grade.toString())
-        val bodyGender = RequestBody.create(MediaType.parse("multipart/form-data"), gender)
+        val bodyInsta = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.instagram ?: "")
+        val bodySnap = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.snapchat ?: "")
+        val bodyTwitter = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.twitter ?: "")
+        val bodyBio = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.bio ?: "")
+        val bodyFirst = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.firstName)
+        val bodyLast = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.lastName)
+        val bodySchool = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.schoolId.toString())
+        val bodyGrade = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.grade.toString())
+        val bodyGender = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.gender ?: "")
 
         //create request
         val call: Call<UpdateResponse> = apiAccessor.apiService.updateUser(
             bodyToken, bodyInsta, bodySnap, bodyTwitter, bodyBio, bodyFirst, bodyLast, bodySchool, bodyGrade, bodyGender, bodyImage
         )
-
 
         val loadingAnim = loading_pb
         loadingAnim.visibility = View.VISIBLE
@@ -350,6 +350,9 @@ class SettingsFragment : Fragment() {
                     ).show()
                 }
                 else {
+                    AsyncTask.execute {
+                        (activity as MainActivity).singlesDb.singleDao().updateUser(updatedUser)
+                    }
                     findNavController().popBackStack()
                 }
             }

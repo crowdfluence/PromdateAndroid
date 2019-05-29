@@ -1,10 +1,7 @@
 package agency.digitera.android.promdate.data
 
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface SingleDao {
@@ -16,4 +13,7 @@ interface SingleDao {
 
     @Query("DELETE FROM User")
     fun clearDatabase()
+
+    @Update
+    fun updateUser(vararg user: User)
 }
