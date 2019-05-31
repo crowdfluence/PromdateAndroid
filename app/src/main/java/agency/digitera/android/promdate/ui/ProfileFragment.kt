@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import agency.digitera.android.promdate.*
 import agency.digitera.android.promdate.data.DefaultResponse
+import agency.digitera.android.promdate.data.FullUser
 import agency.digitera.android.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -30,6 +31,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import agency.digitera.android.promdate.util.ConfirmationDialog
+import android.widget.Toast
 
 
 class ProfileFragment : Fragment() {
@@ -37,8 +39,10 @@ class ProfileFragment : Fragment() {
     private val profileFragmentArgs: ProfileFragmentArgs by navArgs()
     private lateinit var drawerInterface: DrawerInterface
     private var isSelf = false
+    private var selfId = -1
     private var isSelfMatched: Boolean? = null
     private var selfPartnerId: Int? = null
+    private var requestCompleted = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,7 +60,7 @@ class ProfileFragment : Fragment() {
         //sets that there is no right icon if the user is already matched & it's not yourself
         val sp: SharedPreferences =
             context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
-        val selfId = sp.getInt("userId", 0)
+        selfId = sp.getInt("userId", 0)
         isSelf = selfId == profileFragmentArgs.userId || profileFragmentArgs.userId == -1
         if (profileFragmentArgs.isMatched == 0 || isSelf) {
             setHasOptionsMenu(true)
@@ -88,6 +92,7 @@ class ProfileFragment : Fragment() {
             setDisplayShowHomeEnabled(true)
         }
 
+        requestCompleted = isSelf //doesn't need to wait on checkSelf request if profile is own profile
         loadUser()
 
         if (!isSelf) {
@@ -120,24 +125,30 @@ class ProfileFragment : Fragment() {
                 Snackbar.make(constraint_layout, R.string.no_internet,
                     Snackbar.LENGTH_LONG)
                     .show()
-                loading_pb.visibility = View.GONE
-                //TODO: Proper no internet
+                if (requestCompleted) {
+                    loading_pb.visibility = View.GONE
+                }
+                else {
+                    requestCompleted = true
+                }
+                //TODO: Proper no internet page
             }
 
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 val serverResponse = response.body()
                 if (serverResponse != null && serverResponse.status == 200) {
-                    val user: agency.digitera.android.promdate.data.FullUser = serverResponse.result
+                    val user: FullUser = serverResponse.result
 
-                    if (!isSelf && profileFragmentArgs.isMatched == 0) {
-                        send_match_button.visibility = View.VISIBLE
+                    val canSendMatch = !isSelf && profileFragmentArgs.isMatched == 0
+                    if (canSendMatch) {
                         send_match_button.setOnClickListener {
                             match()
                         }
                     }
 
-                    loading_pb.visibility = View.GONE
-                    blank_group.visibility = View.VISIBLE
+                    if (profileFragmentArgs.isMatched == 0 && user.self.partnerId == selfId) {
+                        send_match_button.text = getString(R.string.accept_request)
+                    }
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
@@ -221,12 +232,28 @@ class ProfileFragment : Fragment() {
                     } else {
                         instagram_image.visibility = View.GONE
                     }
+
+                    //show page if other request has completed
+                    if (requestCompleted) {
+                        loading_pb.visibility = View.GONE
+                        send_match_button.visibility = if (canSendMatch) View.VISIBLE else View.GONE
+                        blank_group.visibility = View.VISIBLE
+                        social_media_group.visibility = View.VISIBLE
+                    }
+                    else {
+                        requestCompleted = true
+                    }
                 }
                 else {
                     Snackbar.make(constraint_layout, R.string.unexpected_error,
                         Snackbar.LENGTH_LONG)
                         .show()
-                    loading_pb.visibility = View.GONE
+                    if (requestCompleted) {
+                        loading_pb.visibility = View.GONE
+                    }
+                    else {
+                        requestCompleted = true
+                    }
                 }
             }
         })
@@ -249,6 +276,13 @@ class ProfileFragment : Fragment() {
                     )
                     isSelfMatched = false
                     selfPartnerId = -1
+
+                    if (requestCompleted) {
+                        loading_pb.visibility = View.GONE
+                    }
+                    else {
+                        requestCompleted = true
+                    }
                 }
 
                 override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
@@ -257,16 +291,37 @@ class ProfileFragment : Fragment() {
                         Log.e("CheckSelfMatched", "${response.body()?.status}: ${response.body()?.result}")
                         isSelfMatched = false
                         selfPartnerId = -1
+
+                        if (requestCompleted) {
+                            loading_pb.visibility = View.GONE
+                        }
+                        else {
+                            requestCompleted = true
+                        }
                     }
                     else {
                         isSelfMatched = response.body()?.result?.self?.matched == 1
                         selfPartnerId = response.body()?.result?.self?.partnerId ?: -1
 
+                        //viewing partner's profile
                         if (isSelfMatched == true && profileFragmentArgs.userId == selfPartnerId) {
-                            changeHeart(ContextCompat.getColor(context!!, R.color.heartRed))
+                            send_match_button.text = getString(R.string.unmatch)
                         }
+                        //viewing pending partner's profile
                         else if (profileFragmentArgs.userId == selfPartnerId) {
-                            changeHeart(Color.WHITE)
+                           send_match_button.text = getString(R.string.cancel_request)
+                        }
+
+                        if (requestCompleted) {
+                            loading_pb.visibility = View.GONE
+                            if (profileFragmentArgs.isMatched == 0) {
+                                send_match_button.visibility = View.VISIBLE
+                            }
+                            social_media_group.visibility = View.VISIBLE
+                            blank_group.visibility = View.VISIBLE
+                        }
+                        else {
+                            requestCompleted = true
                         }
                     }
                 }
@@ -300,6 +355,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun match() {
+
+        //change text of send request button
+        if (send_match_button.text == getString(R.string.send_match_request)) {
+            send_match_button.text = getString(R.string.cancel_request)
+        }
+        else if (send_match_button.text == getString(R.string.cancel_request)) {
+            send_match_button.text = getString(R.string.send_match_request)
+        }
 
         //ensures that user data has been received from server before proceeding
         if (selfPartnerId == null || isSelfMatched == null) {
@@ -371,6 +434,14 @@ class ProfileFragment : Fragment() {
                         R.string.match_error,
                         Snackbar.LENGTH_LONG
                     ).show()
+
+                    //change text of send request button back if fail
+                    if (send_match_button.text == getString(R.string.send_match_request)) {
+                        send_match_button.text = getString(R.string.cancel_request)
+                    }
+                    else if (send_match_button.text == getString(R.string.cancel_request)) {
+                        send_match_button.text = getString(R.string.send_match_request)
+                    }
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
@@ -382,6 +453,14 @@ class ProfileFragment : Fragment() {
                             R.string.match_error,
                             Snackbar.LENGTH_LONG
                         ).show()
+
+                        //change text of send request button back if fail
+                        if (send_match_button.text == getString(R.string.send_match_request)) {
+                            send_match_button.text = getString(R.string.cancel_request)
+                        }
+                        else if (send_match_button.text == getString(R.string.cancel_request)) {
+                            send_match_button.text = getString(R.string.send_match_request)
+                        }
 
                     } else { //success
                         //TODO: Make message more "human"

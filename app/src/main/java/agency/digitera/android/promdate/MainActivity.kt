@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import agency.digitera.android.promdate.ui.FeedFragmentDirections
+import agency.digitera.android.promdate.util.ConfirmationDialog
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -75,10 +76,20 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                     drawer_layout.closeDrawer(GravityCompat.START)
                 }
                 R.id.nav_logout -> {
-                    val sp: SharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                    sp.edit().putString("token", null).apply()
+                    val dialog = ConfirmationDialog(getString(R.string.confirm_logout)).apply {
+                        setPositiveClick {
+                            val sp: SharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                            sp.edit().putString("token", null).apply()
 
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
+                            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
+                        }
+                    }.also {
+                        it.show(
+                            supportFragmentManager,
+                            "confirm_logout_dialog_fragment"
+                        )
+                    }
+
                 }
                 R.id.nav_settings -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_settings)

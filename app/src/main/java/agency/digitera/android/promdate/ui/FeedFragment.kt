@@ -127,7 +127,7 @@ class FeedFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        activity?.menuInflater?.inflate(R.menu.menu_feed_appbar, menu)
+        activity?.menuInflater?.inflate(R.menu.menu_feed, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

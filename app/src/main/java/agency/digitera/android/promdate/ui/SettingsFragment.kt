@@ -64,6 +64,11 @@ class SettingsFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         drawerInterface.lockDrawer()
         return inflater.inflate(R.layout.fragment_settings, container, false)
@@ -107,11 +112,6 @@ class SettingsFragment : Fragment() {
         val gradeSpinner: Spinner = grade_spinner
         gradeSpinner.adapter = gradeAdapter
         gradeSpinner.setSelection(gradeAdapter.count)
-
-        //set up save button
-        save_button.setOnClickListener {
-            updateUser()
-        }
 
         //set up change profile picture
         profile_picture_image.setOnClickListener {
@@ -526,6 +526,20 @@ class SettingsFragment : Fragment() {
         startActivityForResult(pickPhoto,
             PICK_IMAGE_GALLERY_REQUEST_CODE
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        activity?.menuInflater?.inflate(R.menu.menu_settings, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    //controls what happens when button on toolbar is selected
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //checks to make sure it was not the back button pressed
+        if (item.itemId == R.id.action_save) {
+            updateUser()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun snackbar(msg: String) {

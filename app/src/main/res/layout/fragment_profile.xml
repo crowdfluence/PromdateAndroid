@@ -181,4 +181,11 @@
         android:visibility="gone"
         app:constraint_referenced_ids="name_text,grade_text,school_text,bio_text,relationship_text,profile_picture_image" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/social_media_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="instagram_image, twitter_image, snapchat_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

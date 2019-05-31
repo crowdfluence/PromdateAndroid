@@ -68,7 +68,7 @@ class SplashFragment : Fragment() {
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     //failed to connect to server
-                    findNavController().navigate(R.id.nav_login)
+                    //TODO: No internet page
                 }
             })
         }

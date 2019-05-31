@@ -284,18 +284,6 @@
                 app:layout_constraintStart_toEndOf="@+id/current_partner_text"
                 app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
 
-            <Button
-                android:id="@+id/save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="@dimen/edge_margin"
-                android:text="@string/save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/current_partner_text" />
-
             <ProgressBar
                 android:id="@+id/loading_pb"
                 style="?android:attr/progressBarStyle"

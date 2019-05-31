@@ -53,6 +53,7 @@
     <string name="your_profile">Your profile</string>
     <string name="match_error">Failed to send match request! Please try again later.</string>
     <string name="action_edit">Edit your profile</string>
+    <string name="action_save">Save your changes</string>
     <string name="bio">Bio</string>
     <string name="instagram">Instagram</string>
     <string name="snapchat">Snapchat</string>
@@ -90,6 +91,11 @@
     <string name="currently_matched">Currently matched with %s %s</string>
     <string name="remove">Remove</string>
     <string name="invalid_name">This name is invalid.</string>
+    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="cancel_request">Cancel request</string>
+    <string name="unmatch">Unmatch</string>
+    <string name="accept_request">Accept Request</string>
+    <string name="no_notifications">You don\'t have any unread notifications or pending match requests.</string>
 
     <string-array name="genders_array">
         <item>Male</item>

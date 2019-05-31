@@ -113,6 +113,7 @@ class NotificationsFragment : Fragment() {
                     constraint_layout, R.string.no_internet,
                     Snackbar.LENGTH_LONG
                 ).show()
+                //TODO: No internet page
             }
 
             override fun onResponse(call: Call<NotificationResponse>, response: Response<NotificationResponse>) {
@@ -125,11 +126,21 @@ class NotificationsFragment : Fragment() {
 
                     viewAdapter.notifyDataSetChanged()
 
+                    if (notifications.size == 0) {
+                        no_notifications.visibility = View.VISIBLE
+                        notification_recycler.visibility = View.GONE
+                    }
+                    else {
+                        no_notifications.visibility = View.GONE
+                        notification_recycler.visibility = View.VISIBLE
+                    }
+
                 } else {
                     Snackbar.make(
                         constraint_layout, R.string.unexpected_error,
                         Snackbar.LENGTH_LONG
                     ).show()
+                    //TODO: Something went wrong page
                 }
             }
         })
@@ -139,7 +150,7 @@ class NotificationsFragment : Fragment() {
         //open user profile
         val action = NotificationsFragmentDirections.navProfile(
             notification.body[0].sender.id,
-            0,
+            notification.body[0].sender.matched,
             notification.body[0].sender.firstName + " " + notification.body[0].sender.lastName
         )
         findNavController().navigate(action)

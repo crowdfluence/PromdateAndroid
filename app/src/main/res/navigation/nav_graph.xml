@@ -34,7 +34,7 @@
             android:id="@+id/nav_feed"
             app:destination="@id/feedFragment"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -112,7 +112,7 @@
         android:id="@+id/settingsFragment"
         android:name="agency.digitera.android.promdate.ui.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/notificationsFragment"
@@ -138,4 +138,9 @@
                 app:nullable="true" />
         </action>
     </fragment>
+    <action
+        android:id="@+id/nav_logout"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/loginFragment"
+        app:popUpToInclusive="false"/>
 </navigation>

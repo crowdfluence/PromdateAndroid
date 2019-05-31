@@ -22,6 +22,9 @@ import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.data.Couple
 import agency.digitera.android.promdate.data.CoupleBoundaryCallback
 import agency.digitera.android.promdate.util.CheckInternet
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
@@ -67,7 +70,12 @@ class CouplesTabFragment : Fragment(), TabInterface {
             .setEnablePlaceholders(false)
             .build()
 
-        liveData = initializedPagedListBuilder(config).build()
+        try {
+            liveData = initializedPagedListBuilder(config).build()
+        }
+        catch (e: BadTokenException) {
+            return
+        }
 
         liveData.observe(this, Observer<PagedList<Couple>> { pagedList ->
             viewAdapter.submitList(pagedList)
@@ -88,27 +96,37 @@ class CouplesTabFragment : Fragment(), TabInterface {
                 }
             }
             else {
-                //TODO: Error message
+                Snackbar.make(
+                    constraint_layout,
+                    R.string.no_internet,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                swipe_refresh.isRefreshing = false
             }
         }
     }
 
+    @Throws(BadTokenException::class)
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, Couple> {
 
         val livePageListBuilder = LivePagedListBuilder<Int, Couple>(
             (activity as MainActivity).couplesDb.coupleDao().couples(),
-            config)
+            config
+        )
 
         //get token
         val sp: SharedPreferences =
             context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                ?: throw BadTokenException() //TODO: Return to login
+                ?: run {
+                    val navOptions = NavOptions.Builder().setPopUpTo(R.id.feedFragment, true).build()
+                    findNavController().navigate(R.id.nav_logout, null, navOptions)
+                    throw BadTokenException()
+                }
         val token = sp.getString("token", null) ?: ""
 
         livePageListBuilder.setBoundaryCallback(CoupleBoundaryCallback((activity as MainActivity).couplesDb, token))
         return livePageListBuilder
-
     }
 
     private fun onCouplesClick(couple: Couple) {

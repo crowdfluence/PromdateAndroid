@@ -32,7 +32,7 @@ class ConfirmationDialog(private val msg: String) : DialogFragment(), View.OnCli
     }
 
     fun setNegativeClick(func: () -> Unit) {
-        positiveClick = func
+        negativeClick = func
     }
 
     override fun onClick(v: View?) {
