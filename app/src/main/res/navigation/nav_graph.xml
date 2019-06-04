@@ -83,6 +83,9 @@
         <action
             android:id="@+id/nav_notifications"
             app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/nav_invite"
+            app:destination="@id/inviteFragment" />
     </fragment>
 
     <fragment
@@ -142,5 +145,10 @@
         android:id="@+id/nav_logout"
         app:destination="@id/loginFragment"
         app:popUpTo="@id/loginFragment"
-        app:popUpToInclusive="false"/>
+        app:popUpToInclusive="false" />
+    <fragment
+        android:id="@+id/inviteFragment"
+        android:name="agency.digitera.android.promdate.ui.InviteFragment"
+        android:label="InviteFragment"
+        tools:layout="@layout/fragment_invite" />
 </navigation>

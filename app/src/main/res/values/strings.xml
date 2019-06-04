@@ -96,6 +96,10 @@
     <string name="unmatch">Unmatch</string>
     <string name="accept_request">Accept Request</string>
     <string name="no_notifications">You don\'t have any unread notifications or pending match requests.</string>
+    <string name="require_email_authentication">You must verify your email before you can login.</string>
+    <string name="invite">Invite Friends</string>
+    <string name="invite_friend_desc">Have friends going to prom who don\'t have the app? Click the button below and send them an invite!</string>
+    <string name="invite_a_friend">Invite a friend!</string>
 
     <string-array name="genders_array">
         <item>Male</item>

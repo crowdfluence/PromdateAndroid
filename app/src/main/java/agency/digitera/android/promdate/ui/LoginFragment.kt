@@ -81,9 +81,18 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(R.id.nav_feed)
 
                 } else {
-                    Snackbar.make(constraint_layout, R.string.failed_login,
-                            Snackbar.LENGTH_LONG)
-                            .show()
+                    if (response.body()?.result == "Invalid credentials") {
+                        Snackbar.make(
+                            constraint_layout, R.string.failed_login,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    else {
+                        Snackbar.make(
+                            constraint_layout, getString(R.string.require_email_authentication),
+                            Snackbar.LENGTH_LONG
+                        )
+                    }
 
                     loadingAnim.visibility = View.GONE
                 }

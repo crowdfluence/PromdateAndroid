@@ -97,6 +97,9 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                 R.id.nav_notifications -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_notifications)
                 }
+                R.id.nav_invite -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.nav_invite)
+                }
             }
             true
         }

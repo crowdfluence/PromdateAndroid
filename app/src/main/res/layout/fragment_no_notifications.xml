@@ -20,9 +20,9 @@
 
     <TextView
         android:id="@+id/no_notif_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/horizontal_spacing"
+        android:layout_marginStart="@dimen/large_horizontal_spacing"
         android:layout_marginTop="@dimen/edge_margin"
         android:layout_marginEnd="@dimen/edge_margin"
         android:text="@string/no_notifications"

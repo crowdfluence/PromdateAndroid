@@ -4,7 +4,7 @@
     tools:context="agency.digitera.android.promdate.agency.digitera.android.promdate.ui.ProfileFragment">
 
     <item
-        android:id="@+id/action_match"
+        android:id="@+id/action_favourite"
         android:icon="@drawable/ic_heart_border"
         android:orderInCategory="300"
         android:title="@string/action_match"

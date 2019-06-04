@@ -67,7 +67,9 @@ class SplashFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                    //failed to connect to server
+                    /*failed to connect to server
+                    note: do not delete token here or navigate to login, as the token could still work, the client
+                    just doesn't have internet access */
                     //TODO: No internet page
                 }
             })

@@ -31,7 +31,6 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import agency.digitera.android.promdate.util.ConfirmationDialog
-import android.widget.Toast
 
 
 class ProfileFragment : Fragment() {
@@ -339,11 +338,11 @@ class ProfileFragment : Fragment() {
     //controls what happens when button on toolbar is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //checks to make sure it was not the back button pressed
-        if (item.itemId == R.id.action_match || item.itemId == R.id.action_edit)
+        if (item.itemId == R.id.action_favourite || item.itemId == R.id.action_edit)
             //switch depending on whether it is another user's profile or your own
             when (isSelf) {
                 true -> findNavController().navigate(R.id.nav_settings)
-                false -> match()
+                false -> favourite()
             }
         return super.onOptionsItemSelected(item)
     }
