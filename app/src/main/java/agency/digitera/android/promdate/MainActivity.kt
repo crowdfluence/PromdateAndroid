@@ -76,15 +76,15 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                     drawer_layout.closeDrawer(GravityCompat.START)
                 }
                 R.id.nav_logout -> {
-                    val dialog = ConfirmationDialog(getString(R.string.confirm_logout)).apply {
+                    ConfirmationDialog(getString(R.string.confirm_logout)).apply {
                         setPositiveClick {
                             val sp: SharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
                             sp.edit().putString("token", null).apply()
 
                             findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)
                         }
-                    }.also {
-                        it.show(
+                    }.also { dialog ->
+                        dialog.show(
                             supportFragmentManager,
                             "confirm_logout_dialog_fragment"
                         )

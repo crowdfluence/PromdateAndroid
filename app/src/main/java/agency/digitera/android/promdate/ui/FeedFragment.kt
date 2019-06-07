@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_feed.*
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,6 +13,7 @@ import agency.digitera.android.promdate.util.ApiAccessor
 import agency.digitera.android.promdate.DrawerInterface
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.UserResponse
+import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -105,7 +105,7 @@ class FeedFragment : Fragment() {
     }
 
     inner class TabAdapter(fm: FragmentManager) :
-        FragmentPagerAdapter(fm) {
+        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when (position) {

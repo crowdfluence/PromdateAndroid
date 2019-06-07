@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profile_picture_image"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginBottom="@dimen/vertical_spacing"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/first_name_edit_wrapper"
+                app:layout_constraintBottom_toTopOf="@id/bio_edit_wrapper"
+                app:srcCompat="@drawable/default_profile" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/first_name_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/edge_margin"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="false"
+                app:layout_constraintBottom_toTopOf="@id/last_name_edit_wrapper"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_picture_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_name_edit"
+                    style="@style/loginEditText"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName"
+                    android:maxLength="190"
+                    android:theme="@style/EditText"
+                    tools:text="John" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                android:layout_marginBottom="@dimen/vertical_spacing"
+                app:errorEnabled="false"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_picture_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_picture_image"
+                app:layout_constraintTop_toBottomOf="@id/first_name_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/last_name_edit"
+                    style="@style/loginEditText"
+                    android:hint="@string/last_name"
+                    android:inputType="textPersonName"
+                    android:maxLength="190"
+                    android:theme="@style/EditText"
+                    tools:text="Smith" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bio_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/last_name_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bio_edit"
+                    style="@style/loginEditText"
+                    android:hint="@string/bio"
+                    android:inputType="textMultiLine"
+                    android:maxLength="190"
+                    android:theme="@style/EditText"
+                    tools:text="I'm an incredibly intelligent individual. Please do not attempt to match with me if your IQ is below 150." />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/instagram_image"
+                android:layout_width="48dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="@+id/instagram_edit_wrapper"
+                app:layout_constraintEnd_toStartOf="@id/instagram_edit_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/instagram_edit_wrapper"
+                app:srcCompat="@drawable/instagram_logo" />
+
+            <ImageView
+                android:id="@+id/snapchat_image"
+                android:layout_width="48dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="@+id/snapchat_edit_wrapper"
+                app:layout_constraintEnd_toStartOf="@id/snapchat_edit_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/snapchat_edit_wrapper"
+                app:srcCompat="@drawable/snapchat_logo" />
+
+            <ImageView
+                android:id="@+id/twitter_image"
+                android:layout_width="48dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginBottom="@dimen/vertical_spacing"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="@+id/twitter_edit_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/twitter_edit_wrapper"
+                app:srcCompat="@drawable/twitter_logo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/instagram_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/instagram_image"
+                app:layout_constraintTop_toBottomOf="@+id/bio_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/instagram_edit"
+                    style="@style/loginEditText"
+                    android:drawableStart="@drawable/at_sign"
+                    android:hint="@string/instagram"
+                    android:maxLength="30"
+                    android:theme="@style/EditText" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/snapchat_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/small_vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/snapchat_image"
+                app:layout_constraintTop_toBottomOf="@+id/instagram_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/snapchat_edit"
+                    style="@style/loginEditText"
+                    android:hint="@string/snapchat"
+                    android:maxLength="15"
+                    android:theme="@style/EditText" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/twitter_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginTop="@dimen/small_vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/twitter_image"
+                app:layout_constraintTop_toBottomOf="@+id/snapchat_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/twitter_edit"
+                    style="@style/loginEditText"
+                    android:drawableStart="@drawable/at_sign"
+                    android:hint="@string/twitter"
+                    android:maxLength="15"
+                    android:theme="@style/EditText" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/school_edit_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/vertical_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/twitter_edit_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/school_edit"
+                    style="@style/loginEditText"
+                    android:hint="@string/school"
+                    android:inputType="textNoSuggestions|textPersonName"
+                    android:theme="@style/EditText" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/gender_spinner"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/small_vertical_spacing"
+                android:prompt="@string/select_gender"
+                app:layout_constraintEnd_toStartOf="@+id/grade_spinner"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/school_edit_wrapper" />
+
+            <Spinner
+                android:id="@+id/grade_spinner"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="@dimen/horizontal_spacing"
+                android:layout_marginEnd="@dimen/edge_margin"
+                android:prompt="@string/select_grade"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gender_spinner"
+                app:layout_constraintTop_toTopOf="@+id/gender_spinner" />
+
+            <TextView
+                android:id="@+id/current_partner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/currently_matched"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/unmatch_partner_button"
+                app:layout_constraintEnd_toStartOf="@+id/unmatch_partner_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/unmatch_partner_button" />
+
+            <Button
+                android:id="@+id/unmatch_partner_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/remove"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/current_partner_text"
+                app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
+
+            <ProgressBar
+                android:id="@+id/loading_pb"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/edge_margin"
+                android:layout_marginTop="@dimen/edge_margin"
+                android:layout_marginEnd="@dimen/edge_margin"
+                android:layout_marginBottom="@dimen/edge_margin"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.25" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

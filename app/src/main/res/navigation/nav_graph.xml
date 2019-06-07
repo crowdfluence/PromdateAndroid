@@ -13,11 +13,15 @@
         <action
             android:id="@+id/nav_feed"
             app:destination="@id/feedFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/nav_login"
             app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -29,7 +33,11 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/nav_register"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/nav_feed"
             app:destination="@id/feedFragment"
@@ -45,6 +53,8 @@
         <action
             android:id="@+id/nav_login"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -86,6 +96,22 @@
         <action
             android:id="@+id/nav_invite"
             app:destination="@id/inviteFragment" />
+        <action
+            android:id="@+id/nav_couples_profile"
+            app:destination="@id/couplesProfileFragment">
+            <argument
+                android:name="user1Id"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="user2Id"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="userNames"
+                android:defaultValue=" "
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -151,4 +177,39 @@
         android:name="agency.digitera.android.promdate.ui.InviteFragment"
         android:label="InviteFragment"
         tools:layout="@layout/fragment_invite" />
+    <fragment
+        android:id="@+id/couplesProfileFragment"
+        android:name="agency.digitera.android.promdate.ui.CouplesProfileFragment"
+        android:label="CouplesProfileFragment"
+        tools:layout="@layout/fragment_couple">
+        <argument
+            android:name="user1Id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="user2Id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="userNames"
+            android:defaultValue=" "
+            app:argType="string" />
+        <action
+            android:id="@+id/nav_profile"
+            app:destination="@id/profileFragment">
+            <argument
+                android:name="userId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="isMatched"
+                android:defaultValue="0"
+                app:argType="integer" />
+            <argument
+                android:name="userName"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+    </fragment>
 </navigation>

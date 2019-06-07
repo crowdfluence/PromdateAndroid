@@ -81,6 +81,7 @@ class SettingsFragment : Fragment() {
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.edit_profile)
+        toolbar.setNavigationIcon(R.drawable.ic_close)
         appCompatActivity.setSupportActionBar(toolbar)
 
         //set up back arrow

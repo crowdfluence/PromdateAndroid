@@ -7,4 +7,161 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="agency.digitera.android.promdate.ui.ProfileFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name_1_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@id/name_2_text"
+        app:layout_constraintStart_toStartOf="@id/profile_picture_1_image"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="John Smith" />
+
+    <TextView
+        android:id="@+id/name_2_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_spacing"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@id/profile_picture_2_image"
+        app:layout_constraintStart_toEndOf="@id/name_1_text"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="Mary Doe" />
+
+    <ImageView
+        android:id="@+id/profile_picture_1_image"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="@dimen/edge_margin"
+        android:layout_marginEnd="128dp"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_1_text"
+        app:srcCompat="@drawable/default_profile" />
+
+    <ImageView
+        android:id="@+id/profile_picture_2_image"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="@dimen/edge_margin"
+        android:layout_marginEnd="24dp"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_2_text"
+        app:srcCompat="@drawable/default_profile" />
+
+    <TextView
+        android:id="@+id/school_1_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:text="@string/school_location"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@id/school_2_text"
+        app:layout_constraintStart_toStartOf="@id/profile_picture_1_image"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture_1_image"
+        tools:text="Merivale High School, Ottawa" />
+
+    <TextView
+        android:id="@+id/school_2_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_spacing"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:text="@string/school_location"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@id/profile_picture_2_image"
+        app:layout_constraintStart_toEndOf="@id/school_1_text"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture_2_image"
+        tools:text="Merivale High School, Ottawa" />
+
+    <TextView
+        android:id="@+id/grade_1_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:text="@string/grade_variable"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@id/grade_2_text"
+        app:layout_constraintStart_toStartOf="@id/profile_picture_1_image"
+        app:layout_constraintTop_toBottomOf="@+id/school_1_text"
+        tools:text="Grade 12" />
+
+    <TextView
+        android:id="@+id/grade_2_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:text="@string/grade_variable"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@id/profile_picture_2_image"
+        app:layout_constraintStart_toEndOf="@id/grade_1_text"
+        app:layout_constraintTop_toBottomOf="@+id/school_2_text"
+        tools:text="Grade 12" />
+
+    <Button
+        android:id="@+id/limo_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_limo_group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/grade_1_text"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <ProgressBar
+        android:id="@+id/loading_pb"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="@dimen/vertical_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintWidth_percent="0.25"
+        tools:visibility="gone" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/blank_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids=",grade_2_text,limo_group_button,name_1_text,profile_picture_2_image,school_2_text,grade_1_text,name_2_text,school_1_text,profile_picture_1_image"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

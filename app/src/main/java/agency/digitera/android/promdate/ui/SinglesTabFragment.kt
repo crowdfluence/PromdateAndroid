@@ -21,6 +21,7 @@ import agency.digitera.android.promdate.data.SingleBoundaryCallback
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.CheckInternet
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavOptions
 import com.google.android.material.snackbar.Snackbar
@@ -62,7 +63,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
     private fun initializeList() {
         val config = PagedList.Config.Builder()
-            .setPageSize(8)
+            .setPageSize(16)
             .setEnablePlaceholders(false)
             .build()
 

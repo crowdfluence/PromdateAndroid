@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_invite.*
 
@@ -45,5 +46,17 @@ class InviteFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        invite_button.setOnClickListener {
+            invite(it)
+        }
+    }
+
+    private fun invite(view: View) {
+        ShareCompat.IntentBuilder.from(activity)
+            .setType("text/plain")
+            .setChooserTitle(getString(R.string.invite_chooser))
+            .setText(getString(R.string.invite_message))
+            .startChooser()
     }
 }

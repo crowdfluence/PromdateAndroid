@@ -130,6 +130,18 @@ class CouplesTabFragment : Fragment(), TabInterface {
     }
 
     private fun onCouplesClick(couple: Couple) {
-        //open couples profile
+        //open couples page
+        val action = FeedFragmentDirections.navCouplesProfile(
+            couple.user1.id,
+            couple.user2.id,
+            getString(
+                R.string.couple_name,
+                couple.user1.firstName,
+                couple.user1.lastName[0],
+                couple.user2.firstName,
+                couple.user2.lastName[0]
+            )
+        )
+        findNavController().navigate(action)
     }
 }

@@ -42,6 +42,7 @@ class ProfileFragment : Fragment() {
     private var isSelfMatched: Boolean? = null
     private var selfPartnerId: Int? = null
     private var requestCompleted = false
+    private var hasPartner = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -159,8 +160,8 @@ class ProfileFragment : Fragment() {
                     if (user.partner == null) {
                         relationship_text.text = context?.getString(R.string.single)
                     } else {
+                        hasPartner = true
                         relationship_text.text = context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
-                        partner_picture_image.visibility = View.VISIBLE
                         LoadUrl.loadUrl(context!!, partner_picture_image, user.partner?.profilePictureUrl ?: "")
                     }
                     bio_text.text = user.self.bio
@@ -236,6 +237,7 @@ class ProfileFragment : Fragment() {
                     if (requestCompleted) {
                         loading_pb.visibility = View.GONE
                         send_match_button.visibility = if (canSendMatch) View.VISIBLE else View.GONE
+                        partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                         blank_group.visibility = View.VISIBLE
                         social_media_group.visibility = View.VISIBLE
                     }
@@ -316,6 +318,7 @@ class ProfileFragment : Fragment() {
                             if (profileFragmentArgs.isMatched == 0) {
                                 send_match_button.visibility = View.VISIBLE
                             }
+                            partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                             social_media_group.visibility = View.VISIBLE
                             blank_group.visibility = View.VISIBLE
                         }

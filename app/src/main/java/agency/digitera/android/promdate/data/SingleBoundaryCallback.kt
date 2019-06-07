@@ -37,7 +37,7 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                             db.singleDao().insert(singles ?: listOf())
                             helperCallback.recordSuccess()
                         }
-                        maxLoaded = 30
+                        maxLoaded = singles?.size ?: 0
                     }
                 })
         }
@@ -64,14 +64,15 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                             db.singleDao().insert(singles ?: listOf())
                             helperCallback.recordSuccess()
                         }
-                        maxLoaded += PAGE_SIZE
+                        maxLoaded += singles?.size ?: 0
+                        Log.d("SingleBoundaryCallback", "Database size: ${singles?.size}, Max loaded: $maxLoaded")
                     }
                 })
         }
     }
 
     companion object {
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 16
         var maxLoaded = 0
     }
 }
