@@ -41,10 +41,4 @@ class AddPhotoDialogFragment : BottomSheetDialogFragment(), View.OnClickListener
             R.id.from_camera_text -> cameraOnClick()
         }
     }
-
-    companion object {
-        fun newInstance(): AddPhotoDialogFragment {
-            return AddPhotoDialogFragment()
-        }
-    }
 }

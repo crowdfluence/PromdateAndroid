@@ -21,7 +21,10 @@ import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.data.Couple
 import agency.digitera.android.promdate.data.CoupleBoundaryCallback
+import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.CheckInternet
+import agency.digitera.android.promdate.util.CoupleDialogFragment
+import android.util.Log
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -130,18 +133,26 @@ class CouplesTabFragment : Fragment(), TabInterface {
     }
 
     private fun onCouplesClick(couple: Couple) {
-        //open couples page
-        val action = FeedFragmentDirections.navCouplesProfile(
-            couple.user1.id,
-            couple.user2.id,
-            getString(
-                R.string.couple_name,
-                couple.user1.firstName,
-                couple.user1.lastName[0],
-                couple.user2.firstName,
-                couple.user2.lastName[0]
+
+        //create function to run on user selection
+        val onUserSelected = fun(user: User) {
+            //create action to go to singles page for selected user
+            val action = FeedFragmentDirections.navProfile(
+                user.id,
+                1,
+                getString(R.string.full_name, user.firstName, user.lastName)
             )
-        )
-        findNavController().navigate(action)
+            findNavController().navigate(action)
+        }
+
+        //create dialog
+        CoupleDialogFragment(couple).apply {
+            onPartnerClick = onUserSelected
+        }.also { dialog ->
+            dialog.show(
+                fragmentManager ?: throw Exception("Fragment manager not found"),
+                "couple_dialog_fragment"
+            )
+        }
     }
 }

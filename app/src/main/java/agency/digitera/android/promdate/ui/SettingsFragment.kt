@@ -548,7 +548,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showImagePickerDialog() {
-        AddPhotoDialogFragment.newInstance().apply {
+        AddPhotoDialogFragment().apply {
             setOnCameraClick { openCamera() }
             setOnGalleryClick { openGallery() }
         }.also { dialog ->

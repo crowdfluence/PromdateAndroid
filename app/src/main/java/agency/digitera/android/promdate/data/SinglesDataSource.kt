@@ -1,3 +1,5 @@
+/**This class is no longer in use and has been replaced by the singleDb, singleDao, and singleBoundaryCallback. **/
+
 /*package agency.digitera.android.promdate.data
 
 import androidx.paging.PositionalDataSource

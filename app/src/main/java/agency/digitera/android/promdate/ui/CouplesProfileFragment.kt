@@ -1,3 +1,7 @@
+/**This fragment is no longer in use and has been replaced by the CoupleDialogFragment. It is being kept in case the
+ * changes need to be reverted. **/
+
+/*
 package agency.digitera.android.promdate.ui
 
 import android.content.Context
@@ -157,3 +161,4 @@ class CouplesProfileFragment : Fragment() {
     }
 }
 
+*/

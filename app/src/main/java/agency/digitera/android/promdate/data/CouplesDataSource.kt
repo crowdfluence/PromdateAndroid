@@ -1,3 +1,7 @@
+/**This class is no longer in use and has been replaced by the coupleDb, coupleDao, and coupleBoundaryCallback. **/
+
+
+/*
 package agency.digitera.android.promdate.data
 
 import androidx.paging.PositionalDataSource
@@ -57,4 +61,4 @@ class CouplesDataSource(private val token: String) : PositionalDataSource<List<U
             }
         })
     }
-}
+}*/
