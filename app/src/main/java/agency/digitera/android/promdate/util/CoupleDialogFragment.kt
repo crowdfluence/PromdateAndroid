@@ -8,10 +8,11 @@ import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.Couple
 import agency.digitera.android.promdate.data.User
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_couple.*
 
 
-class CoupleDialogFragment(private val couple: Couple) : DialogFragment(), View.OnClickListener {
+class CoupleDialogFragment(private val couple: Couple) : BottomSheetDialogFragment(), View.OnClickListener {
 
     var onPartnerClick: (User) -> Unit = {}
 

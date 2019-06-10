@@ -24,14 +24,12 @@ import agency.digitera.android.promdate.data.CoupleBoundaryCallback
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.CheckInternet
 import agency.digitera.android.promdate.util.CoupleDialogFragment
-import android.util.Log
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
-
 
 class CouplesTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
