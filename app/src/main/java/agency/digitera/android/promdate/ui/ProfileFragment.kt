@@ -31,6 +31,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import agency.digitera.android.promdate.util.ConfirmationDialog
+import agency.digitera.android.promdate.util.MissingSpException
 
 
 class ProfileFragment : Fragment() {
@@ -43,6 +44,7 @@ class ProfileFragment : Fragment() {
     private var selfPartnerId: Int? = null
     private var requestCompleted = false
     private var hasPartner = false
+    private var isFavourited = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,9 +64,7 @@ class ProfileFragment : Fragment() {
             context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
         selfId = sp.getInt("userId", 0)
         isSelf = selfId == profileFragmentArgs.userId || profileFragmentArgs.userId == -1
-        if (profileFragmentArgs.isMatched == 0 || isSelf) {
-            setHasOptionsMenu(true)
-        }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -351,9 +351,56 @@ class ProfileFragment : Fragment() {
     }
 
     private fun favourite() {
-        val isFavourited = false
-
         changeHeart(if (isFavourited) null else Color.WHITE)
+
+        val accessor = ApiAccessor()
+        val sp: SharedPreferences =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+        val token = sp.getString("token", null) ?: ""
+
+        val call = accessor.apiService.favourite(token, profileFragmentArgs.userId, if (isFavourited) 1 else 0)
+
+        call.enqueue(object : Callback<DefaultResponse> {
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Log.e(
+                    "FavouriteUser",
+                    "Failed to send match request! ${t.javaClass.canonicalName}: ${t.message}"
+                )
+                Snackbar.make(
+                    constraint_layout,
+                    R.string.favourite_error,
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+                //change colour back if fail
+                changeHeart(if (isFavourited) Color.WHITE else null)
+            }
+
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.body()?.status != 200) { //something went wrong, but server received request
+                    //Add to wishlist failed
+                    Log.e("FavouriteUser", "${response.body()?.status}: ${response.body()?.result}")
+                    Snackbar.make(
+                        constraint_layout,
+                        R.string.favourite_error,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+
+                    //change colour back if fail
+                    changeHeart(if (isFavourited) Color.WHITE else null)
+
+                } else { //success
+                    //TODO: Make message more "human"
+                    Snackbar.make(
+                        constraint_layout,
+                        response.body()?.result ?: "",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+
+                    isFavourited = !isFavourited
+                }
+            }
+        })
     }
 
     private fun match() {

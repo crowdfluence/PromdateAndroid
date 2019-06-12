@@ -27,6 +27,7 @@
     <string name="register_success">Successfully registered account! Please verify your email, then sign in.</string>
     <string name="singles">Singles</string>
     <string name="couples">Couples</string>
+    <string name="wishlist">Wishlist</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="action_match">Match with this user</string>
@@ -52,6 +53,7 @@
     <string name="unexpected_error">An unexpected error has occurred.</string>
     <string name="your_profile">Your profile</string>
     <string name="match_error">Failed to send match request! Please try again later.</string>
+    <string name="favourite_error">Failed to favourite user! Please try again later.</string>
     <string name="action_edit">Edit your profile</string>
     <string name="action_save">Save your changes</string>
     <string name="bio">Bio</string>

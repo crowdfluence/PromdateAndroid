@@ -1,4 +1,4 @@
-package agency.digitera.android.promdate
+package agency.digitera.android.promdate.util
 
 class BadTokenException : Exception("Failed to authenticate token")
 

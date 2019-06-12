@@ -47,6 +47,7 @@ interface ServerInterface {
                 @Query("max-size") maxUsers: Int,
                 @Query("single-offset") singlesOffset: Int? = null,
                 @Query("couple-offset") couplesOffset: Int? = null,
+                @Query("wishlist-offset") wishlistOffset: Int? = null,
                 @Query("school-id") schoolId: Int? = null,
                 @Query("name") name: String? = null,
                 @Query("gender") gender: String? = null,
@@ -69,6 +70,13 @@ interface ServerInterface {
     @FormUrlEncoded
     fun matchUser(@Field("token") token: String,
                   @Field("partner-id") partnerId: Int,
+                  @Field("action") action: Int): Call<DefaultResponse>
+
+    //favourite user
+    @POST("php/changeWishlist.php")
+    @FormUrlEncoded
+    fun favourite(@Field("token") token: String,
+                  @Field("wish-id") targetId: Int,
                   @Field("action") action: Int): Call<DefaultResponse>
 
     //get notifications

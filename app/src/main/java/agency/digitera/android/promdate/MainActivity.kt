@@ -2,6 +2,7 @@ package agency.digitera.android.promdate
 
 import agency.digitera.android.promdate.data.CoupleDb
 import agency.digitera.android.promdate.data.SingleDb
+import agency.digitera.android.promdate.data.WishlistDb
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), DrawerInterface {
 
     lateinit var singlesDb: SingleDb
+    lateinit var wishlistDb: WishlistDb
     lateinit var couplesDb: CoupleDb
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
         setContentView(R.layout.activity_main)
 
         singlesDb = SingleDb.create(this)
+        wishlistDb = WishlistDb.create(this)
         couplesDb = CoupleDb.create(this)
     }
 

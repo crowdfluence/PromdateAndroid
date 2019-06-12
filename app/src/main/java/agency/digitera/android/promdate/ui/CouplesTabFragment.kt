@@ -14,7 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import agency.digitera.android.promdate.BadTokenException
+import agency.digitera.android.promdate.util.BadTokenException
 import agency.digitera.android.promdate.MainActivity
 import agency.digitera.android.promdate.adapters.CoupleAdapter
 import agency.digitera.android.promdate.R

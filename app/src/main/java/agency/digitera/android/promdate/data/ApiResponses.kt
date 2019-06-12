@@ -13,8 +13,9 @@ class FeedResponse(
 )
 
 class FeedInnerResponse(
-    @SerializedName("couple") var couples: List<List<User>>,
-    @SerializedName("single") var singles: List<User>
+    @SerializedName("couple")   var couples: List<List<User>>,
+    @SerializedName("single")   var singles: List<User>,
+    @SerializedName("wishlist") var wishlist: List<User>
 )
 
 class UserResponse(

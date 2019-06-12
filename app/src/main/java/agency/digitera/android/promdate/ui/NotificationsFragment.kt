@@ -18,6 +18,7 @@ import agency.digitera.android.promdate.adapters.NotificationsAdapter
 import agency.digitera.android.promdate.data.Notification
 import agency.digitera.android.promdate.data.NotificationResponse
 import agency.digitera.android.promdate.util.ApiAccessor
+import agency.digitera.android.promdate.util.MissingSpException
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_notifications.*

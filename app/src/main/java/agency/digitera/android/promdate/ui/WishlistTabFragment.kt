@@ -17,8 +17,8 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import agency.digitera.android.promdate.*
 import agency.digitera.android.promdate.adapters.SingleAdapter
-import agency.digitera.android.promdate.data.SingleBoundaryCallback
 import agency.digitera.android.promdate.data.User
+import agency.digitera.android.promdate.data.WishlistBoundaryCallback
 import agency.digitera.android.promdate.util.BadTokenException
 import agency.digitera.android.promdate.util.CheckInternet
 import androidx.navigation.NavOptions
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
 
 
-class SinglesTabFragment : Fragment(), TabInterface {
+class WishlistTabFragment : Fragment(), TabInterface {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: SingleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -93,8 +93,8 @@ class SinglesTabFragment : Fragment(), TabInterface {
             if (CheckInternet.isNetworkAvailable(context!!)) {
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
-                    SingleBoundaryCallback.maxLoaded = 0
-                    (activity as MainActivity).singlesDb.singleDao().clearDatabase()
+                    WishlistBoundaryCallback.maxLoaded = 0
+                    (activity as MainActivity).wishlistDb.userDao().clearDatabase()
                     swipe_refresh.isRefreshing = false
                 }
             }
@@ -112,7 +112,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
     @Throws(BadTokenException::class)
     private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
         val livePageListBuilder = LivePagedListBuilder<Int, User>(
-            (activity as MainActivity).singlesDb.singleDao().singles(),
+            (activity as MainActivity).wishlistDb.userDao().users(),
             config)
 
         //get token
@@ -125,7 +125,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
                 }
         val token = sp.getString("token", null) ?: ""
 
-        livePageListBuilder.setBoundaryCallback(SingleBoundaryCallback((activity as MainActivity).singlesDb, token))
+        livePageListBuilder.setBoundaryCallback(WishlistBoundaryCallback((activity as MainActivity).wishlistDb, token))
         return livePageListBuilder
     }
 
@@ -133,7 +133,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
         //open user profile
         val action = FeedFragmentDirections.navProfile(
             user.id,
-            0,
+            user.matched,
             user.firstName + " " + user.lastName
         )
         findNavController().navigate(action)

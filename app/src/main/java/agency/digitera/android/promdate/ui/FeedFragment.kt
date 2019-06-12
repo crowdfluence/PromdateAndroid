@@ -111,6 +111,7 @@ class FeedFragment : Fragment() {
             return when (position) {
                 0 -> getString(R.string.couples)
                 1 -> getString(R.string.singles)
+                2 -> getString(R.string.wishlist)
                 else -> null
             }
         }
@@ -119,11 +120,12 @@ class FeedFragment : Fragment() {
             return when (position) {
                 0 -> CouplesTabFragment()
                 1 -> SinglesTabFragment()
+                2 -> WishlistTabFragment()
                 else -> throw Exception("Invalid tab value")
             }
         }
 
-        override fun getCount(): Int = 2
+        override fun getCount(): Int = 3
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
