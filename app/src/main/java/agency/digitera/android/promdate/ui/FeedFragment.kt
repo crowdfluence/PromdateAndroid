@@ -50,7 +50,7 @@ class FeedFragment : Fragment() {
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = include as Toolbar
+        val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.app_name)
         appCompatActivity.setSupportActionBar(toolbar)
         drawerInterface.setupDrawer(toolbar, 0)

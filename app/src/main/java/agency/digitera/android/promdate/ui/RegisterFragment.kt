@@ -20,7 +20,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import agency.digitera.android.promdate.util.ApiAccessor
-import android.util.Log
 
 
 class RegisterFragment : Fragment() {
@@ -47,7 +46,7 @@ class RegisterFragment : Fragment() {
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = include as Toolbar
+        val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.register)
         appCompatActivity.setSupportActionBar(toolbar)
 

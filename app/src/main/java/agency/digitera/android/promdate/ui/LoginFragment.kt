@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = include as Toolbar
+        val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.login)
         appCompatActivity.setSupportActionBar(toolbar)
 
@@ -91,7 +91,7 @@ class LoginFragment : Fragment() {
                         Snackbar.make(
                             constraint_layout, getString(R.string.require_email_authentication),
                             Snackbar.LENGTH_LONG
-                        )
+                        ).show()
                     }
 
                     loadingAnim.visibility = View.GONE

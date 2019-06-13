@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.LoadUrl
-import android.util.Log
 import kotlinx.android.synthetic.main.item_single.view.*
 
 //Checks if list is updated
@@ -31,7 +30,7 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
             with(itemView) {
                 name_text.text = context.getString(R.string.full_name, user.firstName, user.lastName)
                 if (user.profilePictureUrl.isNotEmpty()) {
-                    LoadUrl.loadUrl(context, profile_picture_image, user.profilePictureUrl)
+                    LoadUrl.loadProfilePicture(context, profile_picture_image, user.profilePictureUrl)
                 }
                 if (user.grade != null) {
                     grade_text.text = context.getString(R.string.grade_number, user.grade)

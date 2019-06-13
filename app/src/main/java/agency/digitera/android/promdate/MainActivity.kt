@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
     }
 
     override fun unlockDrawer() {
-        Log.d("Whatt", "Drawer unlocked")
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
@@ -102,6 +101,9 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                 }
                 R.id.nav_invite -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_invite)
+                }
+                R.id.nav_dress_registry -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.nav_dress_search)
                 }
             }
             true

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.Couple
 import agency.digitera.android.promdate.data.User
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_couple.*
 
@@ -30,14 +29,17 @@ class CoupleDialogFragment(private val couple: Couple) : BottomSheetDialogFragme
 
         //set up profiles
         name_1_text.text = getString(R.string.full_name, couple.user1.firstName, couple.user1.lastName)
+        //grade text isn't visible if user hasn't set their grade
+        grade_1_text.visibility = if (couple.user1.grade == null) View.GONE else View.VISIBLE
         grade_1_text.text = getString(R.string.grade_number, couple.user1.grade)
         bio_1_text.text = couple.user1 .bio
-        LoadUrl.loadUrl(context!!, profile_picture_1_image, couple.user1.profilePictureUrl)
+        LoadUrl.loadProfilePicture(context!!, profile_picture_1_image, couple.user1.profilePictureUrl)
 
         name_2_text.text = getString(R.string.full_name, couple.user2.firstName, couple.user2.lastName)
+        grade_2_text.visibility = if (couple.user2.grade == null) View.GONE else View.VISIBLE
         grade_2_text.text = getString(R.string.grade_number, couple.user2.grade)
         bio_2_text.text = couple.user2.bio
-        LoadUrl.loadUrl(context!!, profile_picture_2_image, couple.user2.profilePictureUrl)
+        LoadUrl.loadProfilePicture(context!!, profile_picture_2_image, couple.user2.profilePictureUrl)
 
     }
 

@@ -104,7 +104,7 @@ class CouplesProfileFragment : Fragment() {
                     when (userPosition) {
                         0 -> {
                             if (user.self.profilePictureUrl.isNotEmpty()) {
-                                LoadUrl.loadUrl(context!!, profile_picture_1_image, user.self.profilePictureUrl)
+                                LoadUrl.loadProfilePicture(context!!, profile_picture_1_image, user.self.profilePictureUrl)
                             }
                             name_1_text . text = context ?. getString (R.string.full_name, user.self.firstName, user.self.lastName)
                             school_1_text.text = user.school.name
@@ -120,7 +120,7 @@ class CouplesProfileFragment : Fragment() {
                         }
                         1 -> {
                             if (user.self.profilePictureUrl.isNotEmpty()) {
-                                LoadUrl.loadUrl(context!!, profile_picture_2_image, user.self.profilePictureUrl)
+                                LoadUrl.loadProfilePicture(context!!, profile_picture_2_image, user.self.profilePictureUrl)
                             }
                             name_2_text . text = context ?. getString (R.string.full_name, user.self.firstName, user.self.lastName)
                             school_2_text.text = user.school.name

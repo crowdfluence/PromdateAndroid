@@ -2,7 +2,6 @@ package agency.digitera.android.promdate.adapters
 
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.Couple
-import agency.digitera.android.promdate.data.User
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -38,10 +37,10 @@ class CoupleAdapter(private val clickListener: (Couple) -> Unit) :
                 couple.user2.lastName[0]
             )
             if (couple.user1.profilePictureUrl.isNotEmpty()) {
-                LoadUrl.loadUrl(context, profile_picture_1_image, couple.user1.profilePictureUrl)
+                LoadUrl.loadProfilePicture(context, profile_picture_1_image, couple.user1.profilePictureUrl)
             }
             if (couple.user2.profilePictureUrl.isNotEmpty()) {
-                LoadUrl.loadUrl(context, profile_picture_2_image, couple.user2.profilePictureUrl)
+                LoadUrl.loadProfilePicture(context, profile_picture_2_image, couple.user2.profilePictureUrl)
             }
             //TODO: Set prom location
             setOnClickListener { clickListener(couple) }

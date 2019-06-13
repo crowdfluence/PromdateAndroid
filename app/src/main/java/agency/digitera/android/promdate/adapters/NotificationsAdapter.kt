@@ -10,7 +10,6 @@ import agency.digitera.android.promdate.util.LoadUrl
 import android.content.Context
 import kotlinx.android.synthetic.main.item_notification.view.*
 
-//adapter for the collection list recyclerview
 class NotificationsAdapter(private val notifications: ArrayList<Notification>,
                            private val clickListener: (Notification) -> Unit): RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
 
@@ -21,7 +20,7 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
                 title_text.text = resources.getStringArray(R.array.notification_types_array)[notification.type - 1] //TODO: Get max to change
                 val bodyText = resources.getStringArray(R.array.notification_messages_array)[notification.type - 1]
                 body_text.text = String.format(bodyText, notification.body[0].sender.firstName, notification.body[0].sender.lastName)
-                LoadUrl.loadUrl(context, sender_image, notification.body[0].sender.profilePictureUrl)
+                LoadUrl.loadProfilePicture(context, sender_image, notification.body[0].sender.profilePictureUrl)
                 icon_image.setImageDrawable(when (notification.type) {
                     1, 2 -> context.getDrawable(R.drawable.ic_heart_red)
                     3, 4 -> context.getDrawable(R.drawable.ic_broken_heart)

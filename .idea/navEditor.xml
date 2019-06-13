@@ -8,18 +8,42 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="couplesProfileFragment">
+                  <entry key="dressListFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="207" />
-                            <option name="y" value="303" />
+                            <option name="x" value="458" />
+                            <option name="y" value="554" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="dressProfileFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="710" />
+                            <option name="y" value="555" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="dressSearchFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="224" />
+                            <option name="y" value="554" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="nav_profile">
+                            <entry key="nav_dress_list">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -40,7 +64,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="nav_couples_profile">
+                            <entry key="nav_dress_search">
                               <value>
                                 <LayoutPositions />
                               </value>

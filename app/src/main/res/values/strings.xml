@@ -105,6 +105,11 @@
     <string name="invite_chooser">Share PromDate with your friends</string>
     <string name="invite_message">Join me on Promdate!: http://promdate.app</string>
     <string name="view_limo_group">View Limo Group</string>
+    <string name="keywords">Keywords</string>
+    <string name="brand">Brand</string>
+    <string name="dress_search">Dress search</string>
+    <string name="model_number">Model number: %s</string>
+    <string name="search_results">Search results</string>
 
     <string-array name="genders_array">
         <item>Male</item>

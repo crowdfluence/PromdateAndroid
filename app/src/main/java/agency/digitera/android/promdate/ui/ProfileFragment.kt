@@ -45,6 +45,7 @@ class ProfileFragment : Fragment() {
     private var requestCompleted = false
     private var hasPartner = false
     private var isFavourited = false
+    private var hasGrade = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -152,17 +153,18 @@ class ProfileFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadUrl(context!!, profile_picture_image, user.self.profilePictureUrl)
+                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl)
                     }
                     name_text.text = context?.getString(R.string.full_name, user.self.firstName, user.self.lastName)
                     school_text.text = user.school.name
                     grade_text.text = context?.getString(R.string.grade_variable, user.self.grade)
+                    hasGrade = user.self.grade != null
                     if (user.partner == null) {
                         relationship_text.text = context?.getString(R.string.single)
                     } else {
                         hasPartner = true
                         relationship_text.text = context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
-                        LoadUrl.loadUrl(context!!, partner_picture_image, user.partner?.profilePictureUrl ?: "")
+                        LoadUrl.loadProfilePicture(context!!, partner_picture_image, user.partner?.profilePictureUrl ?: "")
                     }
                     bio_text.text = user.self.bio
 
@@ -233,12 +235,16 @@ class ProfileFragment : Fragment() {
                         instagram_image.visibility = View.GONE
                     }
 
+                    isFavourited = user.self.isFavourited
+                    changeHeart(if (isFavourited) Color.WHITE else null)
+
                     //show page if other request has completed
                     if (requestCompleted) {
                         loading_pb.visibility = View.GONE
                         send_match_button.visibility = if (canSendMatch) View.VISIBLE else View.GONE
                         partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                         blank_group.visibility = View.VISIBLE
+                        grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
                         social_media_group.visibility = View.VISIBLE
                     }
                     else {
@@ -315,12 +321,11 @@ class ProfileFragment : Fragment() {
 
                         if (requestCompleted) {
                             loading_pb.visibility = View.GONE
-                            if (profileFragmentArgs.isMatched == 0) {
-                                send_match_button.visibility = View.VISIBLE
-                            }
+                            send_match_button.visibility = if (profileFragmentArgs.isMatched == 0) View.VISIBLE else View.GONE
                             partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                             social_media_group.visibility = View.VISIBLE
                             blank_group.visibility = View.VISIBLE
+                            grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
                         }
                         else {
                             requestCompleted = true

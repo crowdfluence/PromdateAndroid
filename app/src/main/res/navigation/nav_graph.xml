@@ -96,6 +96,7 @@
         <action
             android:id="@+id/nav_invite"
             app:destination="@id/inviteFragment" />
+        <!--
         <action
             android:id="@+id/nav_couples_profile"
             app:destination="@id/couplesProfileFragment">
@@ -112,6 +113,10 @@
                 android:defaultValue=" "
                 app:argType="string" />
         </action>
+        -->
+        <action
+            android:id="@+id/nav_dress_search"
+            app:destination="@id/dressSearchFragment" />
     </fragment>
 
     <fragment
@@ -178,6 +183,30 @@
         android:label="InviteFragment"
         tools:layout="@layout/fragment_invite" />
     <fragment
+        android:id="@+id/dressSearchFragment"
+        android:name="agency.digitera.android.promdate.ui.DressSearchFragment"
+        android:label="DressSearchFragment"
+        tools:layout="@layout/fragment_dress_search">
+        <action
+            android:id="@+id/nav_dress_list"
+            app:destination="@id/dressListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dressListFragment"
+        android:name="agency.digitera.android.promdate.ui.DressListFragment"
+        android:label="DressListFragment"
+        tools:layout="@layout/fragment_dress_list">
+        <action
+            android:id="@+id/nav_dress_profile"
+            app:destination="@id/dressProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dressProfileFragment"
+        android:name="agency.digitera.android.promdate.ui.DressProfileFragment"
+        android:label="DressProfileFragment"
+        tools:layout="@layout/fragment_dress_profile"/>
+    <!--
+    <fragment
         android:id="@+id/couplesProfileFragment"
         android:name="agency.digitera.android.promdate.ui.CouplesProfileFragment"
         android:label="CouplesProfileFragment"
@@ -212,4 +241,5 @@
                 app:nullable="true" />
         </action>
     </fragment>
+    -->
 </navigation>

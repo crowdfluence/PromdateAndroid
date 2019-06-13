@@ -10,20 +10,22 @@ import com.squareup.picasso.Picasso
 interface LoadUrl {
     companion object {
         //sets image from url & converts it to a circle
-        fun loadUrl(context: Context, img: ImageView, url: String, transformType: Int = 0) {
+        fun loadProfilePicture(context: Context, img: ImageView, url: String, transformType: Int = 0) {
             if (url == "") {
+                img.setImageDrawable(context.getDrawable(R.drawable.default_profile))
                 return
             }
 
-            val suffixUrl = if (url[0] == '.' && url[1] == '.') {
+/*          val suffixUrl = if (url[0] == '.' && url[1] == '.') {
                 url.substring(3 until url.length)
             }
             else if (url[0] == '/') {
                 url.substring(1 until url.length)
             } else {
                 url
-            }
-            val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com/$suffixUrl"
+            }*/
+
+            val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com/$url"
 
             Picasso.get()
                 .load(fullUrl)
@@ -48,6 +50,29 @@ interface LoadUrl {
                 .centerCrop()
                 .placeholder(R.drawable.default_profile)
                 .error(R.drawable.default_profile)
+                .into(img)
+        }
+
+        fun loadDressPicture(context: Context, img: ImageView, url: String) {
+            if (url == "") {
+                img.setImageDrawable(context.getDrawable(R.drawable.dress_picture))
+                return
+            }
+
+            val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com/$url"
+            Picasso.get()
+                .load(fullUrl)
+                .transform(
+                    CircleTransformation(
+                        256,
+                        1,
+                        ContextCompat.getColor(context, R.color.lightGray)
+                    )
+                )
+                .resize(512, 512)
+                .centerCrop()
+                .placeholder(R.drawable.dress_picture)
+                .error(R.drawable.dress_picture)
                 .into(img)
         }
     }

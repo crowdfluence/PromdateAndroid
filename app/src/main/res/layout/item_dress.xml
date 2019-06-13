@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_gravity="top"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="2dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:elevation="2dp"
+    android:focusable="true"
+    card_view:cardCornerRadius="1dp"
+    tools:layout_height="100dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dress_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="@dimen/horizontal_spacing"
+            android:layout_marginTop="@dimen/vertical_spacing"
+            android:layout_marginBottom="@dimen/vertical_spacing"
+            android:adjustViewBounds="true"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:srcCompat="@drawable/dress_picture" />
+
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/edge_margin"
+            android:layout_marginTop="@dimen/vertical_spacing"
+            android:textColor="@color/darkerGray"
+            android:textSize="16sp"
+            card_view:layout_constraintStart_toEndOf="@+id/dress_image"
+            card_view:layout_constraintTop_toTopOf="@+id/dress_image"
+            tools:text="Cool Dress" />
+
+        <TextView
+            android:id="@+id/model_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_horizontal_spacing"
+            android:layout_marginEnd="@dimen/horizontal_spacing"
+            android:layout_marginBottom="@dimen/vertical_spacing"
+            android:text="@string/model_number"
+            card_view:layout_constraintBottom_toBottomOf="@+id/dress_image"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/dress_image"
+            card_view:layout_constraintTop_toBottomOf="@+id/name_text"
+            tools:text="Model number: #1234" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

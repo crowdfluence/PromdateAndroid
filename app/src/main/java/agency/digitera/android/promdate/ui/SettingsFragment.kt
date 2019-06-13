@@ -175,7 +175,7 @@ class SettingsFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadUrl(context!!, profile_picture_image, user.self.profilePictureUrl, 1)
+                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl, 1)
                     }
                     first_name_edit.setText(user.self.firstName)
                     last_name_edit.setText(user.self.lastName)

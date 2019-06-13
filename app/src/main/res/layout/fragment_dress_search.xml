@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dress_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/edge_margin"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="@dimen/vertical_spacing"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/keyword_edit_wrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_percent="0.25"
+        app:srcCompat="@drawable/dress_picture" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/keyword_edit_wrapper"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/brand_edit_wrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/keyword_edit"
+            style="@style/loginEditText"
+            android:hint="@string/keywords"
+            android:inputType="text"
+            android:theme="@style/EditText"
+            android:visibility="visible" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/brand_edit_wrapper"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginEnd="@dimen/edge_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/keyword_edit_wrapper">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/brand_edit"
+            style="@style/loginEditText"
+            android:hint="@string/brand"
+            android:inputType="text"
+            android:theme="@style/EditText"
+            android:visibility="visible" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edge_margin"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:text="@string/action_search"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brand_edit_wrapper" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

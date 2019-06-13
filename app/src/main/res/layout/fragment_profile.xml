@@ -72,6 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/grade_variable"
+        android:visibility="gone"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/relationship_text"
         app:layout_constraintStart_toStartOf="@+id/name_text"
@@ -179,7 +180,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="name_text,grade_text,school_text,bio_text,relationship_text,profile_picture_image" />
+        app:constraint_referenced_ids="name_text,school_text,bio_text,relationship_text,profile_picture_image" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/social_media_group"

@@ -40,6 +40,9 @@ data class User(
     @SerializedName("DressID")
     var dressId: Int = -1,
 
+    @SerializedName("InWishList")
+    var isFavourited: Boolean = false,
+
 /*    @SerializedName("GroupIDs")
     var groupIds: List<Int> = listOf(),*/
 
