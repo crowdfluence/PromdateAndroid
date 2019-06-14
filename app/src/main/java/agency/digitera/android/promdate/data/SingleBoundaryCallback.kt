@@ -38,6 +38,7 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
                             helperCallback.recordSuccess()
                         }
                         maxLoaded = singles?.size ?: 0
+                        Log.d("SingleBoundaryCallback", "Database size: ${singles?.size}, Max loaded: $maxLoaded")
                     }
                 })
         }
@@ -57,7 +58,8 @@ class SingleBoundaryCallback(private val db: SingleDb, private val token: String
 
                     override fun onResponse(
                         call: Call<FeedResponse>?,
-                        response: Response<FeedResponse>) {
+                        response: Response<FeedResponse>
+                    ) {
 
                         val singles = response.body()?.result?.singles
                         executor.execute {

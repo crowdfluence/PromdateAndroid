@@ -163,8 +163,13 @@ class ProfileFragment : Fragment() {
                         relationship_text.text = context?.getString(R.string.single)
                     } else {
                         hasPartner = true
-                        relationship_text.text = context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
-                        LoadUrl.loadProfilePicture(context!!, partner_picture_image, user.partner?.profilePictureUrl ?: "")
+                        relationship_text.text =
+                            context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
+                        LoadUrl.loadProfilePicture(
+                            context!!,
+                            partner_picture_image,
+                            user.partner?.profilePictureUrl ?: ""
+                        )
                     }
                     bio_text.text = user.self.bio
 
@@ -177,8 +182,7 @@ class ProfileFragment : Fragment() {
                                 val snapUrl = "snapchat://add/${user.self.snapchat}"
                                 val nativeAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
                                 startActivity(nativeAppIntent)
-                            }
-                            catch (e: ActivityNotFoundException) {
+                            } catch (e: ActivityNotFoundException) {
                                 val snapUrl = "https://snapchat.com/add/${user.self.snapchat}"
                                 val websiteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
                                 startActivity(websiteIntent)
@@ -235,8 +239,10 @@ class ProfileFragment : Fragment() {
                         instagram_image.visibility = View.GONE
                     }
 
-                    isFavourited = user.self.isFavourited
-                    changeHeart(if (isFavourited) Color.WHITE else null)
+                    if (!isSelf) {
+                        isFavourited = user.self.isFavourited
+                        changeHeart(if (isFavourited) Color.WHITE else null)
+                    }
 
                     //show page if other request has completed
                     if (requestCompleted) {

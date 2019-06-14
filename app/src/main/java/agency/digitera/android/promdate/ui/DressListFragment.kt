@@ -14,7 +14,6 @@ import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.adapters.DressAdapter
 import agency.digitera.android.promdate.data.Dress
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_dress_list.*
