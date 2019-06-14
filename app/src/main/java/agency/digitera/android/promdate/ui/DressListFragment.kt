@@ -64,11 +64,6 @@ class DressListFragment : Fragment() {
             layoutManager = viewManager
             itemAnimator = DefaultItemAnimator()
             adapter = viewAdapter
-            val dividerItemDecoration = DividerItemDecoration(
-                dress_recycler.context,
-                LinearLayoutManager.VERTICAL
-            )
-            addItemDecoration(dividerItemDecoration)
         }
 
         //set up swipe to refresh

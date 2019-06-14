@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import agency.digitera.android.promdate.R
+import android.util.Log
 import com.squareup.picasso.Picasso
 
 
@@ -15,15 +16,6 @@ interface LoadUrl {
                 img.setImageDrawable(context.getDrawable(R.drawable.default_profile))
                 return
             }
-
-/*          val suffixUrl = if (url[0] == '.' && url[1] == '.') {
-                url.substring(3 until url.length)
-            }
-            else if (url[0] == '/') {
-                url.substring(1 until url.length)
-            } else {
-                url
-            }*/
 
             val fullUrl = "http://ec2-35-183-247-114.ca-central-1.compute.amazonaws.com/$url"
 
