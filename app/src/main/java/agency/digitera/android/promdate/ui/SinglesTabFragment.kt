@@ -86,9 +86,9 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
     override fun onPause() {
         super.onPause()
-        if ((recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)
-            firstVisiblePos =
-                (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        val firstPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        if (firstPosition > 0)
+            firstVisiblePos = firstPosition
     }
 
     override fun invalidate() {
