@@ -1,27 +1,29 @@
 package agency.digitera.android.promdate.ui
 
-import androidx.lifecycle.Observer
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
-import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.MainActivity
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.SingleBoundaryCallback
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.BadTokenException
 import agency.digitera.android.promdate.util.CheckInternet
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
@@ -32,6 +34,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
     private lateinit var viewAdapter: SingleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var liveData: LiveData<PagedList<User>>
+    private var firstVisiblePos: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -74,16 +77,18 @@ class SinglesTabFragment : Fragment(), TabInterface {
 
         liveData.observe(this, Observer<PagedList<User>> { pagedList ->
             viewAdapter.submitList(pagedList)
+            firstVisiblePos?.let {
+                recyclerView.layoutManager?.scrollToPosition(it)
+                firstVisiblePos = null
+            }
         })
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        val lastKey = viewAdapter.currentList?.lastKey as Int
-
-        outState.putInt("lastKey", lastKey)
-        outState.putParcelable("layout_manager_state", recyclerView.layoutManager?.onSaveInstanceState())
+    override fun onPause() {
+        super.onPause()
+        if ((recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)
+            firstVisiblePos =
+                (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
     override fun invalidate() {
