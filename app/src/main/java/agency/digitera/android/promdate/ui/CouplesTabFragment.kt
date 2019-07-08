@@ -36,6 +36,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
     private lateinit var viewAdapter: CoupleAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var liveData: LiveData<PagedList<Couple>>
+    private var firstVisiblePos: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
@@ -73,13 +74,16 @@ class CouplesTabFragment : Fragment(), TabInterface {
 
         try {
             liveData = initializedPagedListBuilder(config).build()
-        }
-        catch (e: BadTokenException) {
+        } catch (e: BadTokenException) {
             return
         }
 
         liveData.observe(this, Observer<PagedList<Couple>> { pagedList ->
             viewAdapter.submitList(pagedList)
+            firstVisiblePos?.let {
+                recyclerView.layoutManager?.scrollToPosition(it)
+                firstVisiblePos = null
+            }
         })
     }
 
@@ -95,8 +99,7 @@ class CouplesTabFragment : Fragment(), TabInterface {
                     (activity as MainActivity).couplesDb.coupleDao().clearDatabase()
                     swipe_refresh.isRefreshing = false
                 }
-            }
-            else {
+            } else {
                 Snackbar.make(
                     constraint_layout,
                     R.string.no_internet,
@@ -105,6 +108,13 @@ class CouplesTabFragment : Fragment(), TabInterface {
                 swipe_refresh.isRefreshing = false
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val firstPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        if (firstPosition > 0)
+            firstVisiblePos = firstPosition
     }
 
     @Throws(BadTokenException::class)
