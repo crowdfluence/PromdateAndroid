@@ -39,7 +39,7 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO:? Delay the creation of the animation
-        loading_pb.visibility = View.VISIBLE
+        //loading_pb.visibility = View.VISIBLE
 
         //check if currently stored token works; if so, skips login and goes directly to main feed
         val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
@@ -56,6 +56,7 @@ class SplashFragment : Fragment() {
                         sp.edit().putString("token", response.body()?.result).apply()
 
                         //stops loading anim and starts main activity
+                        //loading_pb.visibility = View.GONE
                         findNavController().navigate(R.id.nav_feed)
 
                     } else {
@@ -76,10 +77,9 @@ class SplashFragment : Fragment() {
         }
         else {
             //no token found
-            loading_pb.visibility = View.GONE
+            //loading_pb.visibility = View.GONE
 
             findNavController().navigate(R.id.nav_login)
         }
     }
 }
-
