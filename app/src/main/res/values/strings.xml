@@ -6,10 +6,11 @@
     <string name="password">Password</string>
     <string name="password_required">Password</string>
     <string name="log_in">Log In</string>
-    <string name="forgot_password">Forgot your password?</string>
-    <string name="not_registered">Not registered?</string>
+    <string name="forgot_password">Forget your login details?</string>
+    <string name="forgot_password_link"><u>Go here for help</u></string>
+    <string name="not_registered">Don\'t have an account yet?</string>
     <string name="already_have_account">Already have an account?</string>
-    <string name="sign_up"><u>Sign up.</u></string>
+    <string name="sign_up">Go here to sign up</string>
     <string name="sign_in"><u>Sign in.</u></string>
     <string name="no_internet">Unable to connect to the server. Check your internet connection and try again.</string>
     <string name="failed_login">Invalid login credentials. Please check your username and password and try again.</string>
