@@ -5,54 +5,49 @@
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/log_in_background"
     android:fitsSystemWindows="true"
     tools:context="agency.digitera.android.promdate.ui.LoginFragment">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" />
-
     <ImageView
         android:id="@+id/logo_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/edge_margin"
-        android:layout_marginEnd="@dimen/edge_margin"
-        android:layout_marginBottom="@dimen/vertical_spacing"
+        android:layout_width="286dp"
+        android:layout_height="144dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/email_edit_wrapper"
+        app:layout_constraintBottom_toTopOf="@+id/loading_pb"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/promdate_logo" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08"
+        app:srcCompat="@drawable/prom_date_logo_white" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_edit_wrapper"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/vertical_spacing"
-        android:layout_marginEnd="@dimen/edge_margin"
-        android:visibility="visible"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/password_edit_wrapper"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.75"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline8">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_edit"
             style="@style/loginEditText"
+            android:theme="@style/loginEditText"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_opaque_button"
+            android:fontFamily="@font/gothcicb"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:theme="@style/EditText"
+            android:textColorHighlight="@color/white"
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,111 +56,146 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/vertical_spacing"
-        android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/edge_margin"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edit_wrapper"
-        app:layout_constraintVertical_bias="0.75">
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/email_edit_wrapper">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_edit"
             style="@style/loginEditText"
+            android:background="@drawable/ic_opaque_button"
+            android:fontFamily="@font/gothcicb"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:textColorHighlight="@color/white"
             android:theme="@style/EditText"
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/edge_margin"
-        android:background="@color/linkBlue"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_white_login_button"
         android:text="@string/log_in"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
+        android:textColor="@color/mainBlue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/forgot_password_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit_wrapper"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_wrapper" />
 
     <TextView
         android:id="@+id/forgot_password_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/horizontal_spacing"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="@dimen/horizontal_spacing"
+        android:layout_width="172dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/gothic"
         android:text="@string/forgot_password"
-        android:textColor="@color/linkBlue"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
+        android:textAlignment="gravity"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginEnd="@dimen/edge_margin"
-        android:layout_marginBottom="@dimen/edge_margin"
-        android:background="@color/darkGray"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/already_registered_text"
+    <TextView
+        android:id="@+id/forgot_password_link"
+        android:layout_width="112dp"
+        android:layout_height="21dp"
+        android:fontFamily="@font/gothcicb"
+        android:text="@string/forgot_password_link"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forgot_password_text" />
 
     <TextView
-        android:id="@+id/already_registered_text"
+        android:id="@+id/not_registered_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/horizontal_spacing"
-        android:layout_marginEnd="@dimen/small_vertical_spacing"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/not_registered"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sign_up_text"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forgot_password_link" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_up_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_width="183dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/ic_opaque_button"
+        android:fontFamily="@font/gothcicb"
         android:text="@string/sign_up"
         android:textAllCaps="false"
-        android:textColor="@color/linkBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/barrier"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/already_registered_text" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/not_registered_text"
+        app:layout_constraintVertical_bias="0.0"
+        tools:textSize="18sp" />
 
     <ProgressBar
         android:id="@+id/loading_pb"
         style="?android:attr/progressBarStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/edge_margin"
-        android:layout_marginEnd="@dimen/edge_margin"
-        android:layout_marginBottom="@dimen/edge_margin"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_text"
         app:layout_constraintWidth_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

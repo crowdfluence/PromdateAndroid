@@ -44,9 +44,6 @@ class LoginFragment : Fragment() {
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = toolbar as Toolbar
-        toolbar.title = getString(R.string.login)
-        appCompatActivity.setSupportActionBar(toolbar)
 
         //set up blue text to go to register
         sign_up_text.setOnClickListener {
