@@ -7,13 +7,13 @@
     android:animateLayoutChanges="true">
 
     <ImageView
-        android:id="@+id/ellipse_orange"
-        android:layout_width="630dp"
-        android:layout_height="730dp"
-        android:layout_marginTop="276dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ellipse_3" />
+            android:id="@+id/ellipse_orange"
+            android:layout_width="630dp"
+            android:layout_height="720dp"
+            android:layout_marginTop="264dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ellipse_3"/>
 
     <ImageView
         android:id="@+id/ellipse_blue"
@@ -31,13 +31,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:alpha="0.3"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="@id/guideline5"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.514"
-        app:srcCompat="@drawable/promdate_logo_coloured_wo_ring" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.458"
+        app:srcCompat="@drawable/promdate_logo_coloured_wo_ring" android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ProgressBar
         android:id="@+id/loading_pb"
@@ -52,25 +52,25 @@
 
     <TextView
         android:id="@+id/Prom_splash"
-        android:layout_width="333dp"
-        android:layout_height="203dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/hallo_oyster"
         android:text="@string/splash_prom"
         android:textColor="@color/black"
         android:textSize="180sp"
-        app:layout_constraintBottom_toBottomOf="@+id/LogoNoBorder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/LogoNoBorder"
-        app:layout_constraintTop_toTopOf="@+id/LogoNoBorder"
-        app:layout_constraintVertical_bias="0.418" />
+        app:layout_constraintHorizontal_bias="0.217"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.429" android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/Date_splash"
-        android:layout_width="281dp"
-        android:layout_height="207dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -79,26 +79,11 @@
         android:text="@string/splash_date"
         android:textColor="@color/black"
         android:textSize="180sp"
-        app:layout_constraintBottom_toBottomOf="@id/LogoNoBorder"
-        app:layout_constraintEnd_toEndOf="@+id/LogoNoBorder"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.808"
         app:layout_constraintStart_toStartOf="@+id/Prom_splash"
-        app:layout_constraintTop_toTopOf="@+id/Prom_splash"
-        app:layout_constraintVertical_bias="0.574" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.16" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.611" app:layout_constraintBottom_toTopOf="@+id/loading_pb"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
