@@ -33,8 +33,19 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColorHighlight">@color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="login_EditText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:fontFamily">@font/gothcicb</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:colorControlNormal">@color/white</item>
+        <item name="android:colorAccent">@color/white</item>
     </style>
 
     <style name="EditText">
@@ -48,10 +59,11 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Theme for the log in screen  -->
-    <style name="LogInTheme" parent="AppTheme">
+    <style name="LogInTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/LogInRed</item>
         <item name="colorPrimaryDark">@color/LogInRed</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:statusBarColor">@color/LogInRed</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme"
