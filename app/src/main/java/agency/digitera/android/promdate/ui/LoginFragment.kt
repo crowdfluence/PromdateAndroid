@@ -3,11 +3,8 @@ package agency.digitera.android.promdate.ui
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.widget.Toolbar
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,6 +12,7 @@ import agency.digitera.android.promdate.util.ApiAccessor
 import agency.digitera.android.promdate.DrawerInterface
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.DefaultResponse
+import android.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +33,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         drawerInterface.lockDrawer()
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
@@ -43,7 +42,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //set up toolbar at top of layout
-        val appCompatActivity = activity as AppCompatActivity
+        //val appCompatActivity = activity as AppCompatActivity
 
         //set up blue text to go to register
         sign_up_text.setOnClickListener {
@@ -54,6 +53,24 @@ class LoginFragment : Fragment() {
         login_button.setOnClickListener {
             login(it)
         }
+
+        /*Allows the hint to appear and disappear depending on it's focus for email_edit*/
+        email_edit.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                email_edit.hint = ""
+            } else {
+                email_edit.hint = getString(R.string.email)
+            }
+        }
+
+        /*Allows the hint to appear and disappear depending on it's focus for password_edit*/
+        password_edit.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                password_edit.hint = ""
+            } else {
+                password_edit.hint = getString(R.string.password)
+            }
+        }
     }
 
     private fun login(view: View) {
@@ -61,14 +78,14 @@ class LoginFragment : Fragment() {
         val password = password_edit.text.toString()
         val apiAccessor = ApiAccessor()
 
-        val loadingAnim = loading_pb
-        loadingAnim.visibility = View.VISIBLE
+        //val loadingAnim = loading_pb
+        //loadingAnim.visibility = View.VISIBLE
 
         val call: Call<DefaultResponse> = apiAccessor.apiService.login(email, password)
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful && response.body()?.status == 200) {
-                    loadingAnim.visibility = View.GONE
+                    //loadingAnim.visibility = View.GONE
 
                     //successfully logged in; stores authentication token in file
                     val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
@@ -91,7 +108,7 @@ class LoginFragment : Fragment() {
                         ).show()
                     }
 
-                    loadingAnim.visibility = View.GONE
+                    //loadingAnim.visibility = View.GONE
                 }
             }
 
@@ -100,7 +117,7 @@ class LoginFragment : Fragment() {
                         Snackbar.LENGTH_LONG)
                         .show()
 
-                loadingAnim.visibility = View.GONE
+                //loadingAnim.visibility = View.GONE
             }
         })
     }
