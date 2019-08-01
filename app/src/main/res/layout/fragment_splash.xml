@@ -7,13 +7,13 @@
     android:animateLayoutChanges="true">
 
     <ImageView
-            android:id="@+id/ellipse_orange"
-            android:layout_width="630dp"
-            android:layout_height="720dp"
-            android:layout_marginTop="264dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ellipse_3"/>
+        android:id="@+id/ellipse_orange"
+        android:layout_width="630dp"
+        android:layout_height="720dp"
+        android:layout_marginTop="264dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ellipse_3"/>
 
     <ImageView
         android:id="@+id/ellipse_blue"
