@@ -79,11 +79,12 @@
         android:text="@string/splash_date"
         android:textColor="@color/black"
         android:textSize="180sp"
+        app:layout_constraintBottom_toTopOf="@+id/loading_pb"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintHorizontal_bias="0.767"
         app:layout_constraintStart_toStartOf="@+id/Prom_splash"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.611" app:layout_constraintBottom_toTopOf="@+id/loading_pb"/>
+        app:layout_constraintTop_toTopOf="@+id/Prom_splash"
+        app:layout_constraintVertical_bias="0.295" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
