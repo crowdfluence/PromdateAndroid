@@ -29,10 +29,14 @@ class CoupleAdapter(private val clickListener: (Couple) -> Unit) :
     //sets content of view
     inner class CoupleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(couple: Couple, clickListener: (Couple) -> Unit) = with(itemView) {
-            names_text.text = context.getString(
-                R.string.couple_name,
+            name_text1.text = context.getString(
+                R.string.couple_name1,
                 couple.user1.firstName,
-                couple.user1.lastName[0],
+                couple.user1.lastName[0]
+            )
+
+            name_text2.text = context.getString(
+                R.string.couple_name2,
                 couple.user2.firstName,
                 couple.user2.lastName[0]
             )

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.LoadUrl
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.item_single.view.*
 
 //Checks if list is updated
@@ -39,6 +40,28 @@ class SingleAdapter(private val clickListener: (User) -> Unit) :
                 else {
                     grade_text.visibility = View.GONE
                 }
+                if (user.gender != null && user.gender != "Select Gender") {
+                    gender_text.text = context.getString(R.string.gender, user.gender)
+                    gender_text.visibility = View.VISIBLE
+
+                    /*Sets the correct drawable depending on the user's gender */
+                    if(user.gender == "Female")
+                        circle_background.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pink_circle_outline))
+                    else if(user.gender == "Male")
+                        circle_background.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_blue_circle_outline))
+                    else if(user.gender == "Other")
+                        circle_background.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_orange_circle_outline))
+                }
+                else {
+                    gender_text.visibility = View.GONE
+                }
+                /*Determines if the heart should be displayed*/
+                if (user.isFavourited)
+                    wishlist_heart.visibility = View.VISIBLE
+                else
+                    wishlist_heart.visibility = View.GONE
+
+
                 bio_text.text = user.bio
                 setOnClickListener { clickListener(user) }
             }

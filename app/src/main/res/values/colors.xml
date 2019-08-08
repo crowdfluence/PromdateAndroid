@@ -20,4 +20,7 @@
     <color name="white">#FFFFFF</color>
     <color name="mainBlue">#49BBC5</color>
     <color name="LogInRed">#EF5A75</color>
+    <color name="CoupleFeedRed">#FD4873</color>
+    <color name="WishlistFeedBlue">#00BDC6</color>
+    <color name="SinglesFeedOrange">#FDA071</color>
 </resources>

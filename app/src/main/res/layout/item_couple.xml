@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:layout_gravity="top"
     android:layout_marginStart="8dp"
     android:layout_marginTop="2dp"
@@ -13,68 +13,176 @@
     android:layout_marginBottom="2dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
-    android:elevation="2dp"
+    android:elevation="0dp"
     android:focusable="true"
     card_view:cardCornerRadius="1dp"
-    tools:layout_height="100dp">
+    tools:layout_height="120dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintHorizontal_bias="0.0"
+        card_view:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/profile_picture_1_image"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="@dimen/horizontal_spacing"
+            android:id="@+id/black_background1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/edge_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="@dimen/edge_margin"
+            android:adjustViewBounds="true"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.015"
+            card_view:layout_constraintStart_toEndOf="@+id/profile_picture_1_image"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:srcCompat="@drawable/profile_circle" />
+
+        <ImageView
+            android:id="@+id/black_background2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="28dp"
             android:layout_marginTop="@dimen/edge_margin"
             android:layout_marginBottom="@dimen/edge_margin"
             android:adjustViewBounds="true"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
+            card_view:srcCompat="@drawable/profile_circle" />
+
+        <ImageView
+            android:id="@+id/profile_picture_1_image"
+            android:layout_width="0dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="@dimen/edge_margin"
+            android:layout_marginBottom="@dimen/edge_margin"
+            android:adjustViewBounds="true"
+            card_view:layout_constraintBottom_toBottomOf="@id/black_background2"
+            card_view:layout_constraintEnd_toEndOf="@+id/black_background2"
+            card_view:layout_constraintHorizontal_bias="1.0"
+            card_view:layout_constraintStart_toStartOf="@id/black_background2"
+            card_view:layout_constraintTop_toTopOf="@id/black_background2"
             card_view:srcCompat="@drawable/default_profile" />
 
         <ImageView
             android:id="@+id/profile_picture_2_image"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="42dp"
+            android:layout_width="0dp"
+            android:layout_height="74dp"
             android:layout_marginTop="@dimen/edge_margin"
             android:layout_marginBottom="@dimen/edge_margin"
             android:adjustViewBounds="true"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toStartOf="@+id/profile_picture_1_image"
-            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="@id/black_background1"
+            card_view:layout_constraintEnd_toEndOf="@+id/black_background1"
+            card_view:layout_constraintHorizontal_bias="0.0"
+            card_view:layout_constraintStart_toStartOf="@+id/black_background1"
+            card_view:layout_constraintTop_toTopOf="@id/black_background1"
             card_view:srcCompat="@drawable/default_profile" />
 
+        <ImageView
+            android:id="@+id/heart_icon"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.3"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.806"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.75"
+            card_view:srcCompat="@drawable/heart_icon" />
+
         <TextView
-            android:id="@+id/names_text"
-            android:layout_width="wrap_content"
+            android:id="@+id/name_text1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_spacing"
-            android:text="@string/couple_name"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/gothic"
+            android:text="@string/couple_name1"
+            android:textAlignment="center"
             android:textColor="@color/darkerGray"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            card_view:layout_constraintBottom_toTopOf="@+id/name_text2"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.397"
             card_view:layout_constraintStart_toEndOf="@+id/profile_picture_2_image"
-            card_view:layout_constraintTop_toTopOf="@+id/profile_picture_2_image"
-            tools:text="Mary D. &amp; John S." />
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.21"
+            tools:text="Oliver Twist" />
+
+        <TextView
+            android:id="@+id/name_text2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/gothic"
+            android:text="@string/couple_name2"
+            android:textAlignment="center"
+            android:textColor="@color/darkerGray"
+            android:textSize="20sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.391"
+            card_view:layout_constraintStart_toEndOf="@+id/profile_picture_2_image"
+            card_view:layout_constraintTop_toTopOf="@+id/heart_icon"
+            card_view:layout_constraintVertical_bias="1.0"
+            tools:text="John Smith" />
 
         <TextView
             android:id="@+id/location_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_spacing"
-            android:layout_marginTop="@dimen/vertical_spacing"
-            android:layout_marginEnd="@dimen/horizontal_spacing"
-            android:layout_marginBottom="@dimen/vertical_spacing"
+            android:layout_width="66dp"
+            android:layout_height="23dp"
             android:ellipsize="end"
             android:lines="2"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/profile_picture_2_image"
-            card_view:layout_constraintTop_toBottomOf="@+id/names_text"
             tools:text="Attending prom at Merivale High School" />
+
+        <TextView
+            android:id="@+id/AndSymbol"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/hallo_oyster"
+            android:text="&amp;"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            card_view:layout_constraintBottom_toBottomOf="@id/heart_icon"
+            card_view:layout_constraintEnd_toEndOf="@id/heart_icon"
+            card_view:layout_constraintHorizontal_bias="1.0"
+            card_view:layout_constraintStart_toStartOf="@id/heart_icon"
+            card_view:layout_constraintTop_toTopOf="@id/heart_icon"
+            card_view:layout_constraintVertical_bias="0.714" />
+
+        <View
+            android:id="@+id/Separator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0.3"
+            android:background="@color/black"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.0"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

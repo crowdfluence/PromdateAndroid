@@ -34,7 +34,9 @@
     <string name="action_match">Match with this user</string>
     <string name="grade_number">Grade %2d</string>
     <string name="full_name">%s %s</string>
-    <string name="couple_name"><![CDATA[%s %c & %s %c]]></string>
+    <string name="couple_name1"><![CDATA[%s %c]]></string>
+    <string name="couple_name2"><![CDATA[%s %c]]></string>
+    <string name="gender">%s</string>
     <string name="select_gender">Select your gender</string>
     <string name="select_grade">Select your grade</string>
     <string name="home">Home</string>

@@ -24,9 +24,13 @@ import agency.digitera.android.promdate.data.CoupleBoundaryCallback
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.CheckInternet
 import agency.digitera.android.promdate.util.CoupleDialogFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_feed.*
 
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors

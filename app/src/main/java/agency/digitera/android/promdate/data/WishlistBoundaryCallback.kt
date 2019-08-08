@@ -7,6 +7,7 @@ import androidx.paging.PagedList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 import java.util.concurrent.Executors
 
 class WishlistBoundaryCallback(private val db: WishlistDb, private val token: String) :
@@ -38,6 +39,12 @@ class WishlistBoundaryCallback(private val db: WishlistDb, private val token: St
                             helperCallback.recordSuccess()
                         }
                         maxLoaded = users?.size ?: 0
+                        try {
+                            for (numUser in 0 until users!!.size)
+                                users[numUser].isFavourited = true
+                        }catch (e: Exception) {
+                            return
+                        }
                     }
                 })
         }
@@ -66,6 +73,12 @@ class WishlistBoundaryCallback(private val db: WishlistDb, private val token: St
                         }
                         maxLoaded += users?.size ?: 0
                         Log.d("SingleBoundaryCallback", "Database size: ${users?.size}, Max loaded: $maxLoaded")
+                        try {
+                            for (numUser in 0 until users!!.size)
+                                users[numUser].isFavourited = true
+                        }catch (e: Exception) {
+                            return
+                        }
                     }
                 })
         }

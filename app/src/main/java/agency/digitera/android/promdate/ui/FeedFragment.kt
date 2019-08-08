@@ -18,11 +18,16 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import com.google.android.material.tabs.TabLayout
+
 
 class FeedFragment : Fragment() {
 
     private var pagerAdapter: TabAdapter? = null
     private lateinit var drawerInterface: DrawerInterface
+    private val tabColors = arrayListOf(R.color.CoupleFeedRed, R.color.SinglesFeedOrange, R.color.WishlistFeedBlue)
 
     override fun onAttach(context: Context) {
         //get drawerInterface to setup navigation drawer
@@ -52,6 +57,7 @@ class FeedFragment : Fragment() {
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.app_name)
+        toolbar.setTitleTextAppearance(context, R.style.Toolbar_TitleText_Feed)
         appCompatActivity.setSupportActionBar(toolbar)
         drawerInterface.setupDrawer(toolbar, 0)
 
@@ -68,9 +74,29 @@ class FeedFragment : Fragment() {
 
         //set up view pager with selections adapter
         view_pager.adapter = pagerAdapter
+        view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
+        tab_layout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                val position = tab!!.position
+                toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), tabColors[position]))
+            }
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val position = tab!!.position
+                toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), tabColors[position]))
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
 
         //set up tab layout
         tab_layout.setupWithViewPager(view_pager)
+
+
+        for(tabNum in 0 until 3) {
+            val tab = (tab_layout.getChildAt(0) as ViewGroup).getChildAt(tabNum)
+            tab.setBackgroundColor(ContextCompat.getColor(this.requireContext(), tabColors[tabNum]))
+        }
 
         //gets user id to store in file
         val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
