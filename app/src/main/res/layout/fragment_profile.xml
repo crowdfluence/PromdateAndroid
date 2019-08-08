@@ -34,11 +34,13 @@
         android:layout_height="64dp"
         android:layout_marginStart="8dp"
         android:adjustViewBounds="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/profile_picture_image"
         app:layout_constraintEnd_toEndOf="@+id/profile_picture_image"
+        app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toEndOf="@+id/profile_picture_image"
         app:layout_constraintTop_toTopOf="@+id/profile_picture_image"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/default_profile" />
 
     <TextView
@@ -46,11 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto_medium"
         android:textColor="@android:color/black"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/school_text"
         app:layout_constraintStart_toEndOf="@+id/partner_picture_image"
         app:layout_constraintTop_toTopOf="@+id/profile_picture_image"
         app:layout_constraintVertical_chainStyle="packed"
@@ -60,35 +61,50 @@
         android:id="@+id/school_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="20dp"
         android:text="@string/school_location"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/grade_text"
-        app:layout_constraintStart_toStartOf="@+id/name_text"
-        app:layout_constraintTop_toBottomOf="@+id/name_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relationship_text"
         tools:text="Merivale High School, Ottawa" />
 
     <TextView
         android:id="@+id/grade_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="20dp"
         android:text="@string/grade_variable"
-        android:visibility="gone"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/relationship_text"
-        app:layout_constraintStart_toStartOf="@+id/name_text"
-        app:layout_constraintTop_toBottomOf="@+id/school_text"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relationship_text"
         tools:text="Grade 12" />
+
+    <TextView
+        android:id="@+id/gender_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/gender"
+        android:textColor="@android:color/black"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relationship_text"
+        tools:text="Female" />
 
     <TextView
         android:id="@+id/relationship_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/vertical_spacing"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="28dp"
         android:text="@string/single"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_picture_image"
-        app:layout_constraintStart_toStartOf="@+id/name_text"
-        app:layout_constraintTop_toBottomOf="@+id/grade_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_picture_image"
         tools:text="Single" />
 
     <Button
@@ -96,27 +112,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/edge_margin"
+        android:layout_marginBottom="24dp"
         android:text="@string/send_match_request"
         android:textAllCaps="false"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_picture_image" />
+        app:layout_constraintTop_toBottomOf="@+id/snapchat_image"
+        app:layout_constraintVertical_bias="0.068" />
 
     <TextView
         android:id="@+id/bio_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/vertical_spacing"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/edge_margin"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send_match_button"
+        app:layout_constraintStart_toEndOf="@+id/partner_picture_image"
+        app:layout_constraintTop_toBottomOf="@+id/name_text"
         tools:text="I'm an incredibly intelligent individual. Please do not attempt to match with me if your IQ is below 150." />
 
     <ImageView
@@ -124,39 +143,39 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/large_vertical_spacing"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/snapchat_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
-        app:srcCompat="@drawable/instagram_logo" />
+        app:srcCompat="@drawable/instagram_icon" />
 
     <ImageView
         android:id="@+id/snapchat_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/large_vertical_spacing"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/twitter_image"
         app:layout_constraintStart_toEndOf="@+id/instagram_image"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
-        app:srcCompat="@drawable/snapchat_logo" />
+        app:srcCompat="@drawable/snapchat_logo_final" />
 
     <ImageView
         android:id="@+id/twitter_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="@dimen/edge_margin"
-        android:layout_marginTop="@dimen/large_vertical_spacing"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="@dimen/edge_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/snapchat_image"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
-        app:srcCompat="@drawable/twitter_logo" />
+        app:srcCompat="@drawable/twitter_icon_final" />
 
     <!-- TODO: Add dress image and description to profile -->
 
@@ -179,14 +198,14 @@
         android:id="@+id/blank_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="name_text,school_text,bio_text,relationship_text,profile_picture_image" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/social_media_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="instagram_image, twitter_image, snapchat_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

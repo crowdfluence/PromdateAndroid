@@ -171,6 +171,10 @@ class ProfileFragment : Fragment() {
                             user.partner?.profilePictureUrl ?: ""
                         )
                     }
+                    if(user.self.gender != R.array.genders_array.toString(3)){
+                        gender_text.text = user.self.gender
+                        gender_text.visibility = View.VISIBLE
+                    }
                     bio_text.text = user.self.bio
 
                     if (user.self.snapchat != null && user.self.snapchat?.isNotEmpty() == true) {
