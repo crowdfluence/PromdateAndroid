@@ -16,7 +16,12 @@ import androidx.navigation.ui.setupWithNavController
 import agency.digitera.android.promdate.ui.FeedFragmentDirections
 import agency.digitera.android.promdate.util.ConfirmationDialog
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import androidx.core.app.NotificationManagerCompat
+import kotlinx.android.synthetic.main.fragment_feed.*
 
 
 class MainActivity : AppCompatActivity(), DrawerInterface {
@@ -25,13 +30,100 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
     lateinit var wishlistDb: WishlistDb
     lateinit var couplesDb: CoupleDb
 
+    private var notificationManager: NotificationManagerCompat? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        notificationManager = NotificationManagerCompat.from(this)
+
         singlesDb = SingleDb.create(this)
         wishlistDb = WishlistDb.create(this)
         couplesDb = CoupleDb.create(this)
+    }
+
+
+    public fun unmatched() {
+
+        val title = "Unmatched"
+        val message = "You just lost your date to prom. :("
+
+        val notification = NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+            .setSmallIcon(R.drawable.ic_broken_heart)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .build()
+        notificationManager!!.notify(1, notification)
+
+    }
+public fun noteUnmatched(){
+    unmatched()
+}
+
+    public fun matchRequest() {
+
+        val title = "Match Request"
+        val message = "Congrats, you were just offered a request to prom"
+
+        val notification = NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+            .setSmallIcon(R.drawable.ic_heart_red)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .build()
+
+        notificationManager!!.notify(2, notification)
+
+    }
+    public fun notematchRequest(){
+        matchRequest()
+    }
+    public fun matchRejected() {
+
+        val title = "Match Rejected"
+        val message = "I'm sorry you were just rejected"
+
+        val notification = NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+            .setSmallIcon(R.drawable.ic_broken_heart)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .build()
+        notificationManager!!.notify(3, notification)
+
+    }
+
+    public fun notematchRejected(){
+        matchRejected()
+    }
+
+    public fun matchApproved() {
+
+        val title = "Match Approved"
+        val message = "Congrats you have a date to your prom"
+
+        val notification = NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+            .setSmallIcon(R.drawable.ic_heart_red)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .build()
+        notificationManager!!.notify(4, notification)
+
+    }
+    public fun notematchApproved(){
+        matchApproved()
+    }
+    public fun note(){
+        matchRequest()
+        matchRejected()
+        unmatched()
     }
 
     override fun onSupportNavigateUp() =
@@ -95,6 +187,11 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                 }
                 R.id.nav_settings -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_settings)
+
+                    with(NotificationManagerCompat.from(this)){
+                    }
+
+
                 }
                 R.id.nav_notifications -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.nav_notifications)

@@ -1,5 +1,9 @@
 package agency.digitera.android.promdate.adapters
 
+import agency.digitera.android.promdate.DrawerInterface
+import agency.digitera.android.promdate.MainActivity
+import androidx.appcompat.app.AppCompatActivity
+
 import agency.digitera.android.promdate.R
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +12,9 @@ import android.view.ViewGroup
 import agency.digitera.android.promdate.data.Notification
 import agency.digitera.android.promdate.util.LoadUrl
 import android.content.Context
+import com.google.android.material.internal.ContextUtils.getActivity
 import kotlinx.android.synthetic.main.item_notification.view.*
+
 
 class NotificationsAdapter(private val notifications: ArrayList<Notification>,
                            private val clickListener: (Notification) -> Unit): RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
@@ -16,8 +22,30 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
     //sets content of view
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(notification: Notification, clickListener: (Notification) -> Unit) {
+
+
             with(itemView) {
                 title_text.text = resources.getStringArray(R.array.notification_types_array)[notification.type - 1] //TODO: Get max to change
+
+
+                if ("Match Rejected" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
+                    (context as MainActivity).notematchRejected()
+                }
+                else if ("Match Requested" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
+                    (context as MainActivity).notematchRequest()
+                }
+                else if  ("Match Approved" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
+                    (context as MainActivity).notematchApproved()
+                }
+                else if  ("Unmatched" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
+                    (context as MainActivity).noteUnmatched()
+                }
+                else {
+                    //nothing happens
+                }
+
+
+
                 val bodyText = resources.getStringArray(R.array.notification_messages_array)[notification.type - 1]
                 body_text.text = String.format(bodyText, notification.body[0].sender.firstName, notification.body[0].sender.lastName)
                 LoadUrl.loadProfilePicture(context, sender_image, notification.body[0].sender.profilePictureUrl)
@@ -28,6 +56,8 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
                 })
                 setOnClickListener { clickListener(notification) }
                 time_text.text = getTime(System.currentTimeMillis() / 1000L - notification.creationTime, context)
+                     //           (activity as MainActivity).notematchRequest()
+
             }
         }
     }
@@ -50,6 +80,9 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
 
     fun getTime(time: Long, context: Context): String {
         var remainingTime = time
+
+
+
 
         if (remainingTime <= 60) {
             return context.getString(R.string.time_seconds, remainingTime)
