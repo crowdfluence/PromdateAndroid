@@ -45,19 +45,6 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
                 }
 
 
-//                when ( "Unmatched" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1] ) {
-//                    (context as MainActivity).noteUnmatched()
-//                }
-//                when ( "Match Approved" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1] ) {
-//                    (context as MainActivity).notematchApproved()
-//                }
-//                when ( "Match Rejected" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1] ) {
-//                    (context as MainActivity).notematchRejected()
-//                }
-//                when ( "Match Requested" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1] ) {
-//                    (context as MainActivity).notematchRequest()
-//                }
-//
 
                 val bodyText = resources.getStringArray(R.array.notification_messages_array)[notification.type - 1]
                 body_text.text = String.format(bodyText, notification.body[0].sender.firstName, notification.body[0].sender.lastName)
