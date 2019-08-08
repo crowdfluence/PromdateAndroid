@@ -208,6 +208,8 @@ class SettingsFragment : Fragment() {
 
                         unmatch_partner_button.setOnClickListener {
                             unmatch(user.partner?.id ?: -1)
+                            (activity as MainActivity).noteUnmatched()
+
                         }
                     }
                 } else {

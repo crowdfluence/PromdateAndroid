@@ -301,4 +301,17 @@
                 app:layout_constraintWidth_percent="0.25" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/click_here_to_change_your_password"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Click here to change your password"
+        android:textAllCaps="false"
+        android:textColor="@color/linkBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent" />
+
 </LinearLayout>

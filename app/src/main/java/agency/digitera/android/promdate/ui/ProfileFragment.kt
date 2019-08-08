@@ -32,6 +32,9 @@ import androidx.appcompat.widget.ActionMenuView
 import androidx.core.content.ContextCompat
 import agency.digitera.android.promdate.util.ConfirmationDialog
 import agency.digitera.android.promdate.util.MissingSpException
+import android.app.NotificationManager
+
+
 
 
 class ProfileFragment : Fragment() {
@@ -516,6 +519,7 @@ class ProfileFragment : Fragment() {
 
                         //change text of send request button back if fail
                         if (send_match_button.text == getString(R.string.send_match_request)) {
+                            (activity as MainActivity).notematchRequest()
                             send_match_button.text = getString(R.string.cancel_request)
                         }
                         else if (send_match_button.text == getString(R.string.cancel_request)) {
