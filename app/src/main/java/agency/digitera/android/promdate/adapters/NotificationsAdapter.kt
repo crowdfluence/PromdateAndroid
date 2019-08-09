@@ -24,27 +24,29 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
         fun bind(notification: Notification, clickListener: (Notification) -> Unit) {
 
 
+
             with(itemView) {
                 title_text.text = resources.getStringArray(R.array.notification_types_array)[notification.type - 1] //TODO: Get max to change
 
-
-                if ("Match Rejected" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
-                    (context as MainActivity).notematchRejected()
-                }
-                else if ("Match Requested" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
-                    (context as MainActivity).notematchRequest()
-                }
-                else if  ("Match Approved" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
-                    (context as MainActivity).notematchApproved()
-                }
-                else if  ("Unmatched" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]){
-                    (context as MainActivity).noteUnmatched()
-                }
-                else {
-                    //nothing happens
-                }
-
-
+//
+////            if (time==0) {
+//                (when (notification.type) {
+//                    1 -> if ("Match Requested" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]) {
+//                        (context as MainActivity).notematchRequest()
+//                    }
+//
+//                    2 -> if ("Match Approved" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]) {
+//                        (context as MainActivity).notematchApproved()
+//                    }
+//                    3 -> if ("Match Rejected" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]) {
+//                        (context as MainActivity).notematchRejected()
+//                    }
+//                    4 -> if ("Unmatched" == resources.getStringArray(R.array.notification_types_array)[notification.type - 1]) {
+//                        (context as MainActivity).noteUnmatched()
+//                    }
+//                    5 -> null
+//                })
+////            }
 
                 val bodyText = resources.getStringArray(R.array.notification_messages_array)[notification.type - 1]
                 body_text.text = String.format(bodyText, notification.body[0].sender.firstName, notification.body[0].sender.lastName)
@@ -106,4 +108,6 @@ class NotificationsAdapter(private val notifications: ArrayList<Notification>,
         remainingTime *= 7 / 365
         return context.getString(R.string.time_years, remainingTime)
     }
+
+
 }
