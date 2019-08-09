@@ -1,6 +1,6 @@
 package agency.digitera.android.promdate.ui
 
-import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
+//import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,11 +15,11 @@ import agency.digitera.android.promdate.R
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.android.volley.AuthFailureError
+/*import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import com.android.volley.toolbox.Volley*/
 import kotlinx.android.synthetic.main.fragment_dress_search.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -31,9 +31,9 @@ class DressSearchFragment : Fragment() {
     private lateinit var brandsList: ArrayList<String>
     private lateinit var typesList: ArrayList<String>
     private lateinit var colorList: ArrayList<String>
-    private lateinit var brandDialog: SpinnerDialog
+    /*private lateinit var brandDialog: SpinnerDialog
     private lateinit var typeDialog: SpinnerDialog
-    private lateinit var colorDialog: SpinnerDialog
+    private lateinit var colorDialog: SpinnerDialog*/
     private lateinit var brandB: Button
     private lateinit var typeB: Button
     private lateinit var colorB: Button
@@ -153,18 +153,18 @@ class DressSearchFragment : Fragment() {
         colorList.add("Yellow")
         colorList.add("Orange")
 
-        brandB = view!!.findViewById(R.id.brandB)
+     /*   brandB = view!!.findViewById(R.id.brandB)
         typeB = view!!.findViewById(R.id.typesB)
         colorB = view!!.findViewById(R.id.colorB)
         brandDialog = SpinnerDialog(activity, brandsList, "Choose the brand: ")
         typeDialog = SpinnerDialog(activity, typesList, "Choose the model: ")
-        colorDialog = SpinnerDialog(activity, colorList, "Choose the color: ")
+        colorDialog = SpinnerDialog(activity, colorList, "Choose the color: ")*/
     }//end fun initItems
 
     /**
      * function that shows the alert dialog for confirming a dress
      */
-    private fun showAlert() {
+   /* private fun showAlert() {
         val builder = AlertDialog.Builder(view!!.context)
         builder.setCancelable(true)
         builder.setTitle("Confirm Dress")
@@ -176,7 +176,7 @@ class DressSearchFragment : Fragment() {
         builder.setNegativeButton(android.R.string.cancel) { dialog, which -> }
         val dialog = builder.create()
         dialog.show()
-    }//end fun showAlert()
+    }//end fun showAlert()*/
 
     /**
      * TODO: Add things to the list from the database with all the dresses
@@ -232,7 +232,7 @@ class DressSearchFragment : Fragment() {
      * TODO: Call the currents user's dress when calling on the dress profile
      * TODO: Call the dresses information when opening the dress profile
      */
-    private fun addDress() {
+   /* private fun addDress() {
         val stringRequest = object : StringRequest(Method.POST, URL_DRESS,
             Response.Listener { response ->
                 try {
@@ -268,14 +268,14 @@ class DressSearchFragment : Fragment() {
         }
         val rq: RequestQueue = Volley.newRequestQueue(context)
         rq.add(stringRequest)
-    }//end add dress
+    }//end add dress*/
 
-    /**
+  /*  *//**
      * I had to create 2 different PHP files to save the dress, the first was to add the dress and inform the user
      * if there was a duplicate. However, I could not find a way to communicate between Android Studio and my PHP files
      * so I created a second file that would add the dress even if there was a duplicate.
      * It is not the mos efficient way to do
-     */
+     *//*
     private fun addDressWithRepeat() {
         val stringRequest = object : StringRequest(Method.POST, ROOT_URL + "", //php file, or whatever that has the code that connects to the database
             Response.Listener { response ->
@@ -299,5 +299,5 @@ class DressSearchFragment : Fragment() {
         }
         val rq: RequestQueue = Volley.newRequestQueue(context)
         rq.add(stringRequest)
-    }//end addDressRepeat
+    }//end addDressRepeat*/
 }//end class
