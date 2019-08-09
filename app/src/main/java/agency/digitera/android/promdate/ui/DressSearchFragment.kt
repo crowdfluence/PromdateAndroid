@@ -35,7 +35,7 @@ class DressSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //set up toolbar at top of layout
+        /*//set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.dress_search)
@@ -49,7 +49,7 @@ class DressSearchFragment : Fragment() {
         //set up login button
         search_button.setOnClickListener {
             search(it)
-        }
+        }*/
     }
 
     private fun search(view: View) {

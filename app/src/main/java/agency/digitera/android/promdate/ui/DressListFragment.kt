@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_dress_list.*
-import kotlinx.android.synthetic.main.fragment_dress_search.toolbar
+//import kotlinx.android.synthetic.main.fragment_dress_search.toolbar
 
 class DressListFragment : Fragment() {
     private lateinit var viewAdapter: DressAdapter
@@ -43,7 +43,7 @@ class DressListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //set up toolbar at top of layout
+        /*//set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.search_results)
@@ -71,7 +71,7 @@ class DressListFragment : Fragment() {
             swipe_refresh.isRefreshing = false
         }
 
-        loadDresses()
+        loadDresses()*/
     }
 
     private fun loadDresses() {

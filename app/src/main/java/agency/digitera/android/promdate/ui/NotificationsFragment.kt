@@ -52,7 +52,7 @@ class NotificationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+/*
         //set up toolbar
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
@@ -87,13 +87,13 @@ class NotificationsFragment : Fragment() {
             swipe_refresh.isRefreshing = false
         }
 
-        loadNotifications()
+        loadNotifications()*/
     }
 
     private fun loadNotifications() {
         val accessor = ApiAccessor()
 
-        //get token
+       /* //get token
         val sp: SharedPreferences =
             context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
@@ -144,7 +144,7 @@ class NotificationsFragment : Fragment() {
                     //TODO: Something went wrong page
                 }
             }
-        })
+        })*/
     }
 
     private fun onNotificationClick(notification: Notification) {

@@ -75,7 +75,7 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        /*super.onViewCreated(view, savedInstanceState)
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
@@ -120,10 +120,10 @@ class SettingsFragment : Fragment() {
         }
 
         //load data
-        loadData()
+        loadData()*/
     }
 
-    override fun onDestroyView() {
+  /*  override fun onDestroyView() {
         super.onDestroyView()
         drawerInterface.unlockDrawer() //unlocks drawer upon exiting fragment
 
@@ -367,7 +367,7 @@ class SettingsFragment : Fragment() {
                 loadingAnim.visibility = View.GONE
             }
         })
-    }
+    }*/
 
     private fun isValidName(name: String): Boolean {
         if (name.isEmpty()) {
@@ -416,7 +416,7 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CAMERA) {
+    /*    if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
             }
@@ -431,12 +431,12 @@ class SettingsFragment : Fragment() {
             else {
                 snackbar("PromDate requires storage and camera access in order to select a photo from gallery.")
             }
-        }
+        }*/
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun showImage(imageUri: Uri) {
-        profilePicUri = imageUri
+      /*  profilePicUri = imageUri
         Picasso.get()
             .load(imageUri)
             .transform(
@@ -452,7 +452,7 @@ class SettingsFragment : Fragment() {
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
             .error(R.drawable.default_profile) //TODO: Change to actual error
-            .into(profile_picture_image)
+            .into(profile_picture_image)*/
     }
 
     private fun openCropActivity(sourceUri: Uri) {
@@ -529,7 +529,7 @@ class SettingsFragment : Fragment() {
         )
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+/*    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         activity?.menuInflater?.inflate(R.menu.menu_settings, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -541,9 +541,9 @@ class SettingsFragment : Fragment() {
             updateUser()
         }
         return super.onOptionsItemSelected(item)
-    }
+    }*/
 
-    private fun snackbar(msg: String) {
+    /*private fun snackbar(msg: String) {
         Snackbar.make(constraint_layout, msg, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -557,7 +557,7 @@ class SettingsFragment : Fragment() {
                 "add_photo_dialog_fragment"
             )
         }
-    }
+    }*/
 
     companion object {
         private const val PICK_IMAGE_CAMERA_REQUEST_CODE = 610

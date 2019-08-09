@@ -77,21 +77,23 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //set up toolbar at top of layout
-        val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = toolbar as Toolbar
+//        val appCompatActivity = activity as AppCompatActivity
+//        val toolbar: Toolbar = toolbar as Toolbar
         if (profileFragmentArgs.userName != null) {
-            toolbar.title = profileFragmentArgs.userName
+            constraint_layout.background= ContextCompat.getDrawable(requireContext(), R.drawable.single_profile_screenshot)
+//            toolbar.title = profileFragmentArgs.userName
         }
         else {
-            toolbar.title = getString(R.string.your_profile)
+            constraint_layout.background= ContextCompat.getDrawable(requireContext(), R.drawable.your_profile_screenshot)
+//            toolbar.title = getString(R.string.your_profile)
         }
-        appCompatActivity.setSupportActionBar(toolbar)
+        /*appCompatActivity.setSupportActionBar(toolbar)
 
         //set up back arrow
         appCompatActivity.supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
-        }
+        }*/
 
         requestCompleted = isSelf //doesn't need to wait on checkSelf request if profile is own profile
         loadUser()
@@ -115,7 +117,7 @@ class ProfileFragment : Fragment() {
 
         val call = accessor.apiService.getUser(token, userId)
 
-        loading_pb.visibility = View.VISIBLE
+//        loading_pb.visibility = View.VISIBLE
 
         call.enqueue(object : Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
@@ -127,7 +129,7 @@ class ProfileFragment : Fragment() {
                     Snackbar.LENGTH_LONG)
                     .show()
                 if (requestCompleted) {
-                    loading_pb.visibility = View.GONE
+//                    loading_pb.visibility = View.GONE
                 }
                 else {
                     requestCompleted = true
@@ -142,43 +144,43 @@ class ProfileFragment : Fragment() {
 
                     val canSendMatch = !isSelf && profileFragmentArgs.isMatched == 0
                     if (canSendMatch) {
-                        send_match_button.setOnClickListener {
+                        /*send_match_button.setOnClickListener {
                             match()
-                        }
+                        }*/
                     }
 
                     if (profileFragmentArgs.isMatched == 0 && user.self.partnerId == selfId) {
-                        send_match_button.text = getString(R.string.accept_request)
+//                        send_match_button.text = getString(R.string.accept_request)
                     }
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl)
+//                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl)
                     }
-                    name_text.text = context?.getString(R.string.full_name, user.self.firstName, user.self.lastName)
+                   /* name_text.text = context?.getString(R.string.full_name, user.self.firstName, user.self.lastName)
                     school_text.text = user.school.name
-                    grade_text.text = context?.getString(R.string.grade_variable, user.self.grade)
+                    grade_text.text = context?.getString(R.string.grade_variable, user.self.grade)*/
                     hasGrade = user.self.grade != null
                     if (user.partner == null) {
-                        relationship_text.text = context?.getString(R.string.single)
+//                        relationship_text.text = context?.getString(R.string.single)
                     } else {
                         hasPartner = true
-                        relationship_text.text =
-                            context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
-                        LoadUrl.loadProfilePicture(
+                        /*relationship_text.text =
+                            context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix*/
+                        /*LoadUrl.loadProfilePicture(
                             context!!,
                             partner_picture_image,
                             user.partner?.profilePictureUrl ?: ""
-                        )
+                        )*/
                     }
                     if(user.self.gender != R.array.genders_array.toString(3)){
-                        gender_text.text = user.self.gender
-                        gender_text.visibility = View.VISIBLE
+                       /* gender_text.text = user.self.gender
+                        gender_text.visibility = View.VISIBLE*/
                     }
-                    bio_text.text = user.self.bio
+//                    bio_text.text = user.self.bio
 
                     if (user.self.snapchat != null && user.self.snapchat?.isNotEmpty() == true) {
-                        snapchat_image.visibility = View.VISIBLE
+                       /* snapchat_image.visibility = View.VISIBLE
 
                         snapchat_image.setOnClickListener {
 
@@ -191,12 +193,12 @@ class ProfileFragment : Fragment() {
                                 val websiteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(snapUrl))
                                 startActivity(websiteIntent)
                             }
-                        }
+                        }*/
                     } else {
-                        snapchat_image.visibility = View.GONE
+//                        snapchat_image.visibility = View.GONE
                     }
                     if (user.self.twitter != null && user.self.twitter?.isNotEmpty() == true) {
-                        twitter_image.visibility = View.VISIBLE
+                        /*twitter_image.visibility = View.VISIBLE
 
                         twitter_image.setOnClickListener {
                             val uri = Uri.parse("http://twitter.com/${user.self.twitter}")
@@ -214,12 +216,12 @@ class ProfileFragment : Fragment() {
                                     )
                                 )
                             }
-                        }
+                        }*/
                     } else {
-                        twitter_image.visibility = View.GONE
+//                        twitter_image.visibility = View.GONE
                     }
                     if (user.self.instagram != null && user.self.instagram?.isNotEmpty() == true) {
-                        instagram_image.visibility = View.VISIBLE
+                        /*instagram_image.visibility = View.VISIBLE
 
                         instagram_image.setOnClickListener {
                             val uri = Uri.parse("http://instagram.com/_u/${user.self.instagram}")
@@ -237,10 +239,10 @@ class ProfileFragment : Fragment() {
                                     )
                                 )
                             }
-                        }
+                        }*/
 
                     } else {
-                        instagram_image.visibility = View.GONE
+//                        instagram_image.visibility = View.GONE
                     }
 
                     if (!isSelf) {
@@ -250,12 +252,12 @@ class ProfileFragment : Fragment() {
 
                     //show page if other request has completed
                     if (requestCompleted) {
-                        loading_pb.visibility = View.GONE
+                       /* loading_pb.visibility = View.GONE
                         send_match_button.visibility = if (canSendMatch) View.VISIBLE else View.GONE
                         partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                         blank_group.visibility = View.VISIBLE
                         grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
-                        social_media_group.visibility = View.VISIBLE
+                        social_media_group.visibility = View.VISIBLE*/
                     }
                     else {
                         requestCompleted = true
@@ -266,7 +268,7 @@ class ProfileFragment : Fragment() {
                         Snackbar.LENGTH_LONG)
                         .show()
                     if (requestCompleted) {
-                        loading_pb.visibility = View.GONE
+//                        loading_pb.visibility = View.GONE
                     }
                     else {
                         requestCompleted = true
@@ -295,7 +297,7 @@ class ProfileFragment : Fragment() {
                     selfPartnerId = -1
 
                     if (requestCompleted) {
-                        loading_pb.visibility = View.GONE
+//                        loading_pb.visibility = View.GONE
                     }
                     else {
                         requestCompleted = true
@@ -310,7 +312,7 @@ class ProfileFragment : Fragment() {
                         selfPartnerId = -1
 
                         if (requestCompleted) {
-                            loading_pb.visibility = View.GONE
+//                            loading_pb.visibility = View.GONE
                         }
                         else {
                             requestCompleted = true
@@ -322,20 +324,20 @@ class ProfileFragment : Fragment() {
 
                         //viewing partner's profile
                         if (isSelfMatched == true && profileFragmentArgs.userId == selfPartnerId) {
-                            send_match_button.text = getString(R.string.unmatch)
+//                            send_match_button.text = getString(R.string.unmatch)
                         }
                         //viewing pending partner's profile
                         else if (profileFragmentArgs.userId == selfPartnerId) {
-                           send_match_button.text = getString(R.string.cancel_request)
+//                           send_match_button.text = getString(R.string.cancel_request)
                         }
 
                         if (requestCompleted) {
-                            loading_pb.visibility = View.GONE
+                           /* loading_pb.visibility = View.GONE
                             send_match_button.visibility = if (profileFragmentArgs.isMatched == 0) View.VISIBLE else View.GONE
                             partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
                             social_media_group.visibility = View.VISIBLE
                             blank_group.visibility = View.VISIBLE
-                            grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
+                            grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE*/
                         }
                         else {
                             requestCompleted = true
@@ -420,13 +422,13 @@ class ProfileFragment : Fragment() {
 
     private fun match() {
 
-        //change text of send request button
-        if (send_match_button.text == getString(R.string.send_match_request)) {
-            send_match_button.text = getString(R.string.cancel_request)
-        }
-        else if (send_match_button.text == getString(R.string.cancel_request)) {
-            send_match_button.text = getString(R.string.send_match_request)
-        }
+//        //change text of send request button
+//        if (send_match_button.text == getString(R.string.send_match_request)) {
+//            send_match_button.text = getString(R.string.cancel_request)
+//        }
+//        else if (send_match_button.text == getString(R.string.cancel_request)) {
+//            send_match_button.text = getString(R.string.send_match_request)
+//        }
 
         //ensures that user data has been received from server before proceeding
         if (selfPartnerId == null || isSelfMatched == null) {
@@ -499,13 +501,13 @@ class ProfileFragment : Fragment() {
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    //change text of send request button back if fail
-                    if (send_match_button.text == getString(R.string.send_match_request)) {
-                        send_match_button.text = getString(R.string.cancel_request)
-                    }
-                    else if (send_match_button.text == getString(R.string.cancel_request)) {
-                        send_match_button.text = getString(R.string.send_match_request)
-                    }
+//                    //change text of send request button back if fail
+//                    if (send_match_button.text == getString(R.string.send_match_request)) {
+//                        send_match_button.text = getString(R.string.cancel_request)
+//                    }
+//                    else if (send_match_button.text == getString(R.string.cancel_request)) {
+//                        send_match_button.text = getString(R.string.send_match_request)
+//                    }
                 }
 
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
@@ -518,13 +520,13 @@ class ProfileFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
 
-                        //change text of send request button back if fail
-                        if (send_match_button.text == getString(R.string.send_match_request)) {
-                            send_match_button.text = getString(R.string.cancel_request)
-                        }
-                        else if (send_match_button.text == getString(R.string.cancel_request)) {
-                            send_match_button.text = getString(R.string.send_match_request)
-                        }
+//                        //change text of send request button back if fail
+//                        if (send_match_button.text == getString(R.string.send_match_request)) {
+//                            send_match_button.text = getString(R.string.cancel_request)
+//                        }
+//                        else if (send_match_button.text == getString(R.string.cancel_request)) {
+//                            send_match_button.text = getString(R.string.send_match_request)
+//                        }
 
                     } else { //success
                         //TODO: Make message more "human"
@@ -542,13 +544,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun changeHeart(colour: Int?) {
-        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
+//        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
         if (colour == null) {
             //not filled
             var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart_border)
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable)
-                heartItem.setIcon(drawable)
+//                heartItem.setIcon(drawable)
             }
         }
         else {
@@ -556,7 +558,7 @@ class ProfileFragment : Fragment() {
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable)
                 DrawableCompat.setTint(drawable!!.mutate(), colour)
-                heartItem.setIcon(drawable)
+//                heartItem.setIcon(drawable)
             }
         }
     }

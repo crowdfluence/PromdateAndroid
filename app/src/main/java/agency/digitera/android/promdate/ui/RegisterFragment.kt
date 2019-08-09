@@ -44,13 +44,13 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //set up toolbar at top of layout
+        /*//set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
         val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.register)
         appCompatActivity.setSupportActionBar(toolbar)
 
-        //set blue text to return to login
+       //set blue text to return to login
         sign_in_text.setOnClickListener {
             signIn(it)
         }
@@ -76,11 +76,11 @@ class RegisterFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        })
+        })*/
     }
 
     private fun register(view: View) {
-        val emailEdit = email_edit
+        /*val emailEdit = email_edit
         val email = emailEdit.text.toString()
         val password = password_edit.text.toString()
         val checkPasswordEdit = confirm_password_edit
@@ -182,10 +182,10 @@ class RegisterFragment : Fragment() {
                 ).show()
                 loadingAnim.visibility = View.GONE
             }
-        })
+        })*/
     }
 
-    //checks that email format is valid
+   /* //checks that email format is valid
     private fun isValidEmail(emailEdit: TextInputEditText): Boolean {
         val email = emailEdit.text.toString()
         val emailEditWrapper = email_edit_wrapper
@@ -210,11 +210,11 @@ class RegisterFragment : Fragment() {
             }
         }
         return false
-    }
+    }*/
 
     private fun isValidSchoolId(schoolId: Int): Boolean = schoolId > 0
 
-    private fun isValidPasswordConfirmation(confirmPassEdit: TextInputEditText): Boolean {
+    /*private fun isValidPasswordConfirmation(confirmPassEdit: TextInputEditText): Boolean {
         val password = password_edit.text.toString()
         val confirmPassword = confirmPassEdit.text.toString()
         val confirmPassEditWrapper = confirm_password_edit_wrapper
@@ -232,7 +232,7 @@ class RegisterFragment : Fragment() {
         }
         confirmPassEditWrapper.error = null
         return true
-    }
+    }*/
 
     private fun signIn(view: View) {
         findNavController().navigate(R.id.nav_login)

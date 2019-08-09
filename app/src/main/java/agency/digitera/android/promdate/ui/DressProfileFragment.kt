@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_invite.*
+import kotlinx.android.synthetic.main.fragment_dress_profile.*
 
 class DressProfileFragment : Fragment() {
 

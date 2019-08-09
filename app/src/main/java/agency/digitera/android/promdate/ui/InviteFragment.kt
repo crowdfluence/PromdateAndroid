@@ -37,9 +37,9 @@ class InviteFragment : Fragment() {
 
         //set up toolbar at top of layout
         val appCompatActivity = activity as AppCompatActivity
-        val toolbar: Toolbar = toolbar as Toolbar
+        /*val toolbar: Toolbar = toolbar as Toolbar
         toolbar.title = getString(R.string.invite)
-        appCompatActivity.setSupportActionBar(toolbar)
+        appCompatActivity.setSupportActionBar(toolbar)*/
 
         //set up back arrow
         appCompatActivity.supportActionBar?.apply {
@@ -47,9 +47,9 @@ class InviteFragment : Fragment() {
             setDisplayShowHomeEnabled(true)
         }
 
-        invite_button.setOnClickListener {
+        /*invite_button.setOnClickListener {
             invite(it)
-        }
+        }*/
     }
 
     private fun invite(view: View) {
