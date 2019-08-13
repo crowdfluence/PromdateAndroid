@@ -1,21 +1,20 @@
 package agency.digitera.android.promdate
 
-import agency.digitera.android.promdate.data.CoupleDb
-import agency.digitera.android.promdate.data.SingleDb
-import agency.digitera.android.promdate.data.WishlistDb
+import agency.digitera.android.promdate.data.db.CoupleDb
+import agency.digitera.android.promdate.data.db.SingleDb
+import agency.digitera.android.promdate.data.db.WishlistDb
+import agency.digitera.android.promdate.ui.tabs.FeedFragmentDirections
+import agency.digitera.android.promdate.util.dialog.ConfirmationDialog
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import agency.digitera.android.promdate.ui.FeedFragmentDirections
-import agency.digitera.android.promdate.util.ConfirmationDialog
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -80,7 +79,8 @@ class MainActivity : AppCompatActivity(), DrawerInterface {
                 R.id.nav_logout -> {
                     ConfirmationDialog(getString(R.string.confirm_logout)).apply {
                         setPositiveClick {
-                            val sp: SharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                            val sp: SharedPreferences =
+                                getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
                             sp.edit().putString("token", null).apply()
 
                             findNavController(R.id.nav_host_fragment).navigate(R.id.nav_logout)

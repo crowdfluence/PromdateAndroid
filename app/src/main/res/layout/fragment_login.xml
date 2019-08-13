@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="agency.digitera.android.promdate.ui.LoginFragment">
+    tools:context="agency.digitera.android.promdate.ui.init.LoginFragment">
 
     <include
         android:id="@+id/toolbar"
