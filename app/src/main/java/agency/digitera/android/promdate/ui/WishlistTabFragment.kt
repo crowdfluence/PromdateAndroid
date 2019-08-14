@@ -40,6 +40,8 @@ class WishlistTabFragment : Fragment(), TabInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        invalidate()
+
         //sets up recycler view
         viewManager = LinearLayoutManager(context)
         viewAdapter = SingleAdapter {
