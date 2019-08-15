@@ -3,11 +3,13 @@ package agency.digitera.android.promdate.util
 import agency.digitera.android.promdate.data.*
 import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 //Requests that can be sent to the api
 interface ServerInterface {
@@ -88,12 +90,19 @@ interface ServerInterface {
 class ApiAccessor {
     var apiService: ServerInterface
     init {
-        val gson = GsonBuilder()
+        val client = OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .build()
+
+        GsonBuilder()
             .setLenient()
             .create()
+
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
         apiService = retrofit.create(ServerInterface::class.java)
     }
