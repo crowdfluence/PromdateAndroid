@@ -53,7 +53,7 @@
             card_view:layout_constraintHorizontal_bias="0.015"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/profile_circle" />
+            card_view:srcCompat="@drawable/ic_black_circle_outline" />
 
         <ImageView
             android:id="@+id/profile_picture_image"
