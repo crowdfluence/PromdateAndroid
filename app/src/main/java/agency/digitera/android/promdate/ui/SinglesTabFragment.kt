@@ -95,7 +95,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            if (CheckInternet.isNetworkAvailable(context!!)) {
+            if (CheckInternet.isNetworkAvailable(context)) {
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
                     SingleBoundaryCallback.maxLoaded = 0

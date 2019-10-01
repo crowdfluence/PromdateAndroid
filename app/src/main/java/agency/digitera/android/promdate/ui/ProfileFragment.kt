@@ -1,37 +1,37 @@
 package agency.digitera.android.promdate.ui
 
+import agency.digitera.android.promdate.DrawerInterface
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.data.DefaultResponse
+import agency.digitera.android.promdate.data.FullUser
+import agency.digitera.android.promdate.data.UserResponse
+import agency.digitera.android.promdate.util.ApiAccessor
+import agency.digitera.android.promdate.util.ConfirmationDialog
+import agency.digitera.android.promdate.util.LoadUrl
+import agency.digitera.android.promdate.util.MissingSpException
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import agency.digitera.android.promdate.*
-import agency.digitera.android.promdate.data.DefaultResponse
-import agency.digitera.android.promdate.data.FullUser
-import agency.digitera.android.promdate.data.UserResponse
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.content.Intent
-import android.content.ActivityNotFoundException
-import android.net.Uri
-import agency.digitera.android.promdate.util.ApiAccessor
-import agency.digitera.android.promdate.util.LoadUrl
-import android.graphics.Color
-import androidx.core.graphics.drawable.DrawableCompat
-import android.graphics.drawable.Drawable
-import androidx.appcompat.view.menu.ActionMenuItemView
-import androidx.appcompat.widget.ActionMenuView
-import androidx.core.content.ContextCompat
-import agency.digitera.android.promdate.util.ConfirmationDialog
-import agency.digitera.android.promdate.util.MissingSpException
 
 
 class ProfileFragment : Fragment() {
@@ -62,13 +62,20 @@ class ProfileFragment : Fragment() {
 
         //sets that there is no right icon if the user is already matched & it's not yourself
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ) ?: throw MissingSpException()
         selfId = sp.getInt("userId", 0)
         isSelf = selfId == profileFragmentArgs.userId || profileFragmentArgs.userId == -1
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         drawerInterface.lockDrawer()
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
@@ -81,8 +88,7 @@ class ProfileFragment : Fragment() {
         val toolbar: Toolbar = toolbar as Toolbar
         if (profileFragmentArgs.userName != null) {
             toolbar.title = profileFragmentArgs.userName
-        }
-        else {
+        } else {
             toolbar.title = getString(R.string.your_profile)
         }
         appCompatActivity.setSupportActionBar(toolbar)
@@ -93,7 +99,8 @@ class ProfileFragment : Fragment() {
             setDisplayShowHomeEnabled(true)
         }
 
-        requestCompleted = isSelf //doesn't need to wait on checkSelf request if profile is own profile
+        requestCompleted =
+            isSelf //doesn't need to wait on checkSelf request if profile is own profile
         loadUser()
 
         if (!isSelf) {
@@ -105,7 +112,10 @@ class ProfileFragment : Fragment() {
         //load user data
         val accessor = ApiAccessor()
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         var userId: Int? = profileFragmentArgs.userId
@@ -123,13 +133,14 @@ class ProfileFragment : Fragment() {
                     "ProfileFragmentOnCreate",
                     "Failed to get data! ${t.localizedMessage}, ${t.javaClass.canonicalName}"
                 )
-                Snackbar.make(constraint_layout, R.string.no_internet,
-                    Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    constraint_layout, R.string.no_internet,
+                    Snackbar.LENGTH_LONG
+                )
                     .show()
                 if (requestCompleted) {
                     loading_pb.visibility = View.GONE
-                }
-                else {
+                } else {
                     requestCompleted = true
                 }
                 //TODO: Proper no internet page
@@ -153,9 +164,19 @@ class ProfileFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl)
+                        context?.let {
+                            LoadUrl.loadProfilePicture(
+                                it,
+                                profile_picture_image,
+                                user.self.profilePictureUrl
+                            )
+                        }
                     }
-                    name_text.text = context?.getString(R.string.full_name, user.self.firstName, user.self.lastName)
+                    name_text.text = context?.getString(
+                        R.string.full_name,
+                        user.self.firstName,
+                        user.self.lastName
+                    )
                     school_text.text = user.school.name
                     grade_text.text = context?.getString(R.string.grade_variable, user.self.grade)
                     hasGrade = user.self.grade != null
@@ -164,12 +185,17 @@ class ProfileFragment : Fragment() {
                     } else {
                         hasPartner = true
                         relationship_text.text =
-                            context?.getString(R.string.going_with, user.partner?.firstName) //TODO: fix
-                        LoadUrl.loadProfilePicture(
-                            context!!,
-                            partner_picture_image,
-                            user.partner?.profilePictureUrl ?: ""
-                        )
+                            context?.getString(
+                                R.string.going_with,
+                                user.partner?.firstName
+                            ) //TODO: fix
+                        context?.let {
+                            LoadUrl.loadProfilePicture(
+                                it,
+                                partner_picture_image,
+                                user.partner?.profilePictureUrl ?: ""
+                            )
+                        }
                     }
                     bio_text.text = user.self.bio
 
@@ -248,23 +274,23 @@ class ProfileFragment : Fragment() {
                     if (requestCompleted) {
                         loading_pb.visibility = View.GONE
                         send_match_button.visibility = if (canSendMatch) View.VISIBLE else View.GONE
-                        partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
+                        partner_picture_image.visibility =
+                            if (hasPartner) View.VISIBLE else View.GONE
                         blank_group.visibility = View.VISIBLE
                         grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
                         social_media_group.visibility = View.VISIBLE
-                    }
-                    else {
+                    } else {
                         requestCompleted = true
                     }
-                }
-                else {
-                    Snackbar.make(constraint_layout, R.string.unexpected_error,
-                        Snackbar.LENGTH_LONG)
+                } else {
+                    Snackbar.make(
+                        constraint_layout, R.string.unexpected_error,
+                        Snackbar.LENGTH_LONG
+                    )
                         .show()
                     if (requestCompleted) {
                         loading_pb.visibility = View.GONE
-                    }
-                    else {
+                    } else {
                         requestCompleted = true
                     }
                 }
@@ -276,7 +302,10 @@ class ProfileFragment : Fragment() {
         //send match request
         val api = ApiAccessor().apiService
         val sp: SharedPreferences? =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
         val token = sp?.getString("token", "") ?: ""
 
         api.getUser(token)
@@ -292,27 +321,30 @@ class ProfileFragment : Fragment() {
 
                     if (requestCompleted) {
                         loading_pb.visibility = View.GONE
-                    }
-                    else {
+                    } else {
                         requestCompleted = true
                     }
                 }
 
-                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
                     if (response.body()?.status != 200) {
                         //Match request failed
-                        Log.e("CheckSelfMatched", "${response.body()?.status}: ${response.body()?.result}")
+                        Log.e(
+                            "CheckSelfMatched",
+                            "${response.body()?.status}: ${response.body()?.result}"
+                        )
                         isSelfMatched = false
                         selfPartnerId = -1
 
                         if (requestCompleted) {
                             loading_pb.visibility = View.GONE
-                        }
-                        else {
+                        } else {
                             requestCompleted = true
                         }
-                    }
-                    else {
+                    } else {
                         isSelfMatched = response.body()?.result?.self?.matched == 1
                         selfPartnerId = response.body()?.result?.self?.partnerId ?: -1
 
@@ -322,18 +354,19 @@ class ProfileFragment : Fragment() {
                         }
                         //viewing pending partner's profile
                         else if (profileFragmentArgs.userId == selfPartnerId) {
-                           send_match_button.text = getString(R.string.cancel_request)
+                            send_match_button.text = getString(R.string.cancel_request)
                         }
 
                         if (requestCompleted) {
                             loading_pb.visibility = View.GONE
-                            send_match_button.visibility = if (profileFragmentArgs.isMatched == 0) View.VISIBLE else View.GONE
-                            partner_picture_image.visibility = if (hasPartner) View.VISIBLE else View.GONE
+                            send_match_button.visibility =
+                                if (profileFragmentArgs.isMatched == 0) View.VISIBLE else View.GONE
+                            partner_picture_image.visibility =
+                                if (hasPartner) View.VISIBLE else View.GONE
                             social_media_group.visibility = View.VISIBLE
                             blank_group.visibility = View.VISIBLE
                             grade_text.visibility = if (hasGrade) View.VISIBLE else View.GONE
-                        }
-                        else {
+                        } else {
                             requestCompleted = true
                         }
                     }
@@ -353,7 +386,7 @@ class ProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //checks to make sure it was not the back button pressed
         if (item.itemId == R.id.action_favourite || item.itemId == R.id.action_edit)
-            //switch depending on whether it is another user's profile or your own
+        //switch depending on whether it is another user's profile or your own
             when (isSelf) {
                 true -> findNavController().navigate(R.id.nav_settings)
                 false -> favourite()
@@ -366,10 +399,17 @@ class ProfileFragment : Fragment() {
 
         val accessor = ApiAccessor()
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
-        val call = accessor.apiService.favourite(token, profileFragmentArgs.userId, if (isFavourited) 1 else 0)
+        val call = accessor.apiService.favourite(
+            token,
+            profileFragmentArgs.userId,
+            if (isFavourited) 1 else 0
+        )
 
         call.enqueue(object : Callback<DefaultResponse> {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
@@ -387,7 +427,10 @@ class ProfileFragment : Fragment() {
                 changeHeart(if (isFavourited) Color.WHITE else null)
             }
 
-            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+            override fun onResponse(
+                call: Call<DefaultResponse>,
+                response: Response<DefaultResponse>
+            ) {
                 if (response.body()?.status != 200) { //something went wrong, but server received request
                     //Add to wishlist failed
                     Log.e("FavouriteUser", "${response.body()?.status}: ${response.body()?.result}")
@@ -419,8 +462,7 @@ class ProfileFragment : Fragment() {
         //change text of send request button
         if (send_match_button.text == getString(R.string.send_match_request)) {
             send_match_button.text = getString(R.string.cancel_request)
-        }
-        else if (send_match_button.text == getString(R.string.cancel_request)) {
+        } else if (send_match_button.text == getString(R.string.cancel_request)) {
             send_match_button.text = getString(R.string.send_match_request)
         }
 
@@ -437,36 +479,34 @@ class ProfileFragment : Fragment() {
 
         //Checks that the user is not currently matched
         var waitForDialogInput = false
-        val action: Int = if (selfPartnerId != -1) { //currently is matched or has sent a request that is pending
-            if (selfPartnerId == profileFragmentArgs.userId) { //matched with person whose profile they're looking at
-                //attempting to send request to someone already matched with; removes match instead
-                1
-            }
-            else { //not matched with current person's profile
-                waitForDialogInput = true
+        val action: Int =
+            if (selfPartnerId != -1) { //currently is matched or has sent a request that is pending
+                if (selfPartnerId == profileFragmentArgs.userId) { //matched with person whose profile they're looking at
+                    //attempting to send request to someone already matched with; removes match instead
+                    1
+                } else { //not matched with current person's profile
+                    waitForDialogInput = true
 
-                //slightly different prompt message depending on if user is already matched
-                val promptMsg: String = if (isSelfMatched == true) { //is matched with someone
-                    getString(R.string.confirm_request_while_matched)
+                    //slightly different prompt message depending on if user is already matched
+                    val promptMsg: String = if (isSelfMatched == true) { //is matched with someone
+                        getString(R.string.confirm_request_while_matched)
+                    } else { //has sent a pending request to someone
+                        getString(R.string.confirm_no_multiple_requests)
+                    }
+                    //prompts user to confirm request
+                    ConfirmationDialog.newInstance(promptMsg).apply {
+                        setPositiveClick { sendMatch(0) }
+                    }.also { dialog ->
+                        dialog.show(
+                            fragmentManager ?: throw Exception("Fragment manager not found"),
+                            "confirm_request_dialog_fragment"
+                        )
+                    }
+                    0
                 }
-                else { //has sent a pending request to someone
-                    getString(R.string.confirm_no_multiple_requests)
-                }
-                //prompts user to confirm request
-                ConfirmationDialog.newInstance(promptMsg).apply {
-                    setPositiveClick { sendMatch(0) }
-                }.also { dialog ->
-                    dialog.show(
-                        fragmentManager ?: throw Exception("Fragment manager not found"),
-                        "confirm_request_dialog_fragment"
-                    )
-                }
+            } else { //isn't currently matched with anyone and doesn't have any pending requests
                 0
             }
-        }
-        else { //isn't currently matched with anyone and doesn't have any pending requests
-            0
-        }
 
         if (!waitForDialogInput) {
             sendMatch(action)
@@ -478,7 +518,10 @@ class ProfileFragment : Fragment() {
         //send match request
         val api = ApiAccessor().apiService
         val sp: SharedPreferences? =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
         val token = sp?.getString("token", null) ?: ""
 
         api.matchUser(token, profileFragmentArgs.userId, action)
@@ -498,13 +541,15 @@ class ProfileFragment : Fragment() {
                     //change text of send request button back if fail
                     if (send_match_button.text == getString(R.string.send_match_request)) {
                         send_match_button.text = getString(R.string.cancel_request)
-                    }
-                    else if (send_match_button.text == getString(R.string.cancel_request)) {
+                    } else if (send_match_button.text == getString(R.string.cancel_request)) {
                         send_match_button.text = getString(R.string.send_match_request)
                     }
                 }
 
-                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                override fun onResponse(
+                    call: Call<DefaultResponse>,
+                    response: Response<DefaultResponse>
+                ) {
                     if (response.body()?.status != 200) { //something went wrong, but server received request
                         //Match request failed
                         Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
@@ -517,8 +562,7 @@ class ProfileFragment : Fragment() {
                         //change text of send request button back if fail
                         if (send_match_button.text == getString(R.string.send_match_request)) {
                             send_match_button.text = getString(R.string.cancel_request)
-                        }
-                        else if (send_match_button.text == getString(R.string.cancel_request)) {
+                        } else if (send_match_button.text == getString(R.string.cancel_request)) {
                             send_match_button.text = getString(R.string.send_match_request)
                         }
 
@@ -538,20 +582,21 @@ class ProfileFragment : Fragment() {
     }
 
     private fun changeHeart(colour: Int?) {
-        val heartItem: ActionMenuItemView = ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
+        val heartItem: ActionMenuItemView =
+            ((toolbar as Toolbar).getChildAt(2) as ActionMenuView).getChildAt(0) as ActionMenuItemView
         if (colour == null) {
             //not filled
-            var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart_border)
+            var drawable =
+                context?.let { ContextCompat.getDrawable(it, R.drawable.ic_heart_border) }
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable)
                 heartItem.setIcon(drawable)
             }
-        }
-        else {
-            var drawable: Drawable? = ContextCompat.getDrawable(context!!, R.drawable.ic_heart)
+        } else {
+            var drawable = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_heart) }
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable)
-                DrawableCompat.setTint(drawable!!.mutate(), colour)
+                drawable?.let { DrawableCompat.setTint(it.mutate(), colour) }
                 heartItem.setIcon(drawable)
             }
         }

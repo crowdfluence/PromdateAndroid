@@ -1,9 +1,8 @@
 package agency.digitera.android.promdate.util
 
-import android.graphics.*
 import agency.digitera.android.promdate.R
-import android.graphics.Bitmap
 import android.content.Context
+import android.graphics.*
 import androidx.core.content.ContextCompat
 import java.util.*
 
@@ -12,8 +11,8 @@ import java.util.*
 class SelectImageOverlayTransformation(
     private val radius: Int,
     private val margin: Int,
-    private val borderColor: Int,
-    private val context: Context
+    private val borderColor: Int?,
+    private val context: Context?
 ) : com.squareup.picasso.Transformation {
 
     override fun transform(source: Bitmap): Bitmap {
@@ -50,7 +49,7 @@ class SelectImageOverlayTransformation(
 
         //adds gray border
         val paint2 = Paint()
-        paint2.color = borderColor
+        borderColor?.let { paint2.color = it }
         paint2.style = Paint.Style.STROKE
         paint2.isAntiAlias = true
         paint2.strokeWidth = 8f
@@ -66,7 +65,8 @@ class SelectImageOverlayTransformation(
         //overlays dark over image
         val paint3 = Paint()
         paint3.apply {
-            color = ContextCompat.getColor(context, R.color.darkeningOverlay)
+            color = context?.let { ContextCompat.getColor(it, R.color.darkeningOverlay) }
+                ?: android.R.color.black
             style = Paint.Style.FILL
             isAntiAlias = true
         }
@@ -78,7 +78,12 @@ class SelectImageOverlayTransformation(
         )
 
         //adds camera in centre
-        val drawable = context.getDrawable(R.drawable.ic_camera_white) ?: throw MissingResourceException("Missing camera icon drawable", "Drawable", "missing_icon")
+        val drawable = context?.getDrawable(R.drawable.ic_camera_white)
+            ?: throw MissingResourceException(
+                "Missing camera icon drawable",
+                "Drawable",
+                "missing_icon"
+            )
         drawable.setBounds(radius / 2, radius / 2, 3 * radius / 2, 3 * radius / 2)
         drawable.draw(canvas)
 
