@@ -33,6 +33,7 @@
             style="@style/loginEditText"
             android:drawableStart="@drawable/at_sign"
             android:maxLength="30"
+            android:focusable="false"
             android:inputType="textPersonName"
             android:theme="@style/EditText" />
     </com.google.android.material.textfield.TextInputLayout>
