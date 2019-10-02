@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_social.view.*
 
 class SocialAdapter(
-    private val list: List<UserSocial>?
+    private val list: MutableList<UserSocial>
 ) : RecyclerView.Adapter<SocialAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,27 +22,41 @@ class SocialAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list?.size ?: 0
+    override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(userSocial = list?.get(position))
+        holder.bind(userSocial = list[position])
     }
 
+    fun addSocialAccount(account: UserSocial) {
+        list.add(account)
+        notifyDataSetChanged()
+    }
+
+    fun getSocialList(): List<UserSocial> = list
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(userSocial: UserSocial?) {
-            userSocial?.let {
+        fun bind(userSocial: UserSocial) {
+
+            if (!userSocial.nameSocial?.isBlank()!!) {
+
                 when (userSocial.socialMedia) {
                     INSTAGRAM -> {
+                        view.social_image.visibility = View.VISIBLE
+                        view.social_edit_wrapper.visibility = View.VISIBLE
+
                         view.social_image.setImageDrawable(
                             ContextCompat.getDrawable(
                                 view.context,
                                 R.drawable.instagram_logo
                             )
                         )
-                        view.social_edit.setText(it.nameSocial)
+                        view.social_edit.setText(userSocial.nameSocial)
                     }
                     SNAPCHAT -> {
+                        view.social_image.visibility = View.VISIBLE
+                        view.social_edit_wrapper.visibility = View.VISIBLE
+
                         view.social_image.setImageDrawable(
                             ContextCompat.getDrawable(
                                 view.context,
@@ -50,16 +64,19 @@ class SocialAdapter(
                             )
                         )
                         view.social_edit.setCompoundDrawables(null, null, null, null)
-                        view.social_edit.setText(it.nameSocial)
+                        view.social_edit.setText(userSocial.nameSocial)
                     }
                     TWITTER -> {
+                        view.social_image.visibility = View.VISIBLE
+                        view.social_edit_wrapper.visibility = View.VISIBLE
+
                         view.social_image.setImageDrawable(
                             ContextCompat.getDrawable(
                                 view.context,
                                 R.drawable.twitter_logo
                             )
                         )
-                        view.social_edit.setText(it.nameSocial)
+                        view.social_edit.setText(userSocial.nameSocial)
                     }
                 }
             }

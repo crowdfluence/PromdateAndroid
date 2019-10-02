@@ -1,6 +1,10 @@
 package agency.digitera.android.promdate.ui
 
 import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.data.INSTAGRAM
+import agency.digitera.android.promdate.data.SNAPCHAT
+import agency.digitera.android.promdate.data.TWITTER
+import agency.digitera.android.promdate.data.UserSocial
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_social_media_tag.*
 
 class SocialMediaTagDialogFragment(private val idSocialMedia: Int) : BottomSheetDialogFragment() {
+
+    var onClickAddAccount: (UserSocial) -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +59,31 @@ class SocialMediaTagDialogFragment(private val idSocialMedia: Int) : BottomSheet
                 )
                 social_media_edit.hint = resources.getString(R.string.twitter)
             }
+        }
+
+        addButton.setOnClickListener {
+            when (idSocialMedia) {
+                R.id.instagram -> onClickAddAccount(
+                    UserSocial(
+                        INSTAGRAM,
+                        social_media_edit.text.toString()
+                    )
+                )
+                R.id.snapchat -> onClickAddAccount(
+                    UserSocial(
+                        SNAPCHAT,
+                        social_media_edit.text.toString()
+                    )
+                )
+                R.id.twitter -> onClickAddAccount(
+                    UserSocial(
+                        TWITTER,
+                        social_media_edit.text.toString()
+                    )
+                )
+            }
+
+            dismiss()
         }
     }
 }

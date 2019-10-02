@@ -54,6 +54,8 @@ import java.util.*
 class SettingsFragment : Fragment() {
 
     private lateinit var drawerInterface: DrawerInterface
+    private lateinit var listSocialMedias: MutableList<UserSocial>
+    private lateinit var socialAdapter: SocialAdapter
     private var profilePicUri: Uri? = null
     private var currentPhotoPath = ""
 
@@ -216,16 +218,17 @@ class SettingsFragment : Fragment() {
                         else -> gender_spinner.setSelection(3)
                     }
 
-                    val listSocialMedias = listOf(
+                    listSocialMedias = mutableListOf(
                         UserSocial(INSTAGRAM, user.self.instagram),
                         UserSocial(SNAPCHAT, user.self.snapchat),
                         UserSocial(TWITTER, user.self.twitter)
                     )
 
+                    socialAdapter = SocialAdapter(listSocialMedias)
                     //set up social media recycler view
                     list_social_media.apply {
                         layoutManager = LinearLayoutManager(context)
-                        adapter = SocialAdapter(listSocialMedias)
+                        adapter = socialAdapter
                     }
 
                     if (user.partner != null) {
@@ -304,9 +307,12 @@ class SettingsFragment : Fragment() {
         updatedUser.firstName = include_user_info.first_name_edit.text.toString()
         updatedUser.lastName = include_user_info.last_name_edit.text.toString()
         updatedUser.bio = bio_edit.text.toString()
-//        updatedUser.snapchat = snapchat_edit.text.toString()
-//        updatedUser.instagram = instagram_edit.text.toString()
-//        updatedUser.twitter = twitter_edit.text.toString()
+        updatedUser.snapchat =
+            socialAdapter.getSocialList().findLast { it.socialMedia == SNAPCHAT }?.nameSocial
+        updatedUser.instagram =
+            socialAdapter.getSocialList().findLast { it.socialMedia == INSTAGRAM }?.nameSocial
+        updatedUser.twitter =
+            socialAdapter.getSocialList().findLast { it.socialMedia == TWITTER }?.nameSocial
         updatedUser.schoolId = 1
         updatedUser.grade = try {
             grade_spinner.selectedItem.toString().toInt()
@@ -314,7 +320,6 @@ class SettingsFragment : Fragment() {
             -1
         }
         updatedUser.gender = gender_spinner.selectedItem.toString()
-
         //check that all required fields are there & valid
         var missingFields = false
         if (!isValidName(updatedUser.firstName)) {
@@ -633,17 +638,21 @@ class SettingsFragment : Fragment() {
     }
 
     private fun openSocialMediaDialog() {
-        val selectSocialAccount = SocialMediaDialogFragment()
+
+        val updateAdapter = fun(userSocial: UserSocial) {
+            socialAdapter.addSocialAccount(userSocial)
+        }
 
         val onSocialMediaSelected = fun(id: Int) {
-            selectSocialAccount.dismiss()
-            SocialMediaTagDialogFragment(id).show(
+            SocialMediaTagDialogFragment(id).apply {
+                onClickAddAccount = updateAdapter
+            }.show(
                 fragmentManager ?: throw Exception("Fragment manager not found"),
                 "social_media_tag_dialog_fragment"
             )
         }
 
-        selectSocialAccount.apply {
+        SocialMediaDialogFragment().apply {
             onSocialMediaClicked = onSocialMediaSelected
         }.show(
             fragmentManager ?: throw Exception("Fragment manager not found"),

@@ -31,6 +31,7 @@ class SocialMediaDialogFragment : BottomSheetDialogFragment(), View.OnClickListe
 
     override fun onClick(view: View) {
         onSocialMediaClicked(view.id)
+        dismiss()
     }
 
 }

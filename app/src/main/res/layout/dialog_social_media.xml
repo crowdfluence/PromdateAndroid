@@ -9,18 +9,6 @@
     android:background="@drawable/rounded_dialog"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/divider1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightGray" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightGray" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/snapchat"
         android:layout_width="match_parent"
@@ -58,6 +46,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGray" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/instagram"
         android:layout_width="match_parent"
@@ -94,6 +88,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/twitter"

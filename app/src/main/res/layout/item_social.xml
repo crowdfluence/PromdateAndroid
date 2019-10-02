@@ -11,28 +11,30 @@
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="8dp"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/edge_margin"
         android:layout_marginTop="@dimen/vertical_spacing"
         android:adjustViewBounds="true"
         tools:src="@drawable/instagram_logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/instagram_edit_wrapper"
+        android:id="@+id/social_edit_wrapper"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginStart="@dimen/horizontal_spacing"
         android:layout_marginTop="@dimen/vertical_spacing"
-        android:layout_marginEnd="@dimen/edge_margin">
+        android:layout_marginEnd="@dimen/edge_margin"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/social_edit"
             style="@style/loginEditText"
             android:drawableStart="@drawable/at_sign"
             android:maxLength="30"
+            android:inputType="textPersonName"
             android:theme="@style/EditText" />
-
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
