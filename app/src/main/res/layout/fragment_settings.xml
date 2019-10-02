@@ -15,7 +15,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,6 +127,20 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.25" />
 
+            <TextView
+                android:id="@+id/current_partner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/currently_matched"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/unmatch_partner_button"
+                app:layout_constraintEnd_toStartOf="@+id/unmatch_partner_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/unmatch_partner_button"
+                tools:visibility="visible" />
+
             <Button
                 android:id="@+id/unmatch_partner_button"
                 style="@style/Widget.AppCompat.Button"
@@ -145,19 +159,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/gender_spinner"
                 tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/current_partner_text"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_social_media"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/currently_matched"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/unmatch_partner_button"
-                app:layout_constraintEnd_toStartOf="@+id/unmatch_partner_button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/unmatch_partner_button"
-                tools:visibility="visible" />
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
