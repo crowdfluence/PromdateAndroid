@@ -1,46 +1,48 @@
 package agency.digitera.android.promdate.ui
 
+import agency.digitera.android.promdate.DrawerInterface
+import agency.digitera.android.promdate.MainActivity
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.data.*
+import agency.digitera.android.promdate.util.*
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import agency.digitera.android.promdate.*
-import agency.digitera.android.promdate.data.*
-import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_settings.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.NumberFormatException
-import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Environment
 import androidx.core.net.toFile
-import agency.digitera.android.promdate.util.*
-import android.app.Activity.RESULT_CANCELED
-import android.os.AsyncTask
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
+import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.user_info.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -115,7 +117,7 @@ class SettingsFragment : Fragment() {
         gradeSpinner.setSelection(gradeAdapter.count)
 
         //set up change profile picture
-        profile_picture_image.setOnClickListener {
+        include_user_info.profile_picture_image.setOnClickListener {
             showImagePickerDialog()
         }
 
@@ -175,10 +177,15 @@ class SettingsFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl, 1)
+                        LoadUrl.loadProfilePicture(
+                            context!!,
+                            include_user_info.profile_picture_image,
+                            user.self.profilePictureUrl,
+                            1
+                        )
                     }
-                    first_name_edit.setText(user.self.firstName)
-                    last_name_edit.setText(user.self.lastName)
+                    include_user_info.first_name_edit.setText(user.self.firstName)
+                    include_user_info.last_name_edit.setText(user.self.lastName)
                     school_edit.setText(user.school.name)
                     //set grade
                     val gradeId = user.self.grade?.minus(9) ?: -1
@@ -197,9 +204,9 @@ class SettingsFragment : Fragment() {
                         else -> gender_spinner.setSelection(3)
                     }
 
-                    instagram_edit.setText(user.self.instagram)
-                    snapchat_edit.setText(user.self.snapchat)
-                    twitter_edit.setText(user.self.twitter)
+//                    instagram_edit.setText(user.self.instagram)
+//                    snapchat_edit.setText(user.self.snapchat)
+//                    twitter_edit.setText(user.self.twitter)
 
                     if (user.partner != null) {
                         unmatch_partner_button.visibility = View.VISIBLE
@@ -264,12 +271,12 @@ class SettingsFragment : Fragment() {
 
     private fun updateUser() {
         val updatedUser = User()
-        updatedUser.firstName = first_name_edit.text.toString()
-        updatedUser.lastName = last_name_edit.text.toString()
+        updatedUser.firstName = include_user_info.first_name_edit.text.toString()
+        updatedUser.lastName = include_user_info.last_name_edit.text.toString()
         updatedUser.bio = bio_edit.text.toString()
-        updatedUser.snapchat = snapchat_edit.text.toString()
-        updatedUser.instagram = instagram_edit.text.toString()
-        updatedUser.twitter = twitter_edit.text.toString()
+//        updatedUser.snapchat = snapchat_edit.text.toString()
+//        updatedUser.instagram = instagram_edit.text.toString()
+//        updatedUser.twitter = twitter_edit.text.toString()
         updatedUser.schoolId = 1
         updatedUser.grade = try {
             grade_spinner.selectedItem.toString().toInt()
@@ -281,16 +288,16 @@ class SettingsFragment : Fragment() {
         //check that all required fields are there & valid
         var missingFields = false
         if (!isValidName(updatedUser.firstName)) {
-            first_name_edit_wrapper.error = getString(R.string.invalid_name)
+            include_user_info.first_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
-            first_name_edit_wrapper.error = null
+            include_user_info.first_name_edit_wrapper.error = null
         }
         if (!isValidName(updatedUser.lastName)) {
-            last_name_edit_wrapper.error = getString(R.string.invalid_name)
+            include_user_info.last_name_edit_wrapper.error = getString(R.string.invalid_name)
             missingFields = true
         } else {
-            last_name_edit_wrapper.error = null
+            include_user_info.last_name_edit_wrapper.error = null
         }
         if (updatedUser.schoolId < 0) {
             missingFields = true
@@ -452,7 +459,7 @@ class SettingsFragment : Fragment() {
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .placeholder(R.drawable.default_profile) //TODO: Change to loading animation
             .error(R.drawable.default_profile) //TODO: Change to actual error
-            .into(profile_picture_image)
+            .into(include_user_info.profile_picture_image)
     }
 
     private fun openCropActivity(sourceUri: Uri) {
