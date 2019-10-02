@@ -3,6 +3,7 @@ package agency.digitera.android.promdate.ui
 import agency.digitera.android.promdate.DrawerInterface
 import agency.digitera.android.promdate.MainActivity
 import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.adapters.SocialAdapter
 import agency.digitera.android.promdate.data.*
 import agency.digitera.android.promdate.util.*
 import android.Manifest
@@ -31,6 +32,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -95,6 +97,7 @@ class SettingsFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
 
         //set up gender spinner with hint
         val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
@@ -213,9 +216,17 @@ class SettingsFragment : Fragment() {
                         else -> gender_spinner.setSelection(3)
                     }
 
-//                    instagram_edit.setText(user.self.instagram)
-//                    snapchat_edit.setText(user.self.snapchat)
-//                    twitter_edit.setText(user.self.twitter)
+                    val listSocialMedias = listOf(
+                        UserSocial(INSTAGRAM, user.self.instagram),
+                        UserSocial(SNAPCHAT, user.self.snapchat),
+                        UserSocial(TWITTER, user.self.twitter)
+                    )
+
+                    //set up social media recycler view
+                    list_social_media.apply {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = SocialAdapter(listSocialMedias)
+                    }
 
                     if (user.partner != null) {
                         unmatch_partner_button.visibility = View.VISIBLE
@@ -638,10 +649,6 @@ class SettingsFragment : Fragment() {
             fragmentManager ?: throw Exception("Fragment manager not found"),
             "social_media_dialog_fragment"
         )
-    }
-
-    private fun openSocialTag(onSocialMediaClicked: (Int) -> Unit) {
-
     }
 
     companion object {
