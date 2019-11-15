@@ -13,6 +13,11 @@ import agency.digitera.android.promdate.util.ApiAccessor
 import agency.digitera.android.promdate.DrawerInterface
 import agency.digitera.android.promdate.R
 import agency.digitera.android.promdate.data.UserResponse
+import agency.digitera.android.promdate.util.LoadUrl
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -73,27 +78,42 @@ class FeedFragment : Fragment() {
         tab_layout.setupWithViewPager(view_pager)
 
         //gets user id to store in file
-        val sp: SharedPreferences? = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val sp: SharedPreferences? =
+            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         val token: String = sp?.getString("token", null) ?: ""
 
         val accessor = ApiAccessor()
         val call = accessor.apiService.getUser(token)
         call.enqueue(object : Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Snackbar.make(main_content, R.string.no_internet,
-                    Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(
+                    main_content, R.string.no_internet,
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
 
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 val serverResponse = response.body()
                 if (serverResponse != null && serverResponse.status == 200) {
-                    sp?.edit()?.putInt("userId", serverResponse.result.self.id)?.apply()
-                }
-                else {
-                    Snackbar.make(main_content, R.string.unexpected_error,
-                        Snackbar.LENGTH_LONG)
-                        .show()
+                    val user = serverResponse.result.self
+                    sp?.edit()?.putInt("userId", user.id)?.apply()
+
+                    //Set up nav drawer
+                    //TODO: prevent user from seeing drawer while info is still loading (maybe delay showing feed page?)
+                    val drawerLayout = activity?.findViewById<DrawerLayout>(R.id.drawer_layout)
+                    val profilePic = drawerLayout?.findViewById<ImageView>(R.id.profile_picture_image)
+                    val fullName = drawerLayout?.findViewById<TextView>(R.id.full_name_text)
+                    val school = drawerLayout?.findViewById<TextView>(R.id.school_text)
+
+                    fullName?.text = getString(R.string.full_name, user.firstName, user.lastName)
+                    school?.text = serverResponse.result.school.name
+                    if (profilePic != null)
+                        LoadUrl.loadProfilePicture(context!!, profilePic, user.profilePictureUrl)
+                } else {
+                    Snackbar.make(
+                        main_content, R.string.unexpected_error,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
         })
