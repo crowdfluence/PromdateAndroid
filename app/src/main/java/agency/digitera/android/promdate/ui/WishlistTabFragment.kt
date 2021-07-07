@@ -1,27 +1,29 @@
 package agency.digitera.android.promdate.ui
 
-import androidx.lifecycle.Observer
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
-import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.MainActivity
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.data.WishlistBoundaryCallback
 import agency.digitera.android.promdate.util.BadTokenException
 import agency.digitera.android.promdate.util.CheckInternet
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
@@ -90,7 +92,7 @@ class WishlistTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            if (CheckInternet.isNetworkAvailable(context!!)) {
+            if (CheckInternet.isNetworkAvailable(context)) {
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
                     WishlistBoundaryCallback.maxLoaded = 0

@@ -1,46 +1,47 @@
 package agency.digitera.android.promdate.ui
 
+import agency.digitera.android.promdate.DrawerInterface
+import agency.digitera.android.promdate.MainActivity
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.data.*
+import agency.digitera.android.promdate.util.*
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import agency.digitera.android.promdate.*
-import agency.digitera.android.promdate.data.*
-import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_settings.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.NumberFormatException
-import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Environment
 import androidx.core.net.toFile
-import agency.digitera.android.promdate.util.*
-import android.app.Activity.RESULT_CANCELED
-import android.os.AsyncTask
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
+import kotlinx.android.synthetic.main.fragment_settings.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -69,7 +70,11 @@ class SettingsFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         drawerInterface.lockDrawer()
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
@@ -92,27 +97,31 @@ class SettingsFragment : Fragment() {
 
         //set up gender spinner with hint
         val genderOptions: Array<String> = resources.getStringArray(R.array.genders_array)
-        val genderAdapter = HintAdapter(
-            context!!,
-            genderOptions,
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val genderAdapter = context?.let {
+            HintAdapter(
+                it,
+                genderOptions,
+                android.R.layout.simple_spinner_dropdown_item
+            )
+        }
+        genderAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val genderSpinner: Spinner = gender_spinner
         genderSpinner.adapter = genderAdapter
-        genderSpinner.setSelection(genderAdapter.count)
+        genderAdapter?.let { genderSpinner.setSelection(it.count) }
 
         //set up grade spinner with hint
         val gradeOptions: Array<String> = resources.getStringArray(R.array.grades_array)
-        val gradeAdapter = HintAdapter(
-            context!!,
-            gradeOptions,
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val gradeAdapter = context?.let {
+            HintAdapter(
+                it,
+                gradeOptions,
+                android.R.layout.simple_spinner_dropdown_item
+            )
+        }
+        gradeAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val gradeSpinner: Spinner = grade_spinner
         gradeSpinner.adapter = gradeAdapter
-        gradeSpinner.setSelection(gradeAdapter.count)
+        gradeAdapter?.let { gradeSpinner.setSelection(it.count) }
 
         //set up change profile picture
         profile_picture_image.setOnClickListener {
@@ -143,7 +152,10 @@ class SettingsFragment : Fragment() {
 
         //get token
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         //send request
@@ -175,7 +187,14 @@ class SettingsFragment : Fragment() {
 
                     //set up user profile with user's information
                     if (user.self.profilePictureUrl.isNotEmpty()) {
-                        LoadUrl.loadProfilePicture(context!!, profile_picture_image, user.self.profilePictureUrl, 1)
+                        context?.let {
+                            LoadUrl.loadProfilePicture(
+                                it,
+                                profile_picture_image,
+                                user.self.profilePictureUrl,
+                                1
+                            )
+                        }
                     }
                     first_name_edit.setText(user.self.firstName)
                     last_name_edit.setText(user.self.lastName)
@@ -204,7 +223,11 @@ class SettingsFragment : Fragment() {
                     if (user.partner != null) {
                         unmatch_partner_button.visibility = View.VISIBLE
                         current_partner_text.visibility = View.VISIBLE
-                        current_partner_text.text = getString(R.string.currently_matched, user.partner?.firstName, user.partner?.lastName)
+                        current_partner_text.text = getString(
+                            R.string.currently_matched,
+                            user.partner?.firstName,
+                            user.partner?.lastName
+                        )
 
                         unmatch_partner_button.setOnClickListener {
                             unmatch(user.partner?.id ?: -1)
@@ -226,7 +249,10 @@ class SettingsFragment : Fragment() {
         //unmatch current partner
         val api = ApiAccessor().apiService
         val sp: SharedPreferences? =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
         val token = sp?.getString("token", null) ?: ""
 
         api.matchUser(token, partnerId, 1)
@@ -244,7 +270,10 @@ class SettingsFragment : Fragment() {
                     ).show()
                 }
 
-                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                override fun onResponse(
+                    call: Call<DefaultResponse>,
+                    response: Response<DefaultResponse>
+                ) {
                     if (response.body()?.status != 200) { //something went wrong, but server received request
                         //Match request failed
                         Log.e("MatchUser", "${response.body()?.status}: ${response.body()?.result}")
@@ -304,35 +333,59 @@ class SettingsFragment : Fragment() {
         val apiAccessor = ApiAccessor()
 
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: throw MissingSpException()
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            ) ?: throw MissingSpException()
         val token = sp.getString("token", null) ?: ""
 
         //new profile picture
         val bodyImage: MultipartBody.Part? = if (profilePicUri != null) {
-            val file = profilePicUri!!.toFile()
-            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            val file = profilePicUri?.toFile()
+            val requestFile =
+                file?.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
 
             // MultipartBody.Part is used to send also the actual file name
-            MultipartBody.Part.createFormData("img", file.name, requestFile)
-        }
-        else {
+            requestFile?.let { MultipartBody.Part.createFormData("img", file.name, it) }
+        } else {
             null
         }
 
         val bodyToken = RequestBody.create(MediaType.parse("multipart/form-data"), token)
-        val bodyInsta = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.instagram ?: "")
-        val bodySnap = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.snapchat ?: "")
-        val bodyTwitter = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.twitter ?: "")
-        val bodyBio = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.bio ?: "")
-        val bodyFirst = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.firstName)
-        val bodyLast = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.lastName)
-        val bodySchool = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.schoolId.toString())
-        val bodyGrade = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.grade.toString())
-        val bodyGender = RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.gender ?: "")
+        val bodyInsta =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.instagram ?: "")
+        val bodySnap =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.snapchat ?: "")
+        val bodyTwitter =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.twitter ?: "")
+        val bodyBio =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.bio ?: "")
+        val bodyFirst =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.firstName)
+        val bodyLast =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.lastName)
+        val bodySchool = RequestBody.create(
+            MediaType.parse("multipart/form-data"),
+            updatedUser.schoolId.toString()
+        )
+        val bodyGrade =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.grade.toString())
+        val bodyGender =
+            RequestBody.create(MediaType.parse("multipart/form-data"), updatedUser.gender ?: "")
 
         //create request
         val call: Call<UpdateResponse> = apiAccessor.apiService.updateUser(
-            bodyToken, bodyInsta, bodySnap, bodyTwitter, bodyBio, bodyFirst, bodyLast, bodySchool, bodyGrade, bodyGender, bodyImage
+            bodyToken,
+            bodyInsta,
+            bodySnap,
+            bodyTwitter,
+            bodyBio,
+            bodyFirst,
+            bodyLast,
+            bodySchool,
+            bodyGrade,
+            bodyGender,
+            bodyImage
         )
 
         val loadingAnim = loading_pb
@@ -340,7 +393,10 @@ class SettingsFragment : Fragment() {
 
         //send request
         call.enqueue(object : Callback<UpdateResponse> {
-            override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
+            override fun onResponse(
+                call: Call<UpdateResponse>,
+                response: Response<UpdateResponse>
+            ) {
                 loadingAnim.visibility = View.GONE
 
                 if (response.body()?.status != 200) {
@@ -349,8 +405,7 @@ class SettingsFragment : Fragment() {
                         R.string.server_error,
                         Snackbar.LENGTH_LONG
                     ).show()
-                }
-                else {
+                } else {
                     AsyncTask.execute {
                         (activity as MainActivity).singlesDb.singleDao().updateUser(updatedUser)
                     }
@@ -372,8 +427,7 @@ class SettingsFragment : Fragment() {
     private fun isValidName(name: String): Boolean {
         if (name.isEmpty()) {
             return false
-        }
-        else {
+        } else {
             for (i in 0 until name.length) {
                 if (name[i] != ' ' && name[i] != '\n') {
                     return true
@@ -397,45 +451,44 @@ class SettingsFragment : Fragment() {
         }
         //cropped image
         else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-            profilePicUri = UCrop.getOutput(data!!)
-            showImage(profilePicUri!!)
-        }
-        else if (requestCode == UCrop.REQUEST_CROP && resultCode != RESULT_CANCELED) {
+            profilePicUri = data?.let { UCrop.getOutput(it) }
+            showImage(profilePicUri)
+        } else if (requestCode == UCrop.REQUEST_CROP && resultCode != RESULT_CANCELED) {
             //error cropping image
-            val cropError = UCrop.getError(data!!)
+            val cropError = data?.let { UCrop.getError(it) }
             if (cropError != null) {
                 Log.e("OnActivityResult", "handleCropError: ", cropError)
                 Toast.makeText(context, cropError.message, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(context, "Unexpected error", Toast.LENGTH_SHORT).show()
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
-            }
-            else {
+            } else {
                 snackbar("PromDate requires camera access in order to take a photo.")
             }
-        }
-        else if (requestCode == REQUEST_EXTERNAL_STORAGE){
+        } else if (requestCode == REQUEST_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 openGallery()
-            }
-            else {
+            } else {
                 snackbar("PromDate requires storage and camera access in order to select a photo from gallery.")
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun showImage(imageUri: Uri) {
+    private fun showImage(imageUri: Uri?) {
         profilePicUri = imageUri
         Picasso.get()
             .load(imageUri)
@@ -443,8 +496,8 @@ class SettingsFragment : Fragment() {
                 SelectImageOverlayTransformation(
                     256,
                     1,
-                    ContextCompat.getColor(context!!, R.color.lightGray),
-                    context!!
+                    context?.let { ContextCompat.getColor(it, R.color.lightGray) },
+                    context
                 )
             )
             .resize(512, 512)
@@ -456,17 +509,20 @@ class SettingsFragment : Fragment() {
     }
 
     private fun openCropActivity(sourceUri: Uri) {
-        UCrop.of(sourceUri, Uri.fromFile(getImageFile()))
-            .withMaxResultSize(1280, 1280)
-            .withAspectRatio(5f, 5f)
-            .start(context!!, this, UCrop.REQUEST_CROP)
+        context?.let {
+            UCrop.of(sourceUri, Uri.fromFile(getImageFile()))
+                .withMaxResultSize(1280, 1280)
+                .withAspectRatio(5f, 5f)
+                .start(it, this, UCrop.REQUEST_CROP)
+        }
     }
 
     @Throws(IOException::class)
     private fun getImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: throw Exception("Context not found")
+        val storageDir: File = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            ?: throw Exception("Context not found")
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
@@ -478,7 +534,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun openCamera() {
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        val cameraPermission =
+            context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) }
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(
                 PERMISSIONS_CAMERA,
                 REQUEST_CAMERA
@@ -514,9 +572,21 @@ class SettingsFragment : Fragment() {
     }
 
     private fun openGallery() {
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
+        val readExternalStoragePermission = context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        }
+        val writeExternalStorage = context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
+        if (readExternalStoragePermission != PackageManager.PERMISSION_GRANTED ||
+            writeExternalStorage != PackageManager.PERMISSION_GRANTED
+        ) {
             requestPermissions(
                 PERMISSIONS_STORAGE,
                 REQUEST_EXTERNAL_STORAGE
@@ -524,7 +594,8 @@ class SettingsFragment : Fragment() {
             return
         }
         val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickPhoto,
+        startActivityForResult(
+            pickPhoto,
             PICK_IMAGE_GALLERY_REQUEST_CODE
         )
     }
@@ -565,7 +636,10 @@ class SettingsFragment : Fragment() {
         private const val REQUEST_EXTERNAL_STORAGE = 0
         private const val REQUEST_CAMERA = 1
         private val PERMISSIONS_STORAGE =
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
         private val PERMISSIONS_CAMERA = arrayOf(Manifest.permission.CAMERA)
     }
 }
