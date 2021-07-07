@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="agency.digitera.android.promdate.ui.SplashFragment"
+        android:name="agency.digitera.android.promdate.ui.init.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="agency.digitera.android.promdate.ui.LoginFragment"
+        android:name="agency.digitera.android.promdate.ui.init.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="agency.digitera.android.promdate.ui.RegisterFragment"
+        android:name="agency.digitera.android.promdate.ui.init.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="agency.digitera.android.promdate.ui.FeedFragment"
+        android:name="agency.digitera.android.promdate.ui.tabs.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed">
 
@@ -121,7 +121,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="agency.digitera.android.promdate.ui.ProfileFragment"
+        android:name="agency.digitera.android.promdate.ui.menu.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -144,13 +144,13 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="agency.digitera.android.promdate.ui.SettingsFragment"
+        android:name="agency.digitera.android.promdate.ui.menu.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="agency.digitera.android.promdate.ui.NotificationsFragment"
+        android:name="agency.digitera.android.promdate.ui.menu.NotificationsFragment"
         android:label="NotificationsFragment"
         tools:layout="@layout/fragment_notifications">
 
@@ -179,12 +179,12 @@
         app:popUpToInclusive="false" />
     <fragment
         android:id="@+id/inviteFragment"
-        android:name="agency.digitera.android.promdate.ui.InviteFragment"
+        android:name="agency.digitera.android.promdate.ui.menu.InviteFragment"
         android:label="InviteFragment"
         tools:layout="@layout/fragment_invite" />
     <fragment
         android:id="@+id/dressSearchFragment"
-        android:name="agency.digitera.android.promdate.ui.DressSearchFragment"
+        android:name="agency.digitera.android.promdate.ui.dress.DressSearchFragment"
         android:label="DressSearchFragment"
         tools:layout="@layout/fragment_dress_search">
         <action
@@ -193,7 +193,7 @@
     </fragment>
     <fragment
         android:id="@+id/dressListFragment"
-        android:name="agency.digitera.android.promdate.ui.DressListFragment"
+        android:name="agency.digitera.android.promdate.ui.dress.DressListFragment"
         android:label="DressListFragment"
         tools:layout="@layout/fragment_dress_list">
         <action
@@ -202,7 +202,7 @@
     </fragment>
     <fragment
         android:id="@+id/dressProfileFragment"
-        android:name="agency.digitera.android.promdate.ui.DressProfileFragment"
+        android:name="agency.digitera.android.promdate.ui.dress.DressProfileFragment"
         android:label="DressProfileFragment"
         tools:layout="@layout/fragment_dress_profile"/>
     <!--

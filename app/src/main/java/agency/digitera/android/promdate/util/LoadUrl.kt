@@ -1,10 +1,11 @@
 package agency.digitera.android.promdate.util
 
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.util.image_transformation.CircleTransformation
+import agency.digitera.android.promdate.util.image_transformation.SelectImageOverlayTransformation
 import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import agency.digitera.android.promdate.R
-import android.util.Log
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso

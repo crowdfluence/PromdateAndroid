@@ -1,5 +1,9 @@
 package agency.digitera.android.promdate.data
 
+import agency.digitera.android.promdate.data.entities.User
+import agency.digitera.android.promdate.data.models.Dress
+import agency.digitera.android.promdate.data.models.Notification
+import agency.digitera.android.promdate.data.models.School
 import com.google.gson.annotations.SerializedName
 
 class DefaultResponse(
