@@ -7,7 +7,7 @@ import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.SingleBoundaryCallback
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.util.BadTokenException
-import agency.digitera.android.promdate.util.CheckInternet
+import agency.digitera.android.promdate.util.isNetworkAvailable
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -95,7 +95,7 @@ class SinglesTabFragment : Fragment(), TabInterface {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            if (CheckInternet.isNetworkAvailable(context!!)) {
+            if (context!!.isNetworkAvailable()) {
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
                     SingleBoundaryCallback.maxLoaded = 0

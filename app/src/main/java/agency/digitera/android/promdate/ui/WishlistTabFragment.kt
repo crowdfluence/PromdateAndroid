@@ -1,27 +1,29 @@
 package agency.digitera.android.promdate.ui
 
-import androidx.lifecycle.Observer
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
-import agency.digitera.android.promdate.*
+import agency.digitera.android.promdate.MainActivity
+import agency.digitera.android.promdate.R
+import agency.digitera.android.promdate.TabInterface
 import agency.digitera.android.promdate.adapters.SingleAdapter
 import agency.digitera.android.promdate.data.User
 import agency.digitera.android.promdate.data.WishlistBoundaryCallback
 import agency.digitera.android.promdate.util.BadTokenException
-import agency.digitera.android.promdate.util.CheckInternet
+import agency.digitera.android.promdate.util.isNetworkAvailable
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_scrollable_tab.*
 import java.util.concurrent.Executors
@@ -33,7 +35,11 @@ class WishlistTabFragment : Fragment(), TabInterface {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var liveData: LiveData<PagedList<User>>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_scrollable_tab, container, false)
     }
 
@@ -67,8 +73,7 @@ class WishlistTabFragment : Fragment(), TabInterface {
 
         try {
             liveData = initializedPagedListBuilder(config).build()
-        }
-        catch (e: BadTokenException) {
+        } catch (e: BadTokenException) {
             return
         }
 
@@ -83,22 +88,24 @@ class WishlistTabFragment : Fragment(), TabInterface {
         val lastKey = viewAdapter.currentList?.lastKey as Int
 
         outState.putInt("lastKey", lastKey)
-        outState.putParcelable("layout_manager_state", recyclerView.layoutManager?.onSaveInstanceState())
+        outState.putParcelable(
+            "layout_manager_state",
+            recyclerView.layoutManager?.onSaveInstanceState()
+        )
     }
 
     override fun invalidate() {
         if (!this::liveData.isInitialized) {
             initializeList()
         } else {
-            if (CheckInternet.isNetworkAvailable(context!!)) {
+            if (context!!.isNetworkAvailable()) {
                 val executor = Executors.newSingleThreadExecutor()
                 executor.execute {
                     WishlistBoundaryCallback.maxLoaded = 0
                     (activity as MainActivity).wishlistDb.userDao().clearDatabase()
                     swipe_refresh.isRefreshing = false
                 }
-            }
-            else {
+            } else {
                 Snackbar.make(
                     constraint_layout,
                     R.string.no_internet,
@@ -113,19 +120,29 @@ class WishlistTabFragment : Fragment(), TabInterface {
     private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
         val livePageListBuilder = LivePagedListBuilder<Int, User>(
             (activity as MainActivity).wishlistDb.userDao().users(),
-            config)
+            config
+        )
 
         //get token
         val sp: SharedPreferences =
-            context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            context?.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
                 ?: run {
-                    val navOptions = NavOptions.Builder().setPopUpTo(R.id.feedFragment, true).build()
+                    val navOptions =
+                        NavOptions.Builder().setPopUpTo(R.id.feedFragment, true).build()
                     findNavController().navigate(R.id.nav_logout, null, navOptions)
                     throw BadTokenException()
                 }
         val token = sp.getString("token", null) ?: ""
 
-        livePageListBuilder.setBoundaryCallback(WishlistBoundaryCallback((activity as MainActivity).wishlistDb, token))
+        livePageListBuilder.setBoundaryCallback(
+            WishlistBoundaryCallback(
+                (activity as MainActivity).wishlistDb,
+                token
+            )
+        )
         return livePageListBuilder
     }
 
